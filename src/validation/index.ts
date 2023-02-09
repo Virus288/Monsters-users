@@ -19,14 +19,14 @@ export default class Validator {
     const isEmail = regex.test(email);
 
     if (!email) throw new errors.IncorrectCredentials(tempId, 'email missing');
-    if (!isEmail) throw new errors.IncorrectCredentials(tempId, 'Not valid email address');
+    if (!isEmail) throw new errors.IncorrectCredentials(tempId, 'not valid email address');
   }
 
   static validatePasswords(tempId: string, password: string, password2?: string): void {
     Validator.validatePassword(tempId, password);
 
     if (!password2) throw new errors.IncorrectCredentials(tempId, 'password2 missing');
-    if (password !== password2) throw new errors.IncorrectCredentials(tempId, 'Passwords not the same');
+    if (password !== password2) throw new errors.IncorrectCredentials(tempId, 'passwords not the same');
   }
 
   static validatePassword(tempId: string, password: string): void {

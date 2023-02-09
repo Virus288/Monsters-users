@@ -34,7 +34,7 @@ describe('Register', () => {
         const clone = structuredClone(registerData);
         delete clone.login;
         controller.register(clone, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectCredentials(localUser.tempId, 'Name missing'));
+          expect(err).toEqual(new errors.IncorrectCredentials(localUser.tempId, 'login missing'));
         });
       });
 
@@ -42,7 +42,7 @@ describe('Register', () => {
         const clone = structuredClone(registerData);
         delete clone.password;
         controller.register(clone, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectCredentials(localUser.tempId, 'Password missing'));
+          expect(err).toEqual(new errors.IncorrectCredentials(localUser.tempId, 'password missing'));
         });
       });
 
@@ -50,7 +50,7 @@ describe('Register', () => {
         const clone = structuredClone(registerData);
         delete clone.password2;
         controller.register(clone, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectCredentials(localUser.tempId, 'Password2 missing'));
+          expect(err).toEqual(new errors.IncorrectCredentials(localUser.tempId, 'password2 missing'));
         });
       });
 
@@ -58,7 +58,7 @@ describe('Register', () => {
         const clone = structuredClone(registerData);
         delete clone.email;
         controller.register(clone, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectCredentials(localUser.tempId, 'Email missing'));
+          expect(err).toEqual(new errors.IncorrectCredentials(localUser.tempId, 'email missing'));
         });
       });
     });
@@ -90,7 +90,7 @@ describe('Register', () => {
           expect(err).toEqual(
             new errors.IncorrectCredentials(
               localUser.tempId,
-              'Name should only contain arabic letters, numbers and special characters',
+              'login should only contain arabic letters, numbers and special characters',
             ),
           );
         });
@@ -100,7 +100,7 @@ describe('Register', () => {
       it(`Login too short`, async () => {
         controller.register({ ...registerData, login: 'a' }, localUser).catch((err) => {
           expect(err).toEqual(
-            new errors.IncorrectCredentials(localUser.tempId, 'Name should be at least 3 characters'),
+            new errors.IncorrectCredentials(localUser.tempId, 'login should be at least 3 characters'),
           );
         });
         await db.cleanUp();
@@ -118,7 +118,7 @@ describe('Register', () => {
           )
           .catch((err) => {
             expect(err).toEqual(
-              new errors.IncorrectCredentials(localUser.tempId, 'Name should be less than 30 characters'),
+              new errors.IncorrectCredentials(localUser.tempId, 'login should be less than 30 characters'),
             );
           });
         await db.cleanUp();
@@ -129,7 +129,7 @@ describe('Register', () => {
           expect(err).toEqual(
             new errors.IncorrectCredentials(
               localUser.tempId,
-              'Password should contain at least 1 digit, 6 letter, 1 upper case letter and 1 lower case letter',
+              'password should contain at least 1 digit, 6 letter, 1 upper case letter and 1 lower case letter',
             ),
           );
         });
@@ -139,7 +139,7 @@ describe('Register', () => {
       it(`Password too short`, async () => {
         controller.register({ ...registerData, password: 'a' }, localUser).catch((err) => {
           expect(err).toEqual(
-            new errors.IncorrectCredentials(localUser.tempId, 'Password should be at least 6 characters long'),
+            new errors.IncorrectCredentials(localUser.tempId, 'password should be at least 6 characters long'),
           );
         });
         await db.cleanUp();
@@ -157,7 +157,7 @@ describe('Register', () => {
           )
           .catch((err) => {
             expect(err).toEqual(
-              new errors.IncorrectCredentials(localUser.tempId, 'Password should be less than 200 characters'),
+              new errors.IncorrectCredentials(localUser.tempId, 'password should be less than 200 characters'),
             );
           });
         await db.cleanUp();
@@ -165,14 +165,14 @@ describe('Register', () => {
 
       it(`Passwords do not match`, async () => {
         controller.register({ ...registerData, password2: 'a' }, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectCredentials(localUser.tempId, 'Passwords not the same'));
+          expect(err).toEqual(new errors.IncorrectCredentials(localUser.tempId, 'passwords not the same'));
         });
         await db.cleanUp();
       });
 
       it(`Email incorrect`, async () => {
         controller.register({ ...registerData, email: 'a' }, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectCredentials(localUser.tempId, 'Not valid email address'));
+          expect(err).toEqual(new errors.IncorrectCredentials(localUser.tempId, 'not valid email address'));
         });
         await db.cleanUp();
       });
@@ -180,19 +180,6 @@ describe('Register', () => {
   });
 
   describe('Should pass', () => {
-    const db = new Database();
-
-    beforeEach(async () => {
-      await db.user
-        .login(registerData.login)
-        .password(registerData.password)
-        .email(registerData.email)
-        .verified(false)
-        .create();
-
-      await db.cleanUp();
-    });
-
     it(`Validated`, async () => {
       controller.register({ ...registerData, email: 'test22@test.test' }, localUser).catch((err) => {
         expect(err.name).toEqual('MongoPoolClosedError');
