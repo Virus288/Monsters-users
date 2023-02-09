@@ -1,5 +1,5 @@
 import User from './model';
-import type * as types from '../types';
+import type * as types from '../../types';
 
 export default class Rooster {
   async add(userData: { login: string; email: string; password: string }): Promise<void> {

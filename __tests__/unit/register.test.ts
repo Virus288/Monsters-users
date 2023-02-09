@@ -93,7 +93,7 @@ describe('Login', () => {
         clone.password2 = 'a';
         const func = () => Validation.validateRegister('2', clone);
 
-        expect(func).toThrow(new errors.IncorrectCredentials('2', `passwords not the same`));
+        expect(func).toThrow(new errors.IncorrectCredentials('2', `Passwords not the same`));
       });
 
       it(`Email incorrect`, async () => {
@@ -101,7 +101,7 @@ describe('Login', () => {
         clone.email = 'a';
         const func = () => Validation.validateRegister('2', clone);
 
-        expect(func).toThrow(new errors.IncorrectCredentials('2', `not valid email address`));
+        expect(func).toThrow(new errors.IncorrectCredentials('2', `Not valid email address`));
       });
     });
   });
