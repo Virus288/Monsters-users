@@ -1,6 +1,6 @@
 import { IUserLean } from '../../../src/types';
 import * as enums from '../../../src/enums';
-import User from '../../../src/modules/model';
+import User from '../../../src/modules/user/model';
 import { hashPassword } from '../../../src/tools/token';
 
 export default class FakeUser {

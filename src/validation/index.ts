@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
 import type * as types from '../types';
 import * as errors from '../errors';
+import * as enums from '../enums';
+import mongoose from 'mongoose';
 
 export default class Validator {
   static validateRegister(tempId: string, data: types.IRegisterReq): void {
@@ -19,14 +21,14 @@ export default class Validator {
     const isEmail = regex.test(email);
 
     if (!email) throw new errors.IncorrectCredentials(tempId, 'email missing');
-    if (!isEmail) throw new errors.IncorrectCredentials(tempId, 'not valid email address');
+    if (!isEmail) throw new errors.IncorrectCredentials(tempId, 'Not valid email address');
   }
 
   static validatePasswords(tempId: string, password: string, password2?: string): void {
     Validator.validatePassword(tempId, password);
 
     if (!password2) throw new errors.IncorrectCredentials(tempId, 'password2 missing');
-    if (password !== password2) throw new errors.IncorrectCredentials(tempId, 'passwords not the same');
+    if (password !== password2) throw new errors.IncorrectCredentials(tempId, 'Passwords not the same');
   }
 
   static validatePassword(tempId: string, password: string): void {
@@ -63,8 +65,20 @@ export default class Validator {
     if (name.length > 30) throw new errors.IncorrectCredentials(tempId, 'login should be less than 30 characters');
   }
 
+  static validateAddProfile(tempId: string, data: types.INewProfile): void {
+    const races = Object.values(enums.EUserRace);
+    if (!data.race) throw new errors.IncorrectProfile(tempId, 'Race is missing');
+    if (!races.includes(data.race)) throw new errors.IncorrectProfile(tempId, 'Race has incorrect type');
+  }
+
   static async compare(tempId: string, password: string, hashed: string): Promise<void> {
     const auth = await bcrypt.compare(password, hashed);
     if (!auth) throw new errors.IncorrectLogin(tempId);
+  }
+
+  static validateUserId(tempId: string, data: types.IUserId): void {
+    if (!data.id) throw new errors.IncorrectCredentials(tempId, 'Provided user id is missing');
+    const isValid = mongoose.Types.ObjectId.isValid(data.id);
+    if (isValid) throw new errors.IncorrectCredentials(tempId, 'Provided user id is invalid');
   }
 }

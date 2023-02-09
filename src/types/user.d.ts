@@ -6,7 +6,7 @@ export interface IUser extends IUserLean, mongoose.Document {
 }
 
 export interface IUserLean {
-  _id: mongoose.Types.ObjectId;
+  _id: string;
   login: string;
   email: string;
   verified: boolean;
@@ -25,4 +25,8 @@ export interface IUserCredentials {
   mainToken: string;
   refreshToken: string;
   userId: string;
+}
+
+export interface IUserId {
+  id: string;
 }

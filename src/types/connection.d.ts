@@ -3,6 +3,6 @@ import * as enums from '../enums';
 
 export interface IRabbitMessage {
   user: types.ILocalUser;
-  target: enums.EUserTargets | enums.EMessageTypes;
+  target: enums.EUserTargets | enums.EMessageTypes | enums.EProfileTargets;
   payload: unknown;
 }

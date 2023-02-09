@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import * as types from '../../src/types';
 import * as errors from '../../src/errors';
 import * as enums from '../../src/enums';
-import Controller from '../../src/modules/controller';
+import Controller from '../../src/modules/user/controller';
 import Database from '../utils/mockDB';
 import fakeData from '../utils/fakeData.json';
 

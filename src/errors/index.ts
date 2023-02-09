@@ -139,7 +139,18 @@ export class UsernameAlreadyInUse extends FullError {
     super('UsernameAlreadyInUse');
     this.message = 'Selected username is already in use';
     this.name = 'UsernameAlreadyInUse';
-    this.code = '007';
+    this.code = '013';
+    this.status = 401;
+    this.userId = userId;
+  }
+}
+
+export class IncorrectProfile extends FullError {
+  constructor(userId: string, message?: string) {
+    super('IncorrectProfile');
+    this.message = message ?? 'Incorrect profile data';
+    this.name = 'IncorrectProfile';
+    this.code = '014';
     this.status = 401;
     this.userId = userId;
   }

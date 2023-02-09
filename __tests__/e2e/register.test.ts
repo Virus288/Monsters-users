@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import * as types from '../../src/types';
 import * as errors from '../../src/errors';
 import * as enums from '../../src/enums';
-import Controller from '../../src/modules/controller';
+import Controller from '../../src/modules/user/controller';
 import Database from '../utils/mockDB';
 import fakeData from '../utils/fakeData.json';
 
@@ -165,14 +165,14 @@ describe('Register', () => {
 
       it(`Passwords do not match`, async () => {
         controller.register({ ...registerData, password2: 'a' }, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectCredentials(localUser.tempId, 'passwords not the same'));
+          expect(err).toEqual(new errors.IncorrectCredentials(localUser.tempId, 'Passwords not the same'));
         });
         await db.cleanUp();
       });
 
       it(`Email incorrect`, async () => {
         controller.register({ ...registerData, email: 'a' }, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectCredentials(localUser.tempId, 'not valid email address'));
+          expect(err).toEqual(new errors.IncorrectCredentials(localUser.tempId, 'Not valid email address'));
         });
         await db.cleanUp();
       });
