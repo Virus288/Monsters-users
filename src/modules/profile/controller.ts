@@ -1,7 +1,7 @@
 import Rooster from './rooster';
 import type * as types from '../../types';
 import { INewProfile } from '../../types';
-import Validator from '../../validation';
+import Validator from './validation';
 
 export default class Controller {
   private rooster: Rooster;

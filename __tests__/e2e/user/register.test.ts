@@ -1,12 +1,12 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@jest/globals';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import * as types from '../../src/types';
-import * as errors from '../../src/errors';
-import * as enums from '../../src/enums';
-import Controller from '../../src/modules/user/controller';
-import Database from '../utils/mockDB';
-import fakeData from '../utils/fakeData.json';
+import * as types from '../../../src/types';
+import * as errors from '../../../src/errors';
+import * as enums from '../../../src/enums';
+import Controller from '../../../src/modules/user/controller';
+import Database from '../../utils/mockDB';
+import fakeData from '../../utils/fakeData.json';
 
 describe('Register', () => {
   const registerData: types.IRegisterReq = fakeData.users[0];
@@ -85,15 +85,24 @@ describe('Register', () => {
         });
       });
 
-      it(`Register incorrect`, async () => {
-        controller.register({ ...registerData, login: '!@#$%^&*&*()_+P{:"<?a' }, localUser).catch((err) => {
-          expect(err).toEqual(
-            new errors.IncorrectCredentials(
-              localUser.tempId,
-              'login should only contain arabic letters, numbers and special characters',
-            ),
-          );
-        });
+      it(`Login incorrect`, async () => {
+        controller
+          .register(
+            {
+              ...registerData,
+              login: '!@#$%^&*&*()_+P{:"<?a',
+              email: 'email@email.email',
+            },
+            localUser,
+          )
+          .catch((err) => {
+            expect(err).toEqual(
+              new errors.IncorrectCredentials(
+                localUser.tempId,
+                'login should only contain arabic letters, numbers and special characters',
+              ),
+            );
+          });
         await db.cleanUp();
       });
 

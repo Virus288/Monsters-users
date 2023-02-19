@@ -1,7 +1,7 @@
 import type * as types from '../../types';
 import Rooster from './rooster';
 import * as errors from '../../errors';
-import Validator from '../../validation';
+import Validator from './validation';
 import * as utils from '../../tools/token';
 
 export default class Controller {

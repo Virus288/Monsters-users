@@ -1,9 +1,9 @@
 import { describe, expect, it } from '@jest/globals';
-import * as types from '../../src/types';
-import Validation from '../../src/validation';
-import * as errors from '../../src/errors';
-import { generateRandomName } from '../../src/utils';
-import fakeData from '../utils/fakeData.json';
+import Validation from '../../../src/modules/user/validation';
+import * as errors from '../../../src/errors';
+import * as types from '../../../src/types';
+import fakeData from '../../utils/fakeData.json';
+import { generateRandomName } from '../../../src/utils';
 
 describe('Login', () => {
   const password = `${generateRandomName()}123`;
@@ -28,7 +28,7 @@ describe('Login', () => {
     });
 
     describe('Incorrect data', () => {
-      it(`Register incorrect`, async () => {
+      it(`Register incorrect`, () => {
         const clone = structuredClone(fakeData.users[0]);
         clone.login = '!@#$%^&*&*()_+P{:"<?a';
         const func = () => Validation.validateRegister('2', clone);
@@ -41,7 +41,7 @@ describe('Login', () => {
         );
       });
 
-      it(`Login too short`, async () => {
+      it(`Login too short`, () => {
         const clone = structuredClone(fakeData.users[0]);
         clone.login = 'a';
         const func = () => Validation.validateRegister('2', clone);
@@ -49,7 +49,7 @@ describe('Login', () => {
         expect(func).toThrow(new errors.IncorrectCredentials('2', `login should be at least 3 characters`));
       });
 
-      it(`Login too long`, async () => {
+      it(`Login too long`, () => {
         const clone = structuredClone(fakeData.users[0]);
         clone.login =
           'asssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss';
@@ -58,7 +58,7 @@ describe('Login', () => {
         expect(func).toThrow(new errors.IncorrectCredentials('2', `login should be less than 30 characters`));
       });
 
-      it(`Password incorrect`, async () => {
+      it(`Password incorrect`, () => {
         const clone = structuredClone(fakeData.users[0]);
         clone.password = 'a@$QEWASD+)}KO_PL{:">?';
         const func = () => Validation.validateRegister('2', clone);
@@ -71,7 +71,7 @@ describe('Login', () => {
         );
       });
 
-      it(`Password too short`, async () => {
+      it(`Password too short`, () => {
         const clone = structuredClone(fakeData.users[0]);
         clone.password = 'a';
         const func = () => Validation.validateRegister('2', clone);
@@ -79,7 +79,7 @@ describe('Login', () => {
         expect(func).toThrow(new errors.IncorrectCredentials('2', `password should be at least 6 characters long`));
       });
 
-      it(`Password too long`, async () => {
+      it(`Password too long`, () => {
         const clone = structuredClone(fakeData.users[0]);
         clone.password =
           'aasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsad';
@@ -88,7 +88,7 @@ describe('Login', () => {
         expect(func).toThrow(new errors.IncorrectCredentials('2', `password should be less than 200 characters`));
       });
 
-      it(`Passwords do not match`, async () => {
+      it(`Passwords do not match`, () => {
         const clone = structuredClone(fakeData.users[0]);
         clone.password2 = 'a';
         const func = () => Validation.validateRegister('2', clone);
@@ -96,7 +96,7 @@ describe('Login', () => {
         expect(func).toThrow(new errors.IncorrectCredentials('2', `Passwords not the same`));
       });
 
-      it(`Email incorrect`, async () => {
+      it(`Email incorrect`, () => {
         const clone = structuredClone(fakeData.users[0]);
         clone.email = 'a';
         const func = () => Validation.validateRegister('2', clone);
@@ -107,7 +107,7 @@ describe('Login', () => {
   });
 
   describe('Should pass', () => {
-    it(`Validated register`, async () => {
+    it(`Validated register`, () => {
       const func = () => Validation.validateRegister('2', register);
       expect(func).not.toThrow();
     });

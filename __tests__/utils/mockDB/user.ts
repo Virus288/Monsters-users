@@ -2,6 +2,7 @@ import { IUserLean } from '../../../src/types';
 import * as enums from '../../../src/enums';
 import User from '../../../src/modules/user/model';
 import { hashPassword } from '../../../src/tools/token';
+import mongoose from 'mongoose';
 
 export default class FakeUser {
   state: IUserLean = {
@@ -38,11 +39,12 @@ export default class FakeUser {
     return this;
   }
 
-  async create(): Promise<void> {
+  async create(): Promise<mongoose.Types.ObjectId> {
     this.state.password = await hashPassword(this.state.password);
 
     const NewUser = new User(this.state);
-    await NewUser.save();
+    const user = await NewUser.save();
+    return user._id;
   }
 
   clean(): void {

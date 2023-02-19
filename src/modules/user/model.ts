@@ -13,7 +13,6 @@ export const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please pass valid email'],
     unique: true,
-    lowercase: true,
     minlength: [2, 'Min length is 2 characters'],
     maxlength: [50, 'Max name length is 50 characters'],
   },

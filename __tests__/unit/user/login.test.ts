@@ -1,8 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
-import Validation from '../../src/validation';
-import * as errors from '../../src/errors';
-import * as types from '../../src/types';
-import fakeData from '../utils/fakeData.json';
+import Validation from '../../../src/modules/user/validation';
+import * as errors from '../../../src/errors';
+import * as types from '../../../src/types';
+import fakeData from '../../utils/fakeData.json';
 
 describe('Login', () => {
   const login: types.ILoginReq = {
@@ -24,7 +24,7 @@ describe('Login', () => {
     });
 
     describe('Incorrect data', () => {
-      it(`Login too short`, async () => {
+      it(`Login too short`, () => {
         const clone = structuredClone(fakeData.users[0]);
         clone.login = 'bc';
         const func = () => Validation.validateLogin('2', clone);
@@ -32,7 +32,7 @@ describe('Login', () => {
         expect(func).toThrow(new errors.IncorrectCredentials('2', `login should be at least 3 characters`));
       });
 
-      it(`Login too long`, async () => {
+      it(`Login too long`, () => {
         const clone = structuredClone(fakeData.users[0]);
         clone.login =
           'asssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss';
@@ -41,7 +41,7 @@ describe('Login', () => {
         expect(func).toThrow(new errors.IncorrectCredentials('2', `login should be less than 30 characters`));
       });
 
-      it(`Incorrect password`, async () => {
+      it(`Incorrect password`, () => {
         const clone = structuredClone(fakeData.users[0]);
         clone.password = 'abc';
         const func = () => Validation.validateLogin('2', clone);
@@ -52,7 +52,7 @@ describe('Login', () => {
   });
 
   describe('Should pass', () => {
-    it(`Validated login`, async () => {
+    it(`Validated login`, () => {
       const func = () => Validation.validateLogin('2', login);
       expect(func).not.toThrow();
     });

@@ -7,12 +7,14 @@ export interface IProfile extends IProfileLean, mongoose.Document {
 
 export interface IProfileLean {
   _id: string;
+  user: string;
   race: enums.EUserRace;
   friends: string[];
-  lvL: [number, number];
-  exp: number;
+  lvl: number;
+  exp: [number, number];
 }
 
 export interface INewProfile {
   race: enums.EUserRace;
+  user: string;
 }

@@ -1,12 +1,12 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@jest/globals';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import * as types from '../../src/types';
-import * as errors from '../../src/errors';
-import * as enums from '../../src/enums';
-import Controller from '../../src/modules/user/controller';
-import Database from '../utils/mockDB';
-import fakeData from '../utils/fakeData.json';
+import * as types from '../../../src/types';
+import * as errors from '../../../src/errors';
+import * as enums from '../../../src/enums';
+import Controller from '../../../src/modules/user/controller';
+import Database from '../../utils/mockDB';
+import fakeData from '../../utils/fakeData.json';
 
 describe('Login', () => {
   const loginData: types.ILoginReq = fakeData.users[0];

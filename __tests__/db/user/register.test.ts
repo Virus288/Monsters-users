@@ -1,11 +1,11 @@
 import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
-import Database from '../utils/mockDB';
-import Rooster from '../../src/modules/user/rooster';
-import * as enums from '../../src/enums';
-import * as types from '../../src/types';
+import Database from '../../utils/mockDB';
+import Rooster from '../../../src/modules/user/rooster';
+import * as enums from '../../../src/enums';
+import * as types from '../../../src/types';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import fakeData from '../utils/fakeData.json';
+import fakeData from '../../utils/fakeData.json';
 
 describe('Register', () => {
   const registerData: types.IRegisterReq = fakeData.users[0];
