@@ -1,18 +1,23 @@
-import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
-import Database from '../utils/mockDB';
-import Rooster from '../../src/modules/user/rooster';
-import * as enums from '../../src/enums';
-import * as types from '../../src/types';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
+import Rooster from '../../../src/modules/user/rooster';
+import * as enums from '../../../src/enums';
+import * as types from '../../../src/types';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import fakeData from '../utils/fakeData.json';
 import mongoose from 'mongoose';
+import fakeData from '../../utils/fakeData.json';
+import FakeFactory from '../../utils/fakeFactory/src';
 
 describe('Login', () => {
+  const db = new FakeFactory();
   const loginData: types.IRegisterReq = fakeData.users[0];
 
   beforeAll(async () => {
     const server = await MongoMemoryServer.create();
     await mongoose.connect(server.getUri());
+  });
+
+  afterEach(async () => {
+    await db.cleanUp();
   });
 
   afterAll(async () => {
@@ -29,12 +34,10 @@ describe('Login', () => {
     });
 
     it('Incorrect target', async () => {
-      const db = new Database();
       await db.user.login(loginData.login).password(loginData.password).email(loginData.email).verified(false).create();
 
       const rooster = new Rooster();
       const user = await rooster.getByLogin('a');
-      await db.cleanUp();
 
       expect(user).toEqual([]);
     });
@@ -42,13 +45,11 @@ describe('Login', () => {
 
   describe('Should pass', () => {
     it(`Validated`, async () => {
-      const db = new Database();
       await db.user.login(loginData.login).password(loginData.password).email(loginData.email).verified(false).create();
 
       const rooster = new Rooster();
       const user = await rooster.getByEmail(loginData.email);
       const { login, password, email, verified, _id, type } = user[0];
-      await db.cleanUp();
 
       expect(login).toEqual(loginData.login);
       expect(password.length).not.toBeLessThan(loginData.password.length);

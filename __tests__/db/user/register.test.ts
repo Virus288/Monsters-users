@@ -1,18 +1,23 @@
-import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
-import Database from '../utils/mockDB';
-import Rooster from '../../src/modules/user/rooster';
-import * as enums from '../../src/enums';
-import * as types from '../../src/types';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
+import Rooster from '../../../src/modules/user/rooster';
+import * as enums from '../../../src/enums';
+import * as types from '../../../src/types';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import fakeData from '../utils/fakeData.json';
+import fakeData from '../../utils/fakeData.json';
+import FakeFactory from '../../utils/fakeFactory/src';
 
 describe('Register', () => {
+  const db = new FakeFactory();
   const registerData: types.IRegisterReq = fakeData.users[0];
 
   beforeAll(async () => {
     const server = await MongoMemoryServer.create();
     await mongoose.connect(server.getUri());
+  });
+
+  afterEach(async () => {
+    await db.cleanUp();
   });
 
   afterAll(async () => {
@@ -29,7 +34,6 @@ describe('Register', () => {
     });
 
     it('Incorrect target', async () => {
-      const db = new Database();
       await db.user
         .login(registerData.login)
         .password(registerData.password)
@@ -41,7 +45,6 @@ describe('Register', () => {
       const user = await rooster.getByLogin('a');
 
       expect(user).toEqual([]);
-      await db.cleanUp();
     });
   });
 

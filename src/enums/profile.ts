@@ -4,6 +4,6 @@ export enum EUserRace {
 }
 
 export enum EProfileTargets {
-  Create = 'create',
-  Get = 'get',
+  Create = 'createProfile',
+  Get = 'getProfile',
 }

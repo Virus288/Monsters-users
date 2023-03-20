@@ -3,7 +3,7 @@ import * as enums from '../enums';
 import getConfig from './configLoader';
 import bcrypt from 'bcrypt';
 
-export const generateMainToken = (id: string, type: enums.EUserTypes): string => {
+export const generateAccessToken = (id: string, type: enums.EUserTypes): string => {
   return jwt.sign({ id, type }, getConfig().token, {
     expiresIn: enums.EJwtTime.TokenMaxAge,
   });
@@ -15,7 +15,7 @@ export const generateRefreshToken = (id: string, type: enums.EUserTypes): string
   });
 };
 
-export const hashPassword = async (password: string): Promise<string> => {
-  const salt = await bcrypt.genSalt();
-  return await bcrypt.hash(password, salt);
+export const hashPassword = (password: string): string => {
+  const salt = bcrypt.genSaltSync();
+  return bcrypt.hashSync(password, salt);
 };

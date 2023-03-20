@@ -3,18 +3,22 @@ import type * as type from '../../types';
 import * as enums from '../../enums';
 
 export const profileSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Types.ObjectId,
+    required: [true, 'userId not provided'],
+    unique: true,
+  },
   race: {
     type: String,
     enum: enums.EUserRace,
     required: [true, 'Race not provided'],
   },
   friends: {
-    type: [mongoose.Types.ObjectId],
-    enum: enums.EUserRace,
+    type: [String],
     required: false,
     default: [],
   },
-  lvL: {
+  lvl: {
     type: Number,
     required: false,
     default: 1,

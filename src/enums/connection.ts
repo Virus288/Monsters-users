@@ -18,3 +18,8 @@ export enum EAmqQueues {
   Gateway = 'gatewayQueue',
   Users = 'usersQueue',
 }
+
+export enum EMessageTargets {
+  User = 'user',
+  Profile = 'profile',
+}

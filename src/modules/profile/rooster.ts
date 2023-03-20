@@ -8,6 +8,6 @@ export default class Rooster {
   }
 
   async get(id: string): Promise<types.IProfile> {
-    return Profile.findOne({ _id: id });
+    return Profile.findOne({ user: id });
   }
 }
