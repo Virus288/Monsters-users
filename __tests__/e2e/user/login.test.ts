@@ -5,10 +5,11 @@ import * as types from '../../../src/types';
 import * as errors from '../../../src/errors';
 import * as enums from '../../../src/enums';
 import Controller from '../../../src/modules/user/controller';
-import Database from '../../utils/mockDB';
 import fakeData from '../../utils/fakeData.json';
+import FakeFactory from '../../utils/fakeFactory/src';
 
 describe('Login', () => {
+  const db = new FakeFactory();
   const loginData: types.ILoginReq = fakeData.users[0];
   const localUser: types.ILocalUser = {
     userId: undefined,
@@ -21,6 +22,10 @@ describe('Login', () => {
   beforeAll(async () => {
     const server = await MongoMemoryServer.create();
     await mongoose.connect(server.getUri());
+  });
+
+  afterEach(async () => {
+    await db.cleanUp();
   });
 
   afterAll(async () => {
@@ -48,8 +53,6 @@ describe('Login', () => {
     });
 
     describe('Incorrect data', () => {
-      const db = new Database();
-
       beforeEach(async () => {
         await db.user
           .login(loginData.login)
@@ -79,7 +82,6 @@ describe('Login', () => {
 
   describe('Should pass', () => {
     it(`Validated`, async () => {
-      const db = new Database();
       await db.user
         .login(loginData.login)
         .password(loginData.password)
@@ -87,15 +89,13 @@ describe('Login', () => {
         .verified(false)
         .create();
 
-      const { userId, refreshToken, mainToken } = await controller.login(loginData, localUser);
+      const { userId, refreshToken, accessToken } = await controller.login(loginData, localUser);
       expect(userId).not.toBeUndefined();
       expect(userId.length).not.toBeLessThan(10);
       expect(refreshToken).not.toBeUndefined();
       expect(refreshToken.length).not.toBeLessThan(20);
-      expect(mainToken).not.toBeUndefined();
-      expect(mainToken.length).not.toBeLessThan(20);
-
-      await db.cleanUp();
+      expect(accessToken).not.toBeUndefined();
+      expect(accessToken.length).not.toBeLessThan(20);
     });
   });
 });

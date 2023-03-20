@@ -1,18 +1,18 @@
-import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
 import * as types from '../../../src/types';
 import * as enums from '../../../src/enums';
 import Controller from '../../../src/modules/profile/controller';
 import fakeData from '../../utils/fakeData.json';
-import Database from '../../utils/mockDB';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
+import FakeFactory from '../../utils/fakeFactory/src';
 
 describe('Profile', () => {
+  const db = new FakeFactory();
   const id = fakeData.users[0]._id;
-  const race: types.INewProfile = {
+  const race: types.INewProfileReq = {
     race: enums.EUserRace.Elf,
-    user: id,
   };
   const fake = fakeData.profiles[1];
   const userId: types.IUserId = {
@@ -24,12 +24,27 @@ describe('Profile', () => {
     validated: true,
     type: enums.EUserTypes.User,
   };
+  const localUser2: types.ILocalUser = {
+    userId: new mongoose.Types.ObjectId().toString(),
+    tempId: 'tempId',
+    validated: true,
+    type: enums.EUserTypes.User,
+  };
+  const localUser3: types.ILocalUser = {
+    userId: new mongoose.Types.ObjectId().toString(),
+    tempId: 'tempId',
+    validated: true,
+    type: enums.EUserTypes.User,
+  };
   const controller = new Controller();
 
   beforeAll(async () => {
-    2;
     const server = await MongoMemoryServer.create();
     await mongoose.connect(server.getUri());
+  });
+
+  afterEach(async () => {
+    await db.cleanUp();
   });
 
   afterAll(async () => {
@@ -78,15 +93,13 @@ describe('Profile', () => {
       });
 
       it(`Profile already exists`, async () => {
-        const db = new Database();
-        await db.profile.user(race.user).race(race.race).create();
+        await db.profile.user(localUser2.userId).race(race.race).create();
 
         try {
-          await controller.addProfile(race, localUser);
+          await controller.addProfile(race, localUser2);
         } catch (err) {
           expect(err).not.toBeUndefined();
         }
-        await db.cleanUp();
       });
 
       it(`Profile does not exist`, async () => {
@@ -98,25 +111,29 @@ describe('Profile', () => {
 
   describe('Should pass', () => {
     it(`Added profile`, async () => {
-      const func = async () => await controller.addProfile(race, localUser);
+      db.profile.user(localUser2.userId);
+
+      const func = async () => await controller.addProfile(race, localUser2);
       expect(func).not.toThrow();
     });
+
     it(`Got profile`, async () => {
-      const db = new Database();
       await db.profile
-        .user(fake.user)
+        .user(localUser3.userId)
         .race(fake.race as enums.EUserRace)
         .lvl(fake.lvl)
         .exp(fake.exp as [number, number])
         .friends(fake.friends)
         .create();
 
-      const profile = await controller.getProfile({ id: fakeData.profiles[1].user }, localUser);
-      expect(profile.user.toString()).toEqual(fakeData.profiles[1].user);
+      const profile = await controller.getProfile({ id: localUser3.userId }, localUser3);
+      console.log('profile');
+      console.log(profile);
+
+      expect(profile.user.toString()).toEqual(localUser3.userId);
       expect(profile.lvl).toEqual(fakeData.profiles[1].lvl);
       expect(profile.race).toEqual(fakeData.profiles[1].race);
       expect(profile.friends).toEqual(fakeData.profiles[1].friends);
-      await db.cleanUp();
     });
   });
 });

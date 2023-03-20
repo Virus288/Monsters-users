@@ -5,10 +5,11 @@ import * as types from '../../../src/types';
 import * as errors from '../../../src/errors';
 import * as enums from '../../../src/enums';
 import Controller from '../../../src/modules/user/controller';
-import Database from '../../utils/mockDB';
 import fakeData from '../../utils/fakeData.json';
+import FakeFactory from '../../utils/fakeFactory/src';
 
 describe('Register', () => {
+  const db = new FakeFactory();
   const registerData: types.IRegisterReq = fakeData.users[0];
   const localUser: types.ILocalUser = {
     userId: undefined,
@@ -21,6 +22,10 @@ describe('Register', () => {
   beforeAll(async () => {
     const server = await MongoMemoryServer.create();
     await mongoose.connect(server.getUri());
+  });
+
+  afterEach(async () => {
+    await db.cleanUp();
   });
 
   afterAll(async () => {
@@ -64,8 +69,6 @@ describe('Register', () => {
     });
 
     describe('Incorrect data', () => {
-      const db = new Database();
-
       beforeEach(async () => {
         await db.user
           .login(registerData.login)
@@ -75,17 +78,13 @@ describe('Register', () => {
           .create();
       });
 
-      afterEach(async () => {
-        await db.cleanUp();
-      });
-
-      it(`Already registered`, async () => {
+      it(`Already registered`, () => {
         controller.register(registerData, localUser).catch((err) => {
           expect(err).toEqual(new errors.UsernameAlreadyInUse(localUser.tempId));
         });
       });
 
-      it(`Login incorrect`, async () => {
+      it(`Login incorrect`, () => {
         controller
           .register(
             {
@@ -103,19 +102,17 @@ describe('Register', () => {
               ),
             );
           });
-        await db.cleanUp();
       });
 
-      it(`Login too short`, async () => {
+      it(`Login too short`, () => {
         controller.register({ ...registerData, login: 'a' }, localUser).catch((err) => {
           expect(err).toEqual(
             new errors.IncorrectCredentials(localUser.tempId, 'login should be at least 3 characters'),
           );
         });
-        await db.cleanUp();
       });
 
-      it(`Login too long`, async () => {
+      it(`Login too long`, () => {
         controller
           .register(
             {
@@ -130,10 +127,9 @@ describe('Register', () => {
               new errors.IncorrectCredentials(localUser.tempId, 'login should be less than 30 characters'),
             );
           });
-        await db.cleanUp();
       });
 
-      it(`Password incorrect`, async () => {
+      it(`Password incorrect`, () => {
         controller.register({ ...registerData, password: 'a@$QEWASD+)}KO_PL{:">?' }, localUser).catch((err) => {
           expect(err).toEqual(
             new errors.IncorrectCredentials(
@@ -142,19 +138,17 @@ describe('Register', () => {
             ),
           );
         });
-        await db.cleanUp();
       });
 
-      it(`Password too short`, async () => {
+      it(`Password too short`, () => {
         controller.register({ ...registerData, password: 'a' }, localUser).catch((err) => {
           expect(err).toEqual(
             new errors.IncorrectCredentials(localUser.tempId, 'password should be at least 6 characters long'),
           );
         });
-        await db.cleanUp();
       });
 
-      it(`Password too long`, async () => {
+      it(`Password too long`, () => {
         controller
           .register(
             {
@@ -169,27 +163,24 @@ describe('Register', () => {
               new errors.IncorrectCredentials(localUser.tempId, 'password should be less than 200 characters'),
             );
           });
-        await db.cleanUp();
       });
 
-      it(`Passwords do not match`, async () => {
+      it(`Passwords do not match`, () => {
         controller.register({ ...registerData, password2: 'a' }, localUser).catch((err) => {
           expect(err).toEqual(new errors.IncorrectCredentials(localUser.tempId, 'Passwords not the same'));
         });
-        await db.cleanUp();
       });
 
-      it(`Email incorrect`, async () => {
+      it(`Email incorrect`, () => {
         controller.register({ ...registerData, email: 'a' }, localUser).catch((err) => {
           expect(err).toEqual(new errors.IncorrectCredentials(localUser.tempId, 'Not valid email address'));
         });
-        await db.cleanUp();
       });
     });
   });
 
   describe('Should pass', () => {
-    it(`Validated`, async () => {
+    it(`Validated`, () => {
       controller.register({ ...registerData, email: 'test22@test.test' }, localUser).catch((err) => {
         expect(err.name).toEqual('MongoPoolClosedError');
       });

@@ -4,7 +4,7 @@ import * as enums from '../../enums';
 import mongoose from 'mongoose';
 
 export default class Validator {
-  static validateAddProfile(tempId: string, data: types.INewProfile): void {
+  static validateAddProfile(tempId: string, data: types.INewProfileReq): void {
     const races = Object.values(enums.EUserRace);
     if (!data.race) throw new errors.IncorrectProfile(tempId, 'Race is missing');
     if (!races.includes(data.race)) throw new errors.IncorrectProfile(tempId, 'Race has incorrect type');

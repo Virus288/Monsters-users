@@ -1,5 +1,5 @@
-import * as enums from '../enums';
-import mongoose from 'mongoose';
+import type * as enums from '../enums';
+import type mongoose from 'mongoose';
 
 export interface IUser extends IUserLean, mongoose.Document {
   _id: mongoose.Types.ObjectId;
@@ -22,7 +22,7 @@ export interface ILocalUser {
 }
 
 export interface IUserCredentials {
-  mainToken: string;
+  accessToken: string;
   refreshToken: string;
   userId: string;
 }

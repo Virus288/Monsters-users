@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import * as enums from '../enums';
+import type mongoose from 'mongoose';
+import type * as enums from '../enums';
 
 export interface IProfile extends IProfileLean, mongoose.Document {
   _id: mongoose.Types.ObjectId;
@@ -12,6 +12,10 @@ export interface IProfileLean {
   friends: string[];
   lvl: number;
   exp: [number, number];
+}
+
+export interface INewProfileReq {
+  race: enums.EUserRace;
 }
 
 export interface INewProfile {

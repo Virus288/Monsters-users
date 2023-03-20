@@ -5,10 +5,18 @@ import Validator from './validation';
 import * as utils from '../../tools/token';
 
 export default class Controller {
-  private rooster: Rooster;
-
   constructor() {
     this.rooster = new Rooster();
+  }
+
+  private _rooster: Rooster;
+
+  private get rooster(): Rooster {
+    return this._rooster;
+  }
+
+  private set rooster(value: Rooster) {
+    this._rooster = value;
   }
 
   async login(payload: types.ILoginReq, user: types.ILocalUser): Promise<types.IUserCredentials> {
@@ -25,11 +33,11 @@ export default class Controller {
     const target = users[0];
     await Validator.compare(user.tempId, password, target.password);
 
-    const mainToken = utils.generateMainToken(target._id.toString(), target.type);
+    const accessToken = utils.generateAccessToken(target._id.toString(), target.type);
     const refreshToken = utils.generateRefreshToken(target._id.toString(), target.type);
 
     return {
-      mainToken: mainToken,
+      accessToken: accessToken,
       refreshToken: refreshToken,
       userId: target._id.toString(),
     };
@@ -47,7 +55,7 @@ export default class Controller {
       });
     }
 
-    const hashed = await utils.hashPassword(password);
+    const hashed = utils.hashPassword(password);
 
     await this.rooster.add({ ...payload, password: hashed });
   }

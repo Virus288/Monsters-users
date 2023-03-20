@@ -1,5 +1,5 @@
 import Controller from './controller';
-import * as types from '../../types';
+import type * as types from '../../types';
 import State from '../../tools/state';
 import * as enums from '../../enums';
 

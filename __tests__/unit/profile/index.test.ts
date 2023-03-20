@@ -6,9 +6,8 @@ import * as enums from '../../../src/enums';
 import mongoose from 'mongoose';
 
 describe('Profile', () => {
-  const race: types.INewProfile = {
+  const race: types.INewProfileReq = {
     race: enums.EUserRace.Elf,
-    user: 'randomUser',
   };
   const userId: types.IUserId = {
     id: new mongoose.Types.ObjectId().toString(),

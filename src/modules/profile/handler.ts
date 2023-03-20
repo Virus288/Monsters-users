@@ -1,4 +1,4 @@
-import * as types from '../../types';
+import type * as types from '../../types';
 import State from '../../tools/state';
 import * as enums from '../../enums';
 import Controller from './controller';
@@ -15,12 +15,12 @@ export default class ProfileHandler {
   }
 
   async getProfile(payload: unknown, user: types.ILocalUser): Promise<void> {
-    await this.controller.getProfile(payload as types.IUserId, user);
-    return State.Broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
+    const profile = await this.controller.getProfile(payload as types.IUserId, user);
+    return State.Broker.send(user.tempId, profile, enums.EMessageTypes.Send);
   }
 
   async addProfile(payload: unknown, user: types.ILocalUser): Promise<void> {
-    await this.controller.addProfile(payload as types.INewProfile, user);
+    await this.controller.addProfile(payload as types.INewProfileReq, user);
     return State.Broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
   }
 }

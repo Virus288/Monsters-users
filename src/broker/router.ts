@@ -10,6 +10,7 @@ export default class Router {
 
   constructor() {
     this._user = new UserController();
+    this._profile = new ProfileController();
   }
 
   private get user(): UserController {

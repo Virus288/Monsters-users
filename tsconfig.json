@@ -19,6 +19,7 @@
     "declarationMap": false,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
+    "exactOptionalPropertyTypes": false,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
@@ -30,6 +31,7 @@
     "noImplicitAny": false,
     "noImplicitReturns": true,
     "noImplicitThis": true,
+    "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "build",
@@ -45,6 +47,9 @@
     "strictNullChecks": false,
     "strictPropertyInitialization": false,
     "sourceMap": true
+  },
+  "ts-node": {
+    "swc": true
   },
   "include": [
     "**/*"
