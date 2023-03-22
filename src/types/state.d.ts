@@ -6,7 +6,7 @@ export interface IState {
 
 export interface IConfigInterface {
   amqpURI: string;
-  token: string;
+  accessToken: string;
   refToken: string;
   mongoURI: string;
 }

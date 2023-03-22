@@ -4,7 +4,7 @@ import getConfig from './configLoader';
 import bcrypt from 'bcrypt';
 
 export const generateAccessToken = (id: string, type: enums.EUserTypes): string => {
-  return jwt.sign({ id, type }, getConfig().token, {
+  return jwt.sign({ id, type }, getConfig().accessToken, {
     expiresIn: enums.EJwtTime.TokenMaxAge,
   });
 };
