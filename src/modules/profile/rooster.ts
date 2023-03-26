@@ -1,13 +1,15 @@
 import Profile from './model';
-import type * as types from '../../types';
+import type { IProfileEntity } from './entity';
+import RoosterFactory from '../../tools/abstract/rooster';
+import type { EModules } from '../../tools/abstract/enums';
+import type { IProfile } from './types';
 
-export default class Rooster {
-  async add(data: types.INewProfile): Promise<void> {
-    const newProfile = new Profile(data);
-    await newProfile.save();
+export default class Rooster extends RoosterFactory<IProfile, typeof Profile, EModules.Profiles> {
+  constructor() {
+    super(Profile);
   }
 
-  async get(id: string): Promise<types.IProfile> {
-    return Profile.findOne({ user: id });
+  async get(id: string): Promise<IProfileEntity> {
+    return Profile.findOne({ user: id }).lean();
   }
 }

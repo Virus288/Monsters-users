@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import type * as type from '../../types';
 import * as enums from '../../enums';
+import type { IProfile } from './types';
 
 export const profileSchema = new mongoose.Schema({
   user: {
@@ -30,5 +30,5 @@ export const profileSchema = new mongoose.Schema({
   },
 });
 
-const Profile = mongoose.model<type.IProfile>('Profile', profileSchema);
+const Profile = mongoose.model<IProfile>('Profile', profileSchema);
 export default Profile;

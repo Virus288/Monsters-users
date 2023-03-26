@@ -1,26 +1,23 @@
-import Controller from './controller';
-import type * as types from '../../types';
 import State from '../../tools/state';
 import * as enums from '../../enums';
+import type { ILocalUser } from '../../types';
+import type { ILoginDto, IRegisterDto } from './dto';
+import HandlerFactory from '../../tools/abstract/handler';
+import type { EModules } from '../../tools/abstract/enums';
+import Controller from './controller';
 
-export default class UserHandler {
-  private readonly _controller: Controller;
-
+export default class UserHandler extends HandlerFactory<EModules.Users> {
   constructor() {
-    this._controller = new Controller();
+    super(new Controller());
   }
 
-  private get controller(): Controller {
-    return this._controller;
-  }
-
-  async login(payload: unknown, user: types.ILocalUser): Promise<void> {
-    const data = await this.controller.login(payload as types.ILoginReq, user);
+  async login(payload: unknown, user: ILocalUser): Promise<void> {
+    const data = await this.controller.login(payload as ILoginDto, user);
     return State.Broker.send(user.tempId, data, enums.EMessageTypes.Credentials);
   }
 
-  async register(payload: unknown, user: types.ILocalUser): Promise<void> {
-    await this.controller.register(payload as types.IRegisterReq, user);
+  async register(payload: unknown, user: ILocalUser): Promise<void> {
+    await this.controller.register(payload as IRegisterDto, user);
     return State.Broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
   }
 }

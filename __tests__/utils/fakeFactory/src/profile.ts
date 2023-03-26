@@ -35,6 +35,11 @@ export default class FakeProfile extends TemplateFactory<EFakeData.Profile> {
     return this;
   }
 
+  id(id: string): this {
+    this.state.id = id;
+    return this;
+  }
+
   private fillState(): void {
     this.state = { _id: undefined, exp: [0, 10], friends: [], lvl: 1, race: undefined, user: undefined };
   }

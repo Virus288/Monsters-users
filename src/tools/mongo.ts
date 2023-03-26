@@ -4,8 +4,9 @@ import getConfig from './configLoader';
 import Log from './logger/log';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import fakeData from '../../__tests__/utils/fakeData.json';
-import type * as types from '../types';
 import FakeFactory from '../../__tests__/utils/fakeFactory/src';
+import type { IRegisterDto } from '../modules/user/dto';
+import type { IProfileEntity } from '../modules/profile/entity';
 
 const mongo = async (): Promise<void> => {
   process.env.NODE_ENV === 'test' ? await startMockServer() : await startServer();
@@ -33,8 +34,8 @@ const startMockServer = async (): Promise<void> => {
 };
 
 const fulfillDatabase = async (): Promise<void> => {
-  const users = fakeData.users as types.IRegisterReq[];
-  const profiles = fakeData.profiles as types.IProfileLean[];
+  const users = fakeData.users as IRegisterDto[];
+  const profiles = fakeData.profiles as IProfileEntity[];
 
   await Promise.all(
     users.map(async (u) => {

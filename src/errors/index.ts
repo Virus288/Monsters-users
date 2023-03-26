@@ -15,152 +15,144 @@ export class InternalError extends FullError {
   }
 }
 
-export class MissingProcessPlatform extends FullError {
-  constructor() {
-    super('MissingProcessPlatform');
-    this.message = 'process.platform is missing';
-    this.name = 'MissingProcessPlatform';
-    this.code = '002';
-    this.status = 400;
-  }
-}
-
-export class UserDoesNotExist extends FullError {
-  constructor(userId: string) {
-    super('UserDoesNotExist');
-    this.message = 'User does not exist';
-    this.name = 'UserDoesNotExist';
-    this.code = '003';
-    this.status = 400;
-    this.userId = userId;
-  }
-}
-
 export class NotFoundError extends FullError {
   constructor(userId: string) {
     super('NotFoundError');
     this.message = 'Resource not found';
     this.name = 'NotFoundError';
-    this.code = '004';
+    this.code = '002';
     this.status = 404;
     this.userId = userId;
   }
 }
 
-export class WrongType extends FullError {
+export class UnauthorizedError extends FullError {
   constructor(userId: string) {
-    super('WrongType');
-    this.message = 'Wrong type of data';
-    this.name = 'WrongType';
+    super('UnauthorizedError');
+    this.message = 'User not logged in';
+    this.name = 'UnauthorizedError';
+    this.code = '003';
+    this.status = 401;
+    this.userId = userId;
+  }
+}
+
+export class MissingProcessPlatformError extends FullError {
+  constructor() {
+    super('MissingProcessPlatformError');
+    this.message = 'process.platform is missing';
+    this.name = 'MissingProcessPlatformError';
+    this.code = '004';
+    this.status = 500;
+  }
+}
+
+export class UserDoesNotExistError extends FullError {
+  constructor(userId: string) {
+    super('UserDoesNotExistError');
+    this.message = 'User does not exist';
+    this.name = 'UserDoesNotExistError';
     this.code = '005';
     this.status = 400;
     this.userId = userId;
   }
 }
 
-export class IncorrectCredentials extends FullError {
-  constructor(userId: string, message?: string) {
-    super('IncorrectCredentials');
-    this.message = message ?? 'Incorrect credentials';
-    this.name = 'IncorrectCredentials';
-    this.code = '006';
-    this.status = 400;
-    this.userId = userId;
-  }
-}
-
-export class UserAlreadyRegistered extends FullError {
-  constructor(userId: string) {
-    super('UserAlreadyRegistered');
-    this.message = 'Email already registered';
-    this.name = 'UserAlreadyRegistered';
+export class MissingArgError extends FullError {
+  constructor(userId: string, param: string) {
+    super('MissingArgError');
+    this.message = `Missing param: ${param}`;
+    this.name = 'MissingArgError';
     this.code = '007';
     this.status = 400;
     this.userId = userId;
   }
 }
 
-export class Unauthorized extends FullError {
-  constructor() {
-    super('Unauthorized');
-    this.message = 'User not logged in';
-    this.name = 'Unauthorized';
+export class IncorrectArgError extends FullError {
+  constructor(userId: string, err: string) {
+    super('IncorrectArgError');
+    this.message = err;
+    this.name = 'IncorrectArgError';
     this.code = '008';
-    this.status = 401;
+    this.status = 400;
+    this.userId = userId;
   }
 }
 
-export class WrongCategory extends FullError {
-  constructor(userId: string) {
-    super('WrongCategory');
-    this.message = 'Wrong category of product';
-    this.name = 'WrongCategory';
+export class IncorrectArgType extends FullError {
+  constructor(userId: string, err: string) {
+    super('IncorrectArgType');
+    this.message = err;
+    this.name = 'IncorrectArgType';
     this.code = '009';
     this.status = 400;
     this.userId = userId;
   }
 }
 
-export class InvalidType extends FullError {
-  constructor(userId: string, target: string) {
-    super('InvalidType');
-    this.message = `Invalid type. Element ${target} has wrong type`;
-    this.name = 'InvalidType';
+export class IncorrectCredentialsError extends FullError {
+  constructor(userId: string, message?: string) {
+    super('IncorrectCredentialsError');
+    this.message = message ?? 'Incorrect credentials';
+    this.name = 'IncorrectCredentialsError';
     this.code = '010';
     this.status = 400;
     this.userId = userId;
   }
 }
 
-export class InvalidMongooseType extends FullError {
-  constructor(userId: string, target: string) {
-    super('InvalidMongooseType');
-    this.message = `Invalid type. Element ${target} is not valid mongoDB id`;
-    this.name = 'InvalidMongooseType';
+export class UserAlreadyRegisteredError extends FullError {
+  constructor(userId: string) {
+    super('UserAlreadyRegisteredError');
+    this.message = 'Email already registered';
+    this.name = 'UserAlreadyRegisteredError';
     this.code = '011';
     this.status = 400;
     this.userId = userId;
   }
 }
 
-export class IncorrectLogin extends FullError {
+export class UsernameAlreadyInUseError extends FullError {
   constructor(userId: string) {
-    super('IncorrectLogin');
-    this.message = 'Incorrect login or password';
-    this.name = 'IncorrectLogin';
+    super('UsernameAlreadyInUseError');
+    this.message = 'Selected username is already in use';
+    this.name = 'UsernameAlreadyInUseError';
     this.code = '012';
     this.status = 400;
     this.userId = userId;
   }
 }
 
-export class UsernameAlreadyInUse extends FullError {
+export class ProfileAlreadyExistsError extends FullError {
   constructor(userId: string) {
-    super('UsernameAlreadyInUse');
-    this.message = 'Selected username is already in use';
-    this.name = 'UsernameAlreadyInUse';
+    super('ProfileAlreadyExistsError');
+    this.message = 'Profile already exists';
+    this.name = 'ProfileAlreadyExistsError';
     this.code = '013';
     this.status = 400;
     this.userId = userId;
   }
 }
 
-export class IncorrectProfile extends FullError {
-  constructor(userId: string, message?: string) {
-    super('IncorrectProfile');
-    this.message = message ?? 'Incorrect profile data';
-    this.name = 'IncorrectProfile';
+export class IncorrectArgLengthError extends FullError {
+  constructor(userId: string, target: string, min: number, max: number) {
+    super('IncorrectArgLengthError');
+    this.message =
+      min === undefined
+        ? `Elm ${target} should be less than ${max} characters`
+        : `Elm ${target} should be more than ${min} and less than ${max} characters`;
+    this.name = 'IncorrectArgLengthError';
     this.code = '014';
     this.status = 400;
     this.userId = userId;
   }
 }
 
-export class ProfileAlreadyExists extends FullError {
+export class IncorrectTarget extends FullError {
   constructor(userId: string) {
-    super('ProfileAlreadyExists');
-    this.message = 'Profile already exists';
-    this.name = 'ProfileAlreadyExists';
+    super('IncorrectTarget');
+    this.message = 'Incorrect data target';
     this.code = '015';
     this.status = 400;
     this.userId = userId;

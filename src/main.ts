@@ -14,7 +14,7 @@ class App {
         return broker.init();
       })
       .catch((err) => {
-        Log.log('Server', 'Err while initializing app');
+        Log.log('Server', 'Err while initializing mongoDB');
         Log.log('Server', JSON.stringify(err));
         errLogger.error(err);
         errLogger.error(JSON.stringify(err));

@@ -1,16 +1,15 @@
 import { describe, expect, it } from '@jest/globals';
 import Validation from '../../../src/modules/user/validation';
 import * as errors from '../../../src/errors';
-import * as types from '../../../src/types';
 import fakeData from '../../utils/fakeData.json';
 import { generateRandomName } from '../../../src/utils';
+import { IRegisterDto } from '../../../src/modules/user/dto';
 
 describe('Login', () => {
   const password = `${generateRandomName()}123`;
-  const register: types.IRegisterReq = {
+  const register: IRegisterDto = {
     login: generateRandomName(),
     password: password,
-    password2: password,
     email: `${generateRandomName()}@test.test`,
   };
 
@@ -22,7 +21,7 @@ describe('Login', () => {
           delete clone[k];
           const func = () => Validation.validateRegister('2', clone);
 
-          expect(func).toThrow(new errors.IncorrectCredentials('2', `${k} missing`));
+          expect(func).toThrow(new errors.IncorrectArgError('2', `${k} missing`));
         });
       });
     });
@@ -34,10 +33,7 @@ describe('Login', () => {
         const func = () => Validation.validateRegister('2', clone);
 
         expect(func).toThrow(
-          new errors.IncorrectCredentials(
-            '2',
-            `login should only contain arabic letters, numbers and special characters`,
-          ),
+          new errors.IncorrectArgType('2', `login should only contain arabic letters, numbers and special characters`),
         );
       });
 
@@ -46,7 +42,7 @@ describe('Login', () => {
         clone.login = 'a';
         const func = () => Validation.validateRegister('2', clone);
 
-        expect(func).toThrow(new errors.IncorrectCredentials('2', `login should be at least 3 characters`));
+        expect(func).toThrow(new errors.IncorrectArgLengthError('2', 'login', 3, 30));
       });
 
       it(`Login too long`, () => {
@@ -55,7 +51,7 @@ describe('Login', () => {
           'asssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss';
         const func = () => Validation.validateRegister('2', clone);
 
-        expect(func).toThrow(new errors.IncorrectCredentials('2', `login should be less than 30 characters`));
+        expect(func).toThrow(new errors.IncorrectArgLengthError('2', 'login', 3, 30));
       });
 
       it(`Password incorrect`, () => {
@@ -64,7 +60,7 @@ describe('Login', () => {
         const func = () => Validation.validateRegister('2', clone);
 
         expect(func).toThrow(
-          new errors.IncorrectCredentials(
+          new errors.IncorrectArgType(
             '2',
             `password should contain at least 1 digit, 6 letter, 1 upper case letter and 1 lower case letter`,
           ),
@@ -76,7 +72,7 @@ describe('Login', () => {
         clone.password = 'a';
         const func = () => Validation.validateRegister('2', clone);
 
-        expect(func).toThrow(new errors.IncorrectCredentials('2', `password should be at least 6 characters long`));
+        expect(func).toThrow(new errors.IncorrectArgLengthError('2', 'password', 6, 200));
       });
 
       it(`Password too long`, () => {
@@ -85,15 +81,7 @@ describe('Login', () => {
           'aasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsad';
         const func = () => Validation.validateRegister('2', clone);
 
-        expect(func).toThrow(new errors.IncorrectCredentials('2', `password should be less than 200 characters`));
-      });
-
-      it(`Passwords do not match`, () => {
-        const clone = structuredClone(fakeData.users[0]);
-        clone.password2 = 'a';
-        const func = () => Validation.validateRegister('2', clone);
-
-        expect(func).toThrow(new errors.IncorrectCredentials('2', `Passwords not the same`));
+        expect(func).toThrow(new errors.IncorrectArgLengthError('2', 'password', 6, 200));
       });
 
       it(`Email incorrect`, () => {
@@ -101,7 +89,7 @@ describe('Login', () => {
         clone.email = 'a';
         const func = () => Validation.validateRegister('2', clone);
 
-        expect(func).toThrow(new errors.IncorrectCredentials('2', `Not valid email address`));
+        expect(func).toThrow(new errors.IncorrectArgType('2', `Not valid email address`));
       });
     });
   });
