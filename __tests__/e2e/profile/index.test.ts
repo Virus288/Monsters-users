@@ -7,15 +7,17 @@ import fakeData from '../../utils/fakeData.json';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import FakeFactory from '../../utils/fakeFactory/src';
+import { IAddProfileDto, IGetProfileDto } from '../../../src/modules/profile/dto';
 
 describe('Profile', () => {
   const db = new FakeFactory();
   const id = fakeData.users[0]._id;
-  const race: types.INewProfileReq = {
+  const race: IAddProfileDto = {
     race: enums.EUserRace.Elf,
+    user: new mongoose.Types.ObjectId().toString(),
   };
   const fake = fakeData.profiles[1];
-  const userId: types.IUserId = {
+  const userId: IGetProfileDto = {
     id,
   };
   const localUser: types.ILocalUser = {
@@ -59,7 +61,7 @@ describe('Profile', () => {
         delete clone.race;
 
         controller.addProfile(clone, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectProfile('2', `Race is missing`));
+          expect(err).toEqual(new errors.MissingArgError('2', `Race is missing`));
         });
       });
 
@@ -68,7 +70,7 @@ describe('Profile', () => {
         delete clone.id;
 
         controller.getProfile(clone, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectCredentials('2', 'Provided user id is missing'));
+          expect(err).toEqual(new errors.MissingArgError('2', 'Id is missing'));
         });
       });
     });
@@ -79,7 +81,7 @@ describe('Profile', () => {
         clone.race = 'test' as enums.EUserRace;
 
         controller.addProfile(clone, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectProfile('2', 'Race has incorrect type'));
+          expect(err).toEqual(new errors.IncorrectArgType('2', 'Race has incorrect type'));
         });
       });
 
@@ -88,7 +90,7 @@ describe('Profile', () => {
         clone.id = 'asd';
 
         controller.getProfile(clone, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectCredentials('2', 'Provided user id is invalid'));
+          expect(err).toEqual(new errors.IncorrectArgType('2', 'Provided user id is invalid'));
         });
       });
 
@@ -127,8 +129,6 @@ describe('Profile', () => {
         .create();
 
       const profile = await controller.getProfile({ id: localUser3.userId }, localUser3);
-      console.log('profile');
-      console.log(profile);
 
       expect(profile.user.toString()).toEqual(localUser3.userId);
       expect(profile.lvl).toEqual(fakeData.profiles[1].lvl);

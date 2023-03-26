@@ -2,15 +2,15 @@ import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/glob
 import Rooster from '../../../src/modules/profile/rooster';
 import * as enums from '../../../src/enums';
 import { EUserRace } from '../../../src/enums';
-import * as types from '../../../src/types';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import fakeData from '../../utils/fakeData.json';
 import FakeFactory from '../../utils/fakeFactory/src';
+import { IRegisterDto } from '../../../src/modules/user/dto';
 
 describe('Profile', () => {
   const db = new FakeFactory();
-  const loginData: types.IRegisterReq = fakeData.users[0];
+  const loginData: IRegisterDto = fakeData.users[0];
 
   beforeAll(async () => {
     const server = await MongoMemoryServer.create();

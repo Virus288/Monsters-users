@@ -7,10 +7,11 @@ import * as enums from '../../../src/enums';
 import Controller from '../../../src/modules/user/controller';
 import fakeData from '../../utils/fakeData.json';
 import FakeFactory from '../../utils/fakeFactory/src';
+import { ILoginDto } from '../../../src/modules/user/dto';
 
 describe('Login', () => {
   const db = new FakeFactory();
-  const loginData: types.ILoginReq = fakeData.users[0];
+  const loginData: ILoginDto = fakeData.users[0];
   const localUser: types.ILocalUser = {
     userId: undefined,
     tempId: 'tempId',
@@ -39,7 +40,7 @@ describe('Login', () => {
         const clone = structuredClone(loginData);
         delete clone.login;
         controller.login(clone, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectLogin(localUser.tempId));
+          expect(err).toEqual(new errors.IncorrectCredentialsError(localUser.tempId));
         });
       });
 
@@ -47,7 +48,7 @@ describe('Login', () => {
         const clone = structuredClone(loginData);
         delete clone.password;
         controller.login(clone, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectLogin(localUser.tempId));
+          expect(err).toEqual(new errors.IncorrectCredentialsError(localUser.tempId));
         });
       });
     });
@@ -68,13 +69,13 @@ describe('Login', () => {
 
       it(`Login incorrect`, () => {
         controller.login({ ...loginData, login: 'a' }, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectLogin(localUser.tempId));
+          expect(err).toEqual(new errors.IncorrectCredentialsError(localUser.tempId));
         });
       });
 
       it(`Password incorrect`, () => {
         controller.login({ ...loginData, password: 'a' }, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectLogin(localUser.tempId));
+          expect(err).toEqual(new errors.IncorrectCredentialsError(localUser.tempId));
         });
       });
     });

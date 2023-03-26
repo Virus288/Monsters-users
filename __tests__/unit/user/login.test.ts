@@ -1,11 +1,11 @@
 import { describe, expect, it } from '@jest/globals';
 import Validation from '../../../src/modules/user/validation';
 import * as errors from '../../../src/errors';
-import * as types from '../../../src/types';
 import fakeData from '../../utils/fakeData.json';
+import { ILoginDto } from '../../../src/modules/user/dto';
 
 describe('Login', () => {
-  const login: types.ILoginReq = {
+  const login: ILoginDto = {
     login: 'Test',
     password: 'Test123',
   };
@@ -18,7 +18,7 @@ describe('Login', () => {
           delete clone[k];
           const func = () => Validation.validateLogin('2', clone);
 
-          expect(func).toThrow(new errors.IncorrectCredentials('2', `${k} missing`));
+          expect(func).toThrow(new errors.IncorrectArgError('2', `${k} missing`));
         });
       });
     });
@@ -29,7 +29,7 @@ describe('Login', () => {
         clone.login = 'bc';
         const func = () => Validation.validateLogin('2', clone);
 
-        expect(func).toThrow(new errors.IncorrectCredentials('2', `login should be at least 3 characters`));
+        expect(func).toThrow(new errors.IncorrectArgLengthError('2', 'login', 3, 30));
       });
 
       it(`Login too long`, () => {
@@ -38,7 +38,7 @@ describe('Login', () => {
           'asssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss';
         const func = () => Validation.validateLogin('2', clone);
 
-        expect(func).toThrow(new errors.IncorrectCredentials('2', `login should be less than 30 characters`));
+        expect(func).toThrow(new errors.IncorrectArgLengthError('2', 'login', 3, 30));
       });
 
       it(`Incorrect password`, () => {
@@ -46,7 +46,7 @@ describe('Login', () => {
         clone.password = 'abc';
         const func = () => Validation.validateLogin('2', clone);
 
-        expect(func).toThrow(new errors.IncorrectCredentials('2', `password should be at least 6 characters long`));
+        expect(func).toThrow(new errors.IncorrectArgLengthError('2', 'password', 6, 200));
       });
     });
   });
