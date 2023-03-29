@@ -6,11 +6,11 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import fakeData from '../../utils/fakeData.json';
 import FakeFactory from '../../utils/fakeFactory/src';
-import { IRegisterDto } from '../../../src/modules/user/dto';
+import type { IRegisterDto } from '../../../src/modules/user/dto';
 
 describe('Profile', () => {
   const db = new FakeFactory();
-  const loginData: IRegisterDto = fakeData.users[0];
+  const loginData = fakeData.users[0] as IRegisterDto;
 
   beforeAll(async () => {
     const server = await MongoMemoryServer.create();
@@ -50,7 +50,7 @@ describe('Profile', () => {
   });
 
   describe('Should pass', () => {
-    it(`Validated`, async () => {
+    it('Validated', async () => {
       const userId = await db.user
         .login(loginData.login)
         .password(loginData.password)

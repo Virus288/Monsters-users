@@ -12,7 +12,7 @@ export default class ProfileHandler extends HandlerFactory<EModules.Profiles> {
   }
 
   async get(payload: unknown, user: types.ILocalUser): Promise<void> {
-    const profile = await this.controller.getProfile(payload as IGetProfileDto, user);
+    const profile = await this.controller.getProfile(payload as IGetProfileDto);
     return State.Broker.send(user.tempId, profile, enums.EMessageTypes.Send);
   }
 

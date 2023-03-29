@@ -5,11 +5,11 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import fakeData from '../../utils/fakeData.json';
 import FakeFactory from '../../utils/fakeFactory/src';
-import { IRegisterDto } from '../../../src/modules/user/dto';
+import type { IRegisterDto } from '../../../src/modules/user/dto';
 
 describe('Login', () => {
   const db = new FakeFactory();
-  const loginData: IRegisterDto = fakeData.users[0];
+  const loginData = fakeData.users[0] as IRegisterDto;
 
   beforeAll(async () => {
     const server = await MongoMemoryServer.create();
@@ -44,12 +44,12 @@ describe('Login', () => {
   });
 
   describe('Should pass', () => {
-    it(`Validated`, async () => {
+    it('Validated', async () => {
       await db.user.login(loginData.login).password(loginData.password).email(loginData.email).verified(false).create();
 
       const rooster = new Rooster();
       const user = await rooster.getByEmail(loginData.email);
-      const { login, password, email, verified, _id, type } = user[0];
+      const { login, password, email, verified, _id, type } = user[0]!;
 
       expect(login).toEqual(loginData.login);
       expect(password.length).not.toBeLessThan(loginData.password.length);

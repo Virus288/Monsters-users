@@ -17,7 +17,7 @@ export default class UserHandler extends HandlerFactory<EModules.Users> {
   }
 
   async register(payload: unknown, user: ILocalUser): Promise<void> {
-    await this.controller.register(payload as IRegisterDto, user);
+    await this.controller.register(payload as IRegisterDto);
     return State.Broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
   }
 }

@@ -28,29 +28,29 @@ export default class Router {
       case enums.EMessageTargets.User:
         return this.userMessage(payload);
       default:
-        throw new errors.IncorrectTarget(payload.user.tempId);
+        throw new errors.IncorrectTargetError();
     }
   }
 
   private async profileMessage(payload: types.IRabbitMessage): Promise<void> {
     switch (payload.subTarget) {
       case enums.EProfileTargets.Create:
-        return await this.profile.add(payload.payload, payload.user);
+        return this.profile.add(payload.payload, payload.user);
       case enums.EProfileTargets.Get:
-        return await this.profile.get(payload.payload, payload.user);
+        return this.profile.get(payload.payload, payload.user);
       default:
-        throw new errors.IncorrectTarget(payload.user.tempId);
+        throw new errors.IncorrectTargetError();
     }
   }
 
   private async userMessage(payload: types.IRabbitMessage): Promise<void> {
     switch (payload.subTarget) {
       case enums.EUserTargets.Login:
-        return await this.user.login(payload.payload, payload.user);
+        return this.user.login(payload.payload, payload.user);
       case enums.EUserTargets.Register:
-        return await this.user.register(payload.payload, payload.user);
+        return this.user.register(payload.payload, payload.user);
       default:
-        throw new errors.IncorrectTarget(payload.user.tempId);
+        throw new errors.IncorrectTargetError();
     }
   }
 }
