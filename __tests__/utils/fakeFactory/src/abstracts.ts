@@ -1,19 +1,20 @@
-import { EFakeData } from '../enums';
-import { IFakeModel, IFakeState } from '../types/data';
-import mongoose from 'mongoose';
+import type { EFakeData } from '../enums';
+import type { IFakeModel, IFakeState } from '../types/data';
+import type mongoose from 'mongoose';
 
 export default abstract class TemplateFactory<T extends EFakeData> {
-  private _target: IFakeModel[T];
+  private readonly _target: IFakeModel[T];
+
+  protected constructor(target: IFakeModel[T]) {
+    this._target = target;
+    this.fillState();
+  }
 
   protected get target(): IFakeModel[T] {
     return this._target;
   }
 
-  protected set target(value: IFakeModel[T]) {
-    this._target = value;
-  }
-
-  private _state: IFakeState[T];
+  private _state: IFakeState[T] = {};
 
   protected get state(): IFakeState[T] {
     return this._state;
@@ -38,14 +39,20 @@ export default abstract class TemplateFactory<T extends EFakeData> {
     const { _id } = await newElm.save();
     this.states.push({ ...this.state, _id });
     this.clean();
-    return _id as mongoose.Types.ObjectId;
+    return _id;
   }
 
   async cleanUp(): Promise<void> {
-    for (let state of this.states) {
-      await this._target.findOneAndDelete({ _id: state._id });
-    }
+    await Promise.all(
+      Object.values(this.states).map(async (k) => {
+        return this._target.findOneAndDelete({ _id: k._id! });
+      }),
+    );
     this.states = [];
+  }
+
+  protected fillState(): void {
+    // abstract
   }
 
   private clean(): void {
@@ -53,7 +60,7 @@ export default abstract class TemplateFactory<T extends EFakeData> {
       if (typeof e[1] === 'number') e[1] = 0;
       if (typeof e[1] === 'string') e[1] = undefined;
       if (typeof e[1] === 'boolean') e[1] = false;
-      if (typeof e[1] === undefined || typeof e[1] === null) e[1] = undefined;
+      if (typeof e[1] === 'undefined' || typeof e[1] === 'undefined') e[1] = undefined;
     });
   }
 }
