@@ -1,4 +1,5 @@
 import type { Config } from 'jest';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { defaults } from 'jest-config';
 
 const config: Config = {

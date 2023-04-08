@@ -12,7 +12,7 @@ export default class UserHandler extends HandlerFactory<EModules.Users> {
   }
 
   async login(payload: unknown, user: ILocalUser): Promise<void> {
-    const data = await this.controller.login(payload as ILoginDto, user);
+    const data = await this.controller.login(payload as ILoginDto);
     return State.Broker.send(user.tempId, data, enums.EMessageTypes.Credentials);
   }
 

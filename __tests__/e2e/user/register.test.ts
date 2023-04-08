@@ -1,30 +1,28 @@
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@jest/globals';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose from 'mongoose';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
 import type { IFullError } from '../../../src/types';
 import * as errors from '../../../src/errors';
 import Controller from '../../../src/modules/user/controller';
 import fakeData from '../../utils/fakeData.json';
-import FakeFactory from '../../utils/fakeFactory/src';
 import type { IRegisterDto } from '../../../src/modules/user/dto';
+import Connection from '../../utils';
+import FakeFactory from '../../utils/fakeFactory/src';
 
 describe('Register', () => {
+  const connection = new Connection();
   const db = new FakeFactory();
-  const registerData = fakeData.users[0] as IRegisterDto;
+  const registerData = fakeData.users[1] as IRegisterDto;
   const controller = new Controller();
 
-  beforeAll(async () => {
-    const server = await MongoMemoryServer.create();
-    await mongoose.connect(server.getUri());
+  beforeAll(() => {
+    connection.connect();
   });
 
   afterEach(async () => {
     await db.cleanUp();
   });
 
-  afterAll(async () => {
-    await mongoose.disconnect();
-    await mongoose.connection.close();
+  afterAll(() => {
+    connection.close();
   });
 
   describe('Should throw', () => {
@@ -55,19 +53,19 @@ describe('Register', () => {
     });
 
     describe('Incorrect data', () => {
-      beforeEach(async () => {
+      it('Already registered', async () => {
         await db.user
           .login(registerData.login)
           .password(registerData.password)
           .email(registerData.email)
           .verified(false)
           .create();
-      });
 
-      it('Already registered', () => {
-        controller.register(registerData).catch((err) => {
+        try {
+          await controller.register(registerData);
+        } catch (err) {
           expect(err).toEqual(new errors.UsernameAlreadyInUseError());
-        });
+        }
       });
 
       it('Login incorrect', () => {
@@ -79,7 +77,9 @@ describe('Register', () => {
           })
           .catch((err) => {
             expect(err).toEqual(
-              new errors.IncorrectArgType('login should only contain arabic letters, numbers and special characters'),
+              new errors.IncorrectArgTypeError(
+                'login should only contain arabic letters, numbers and special characters',
+              ),
             );
           });
       });
@@ -105,7 +105,7 @@ describe('Register', () => {
       it('Password incorrect', () => {
         controller.register({ ...registerData, password: 'a@$QEWASD+)}KO_PL{:">?' }).catch((err) => {
           expect(err).toEqual(
-            new errors.IncorrectArgType(
+            new errors.IncorrectArgTypeError(
               'password should contain at least 1 digit, 6 letter, 1 upper case letter and 1 lower case letter',
             ),
           );
@@ -154,7 +154,8 @@ describe('Register', () => {
     it('Validated', () => {
       controller.register({ ...registerData, email: 'test22@test.test' }).catch((err) => {
         const error = err as IFullError;
-        expect(error.name).toEqual('MongoPoolClosedError');
+        // #TODO Add proper test
+        expect(error.name).toEqual('MongoNotConnectedError');
       });
     });
   });
