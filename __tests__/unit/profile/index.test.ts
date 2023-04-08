@@ -21,7 +21,7 @@ describe('Profile', () => {
         clone.race = undefined!;
         const func = (): void => Validation.validateAddProfile(clone);
 
-        expect(func).toThrow(new errors.MissingArgError('Race is missing'));
+        expect(func).toThrow(new errors.MissingArgError('race'));
       });
 
       it('Missing userId', () => {
@@ -29,7 +29,7 @@ describe('Profile', () => {
         clone.id = undefined!;
         const func = (): void => Validation.validateUserId(clone);
 
-        expect(func).toThrow(new errors.MissingArgError('Id is missing'));
+        expect(func).toThrow(new errors.MissingArgError('id'));
       });
     });
 
@@ -45,7 +45,7 @@ describe('Profile', () => {
         const clone = structuredClone(userId);
         clone.id = 'asd';
         const func = (): void => Validation.validateUserId(clone);
-        expect(func).toThrow(new errors.IncorrectArgType('Provided user id is invalid'));
+        expect(func).toThrow(new errors.IncorrectArgTypeError('Provided user id is invalid'));
       });
     });
   });

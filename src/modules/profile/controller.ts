@@ -12,15 +12,15 @@ export default class Controller extends ControllerFactory<EModules.Profiles> {
     super(new Rooster());
   }
 
-  async getProfile(data: IGetProfileDto): Promise<IProfileEntity> {
+  async getProfile(data: IGetProfileDto): Promise<IProfileEntity | null> {
     Validator.validateUserId(data);
     return this.rooster.get(data.id);
   }
 
   async addProfile(data: IAddProfileDto, user: types.ILocalUser): Promise<void> {
     Validator.validateAddProfile(data);
-    const exist = await this.rooster.get(user.userId ?? user.tempId);
+    const exist = await this.rooster.get(user.userId!);
     if (exist) throw new ProfileAlreadyExistsError();
-    return this.rooster.add(data);
+    return this.rooster.add({ ...data, user: user.userId! });
   }
 }

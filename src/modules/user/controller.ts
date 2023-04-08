@@ -1,4 +1,4 @@
-import type { ILocalUser, IUserCredentials } from '../../types';
+import type { IUserCredentials } from '../../types';
 import Rooster from './rooster';
 import * as errors from '../../errors';
 import Validator from './validation';
@@ -12,19 +12,19 @@ export default class Controller extends ControllerFactory<EModules.Users> {
     super(new Rooster());
   }
 
-  async login(payload: ILoginDto, user: ILocalUser): Promise<IUserCredentials> {
+  async login(payload: ILoginDto): Promise<IUserCredentials> {
     try {
       Validator.validateLogin(payload);
     } catch (err) {
-      throw new errors.IncorrectCredentialsError(user.tempId);
+      throw new errors.IncorrectCredentialsError();
     }
 
     const { login, password } = payload;
     const users = await this.rooster.get(login);
-    if (!users || users.length === 0) throw new errors.IncorrectCredentialsError(user.tempId);
+    if (!users || users.length === 0) throw new errors.IncorrectCredentialsError();
 
     const target = users[0]!;
-    await Validator.compare(user.tempId, password, target.password);
+    await Validator.compare(password, target.password);
 
     const accessToken = utils.generateAccessToken(target._id.toString(), target.type);
     const refreshToken = utils.generateRefreshToken(target._id.toString(), target.type);

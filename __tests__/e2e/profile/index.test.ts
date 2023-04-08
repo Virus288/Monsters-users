@@ -12,7 +12,7 @@ import type { IProfileEntity } from '../../../src/modules/profile/entity';
 
 describe('Profile', () => {
   const db = new FakeFactory();
-  const id = fakeData.users[0]!._id!;
+  const id = fakeData.users[0]!._id;
   const race: IAddProfileDto = {
     race: enums.EUserRace.Elf,
     user: new mongoose.Types.ObjectId().toString(),
@@ -62,7 +62,7 @@ describe('Profile', () => {
         clone.race = undefined!;
 
         controller.addProfile(clone, localUser).catch((err) => {
-          expect(err).toEqual(new errors.MissingArgError('Race is missing'));
+          expect(err).toEqual(new errors.MissingArgError('race'));
         });
       });
 
@@ -71,7 +71,7 @@ describe('Profile', () => {
         clone.id = undefined!;
 
         controller.getProfile(clone).catch((err) => {
-          expect(err).toEqual(new errors.MissingArgError('Id is missing'));
+          expect(err).toEqual(new errors.MissingArgError('id'));
         });
       });
     });
@@ -82,7 +82,7 @@ describe('Profile', () => {
         clone.race = 'test' as enums.EUserRace;
 
         controller.addProfile(clone, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectArgType('Race has incorrect type'));
+          expect(err).toEqual(new errors.IncorrectArgTypeError('Race has incorrect type'));
         });
       });
 
@@ -91,7 +91,7 @@ describe('Profile', () => {
         clone.id = 'asd';
 
         controller.getProfile(clone).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectArgType('Provided user id is invalid'));
+          expect(err).toEqual(new errors.IncorrectArgTypeError('Provided user id is invalid'));
         });
       });
 
@@ -128,7 +128,7 @@ describe('Profile', () => {
         .friends(fake.friends)
         .create();
 
-      const profile = await controller.getProfile({ id: localUser3.userId! });
+      const profile = (await controller.getProfile({ id: localUser3.userId! }))!;
 
       expect(profile.user.toString()).toEqual(localUser3.userId);
       expect(profile.lvl).toEqual(fake.lvl);

@@ -5,9 +5,6 @@ import type ProfileRooster from '../../modules/profile/rooster';
 import type { EModules } from './enums';
 import type { IRegisterDto } from '../../modules/user/dto';
 import type { IAddProfileDto } from '../../modules/profile/dto';
-import type { IUser } from '../../modules/user/types';
-import type mongoose from 'mongoose';
-import type { IProfile } from '../../modules/profile/types';
 import type { IUserEntity } from '../../modules/user/entity';
 import type { IProfileEntity } from '../../modules/profile/entity';
 
@@ -21,11 +18,6 @@ export interface IModulesControllers {
   [EModules.Profiles]: ProfileRooster;
 }
 
-export interface IModulesRoosters {
-  [EModules.Users]: mongoose.Model<IUser>;
-  [EModules.Profiles]: mongoose.Model<IProfile>;
-}
-
 export interface IRoosterAddData {
   [EModules.Users]: IRegisterDto;
   [EModules.Profiles]: IAddProfileDto;
@@ -33,7 +25,7 @@ export interface IRoosterAddData {
 
 export interface IRoosterGetData {
   [EModules.Users]: IUserEntity[];
-  [EModules.Profiles]: IProfileEntity;
+  [EModules.Profiles]: IProfileEntity | null;
 }
 
 interface IRoosterFactory<Z extends EModules> {

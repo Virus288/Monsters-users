@@ -1,9 +1,7 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@jest/globals';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import type * as types from '../../../src/types';
 import * as errors from '../../../src/errors';
-import * as enums from '../../../src/enums';
 import Controller from '../../../src/modules/user/controller';
 import fakeData from '../../utils/fakeData.json';
 import FakeFactory from '../../utils/fakeFactory/src';
@@ -12,12 +10,6 @@ import type { ILoginDto } from '../../../src/modules/user/dto';
 describe('Login', () => {
   const db = new FakeFactory();
   const loginData = fakeData.users[0] as ILoginDto;
-  const localUser: types.ILocalUser = {
-    userId: undefined,
-    tempId: 'tempId',
-    validated: true,
-    type: enums.EUserTypes.User,
-  };
   const controller = new Controller();
 
   beforeAll(async () => {
@@ -39,16 +31,16 @@ describe('Login', () => {
       it('Missing login', () => {
         const clone = structuredClone(loginData);
         clone.login = undefined!;
-        controller.login(clone, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectCredentialsError(localUser.tempId));
+        controller.login(clone).catch((err) => {
+          expect(err).toEqual(new errors.IncorrectCredentialsError());
         });
       });
 
       it('Missing password', () => {
         const clone = structuredClone(loginData);
         clone.password = undefined!;
-        controller.login(clone, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectCredentialsError(localUser.tempId));
+        controller.login(clone).catch((err) => {
+          expect(err).toEqual(new errors.IncorrectCredentialsError());
         });
       });
     });
@@ -68,14 +60,14 @@ describe('Login', () => {
       });
 
       it('Login incorrect', () => {
-        controller.login({ ...loginData, login: 'a' }, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectCredentialsError(localUser.tempId));
+        controller.login({ ...loginData, login: 'a' }).catch((err) => {
+          expect(err).toEqual(new errors.IncorrectCredentialsError());
         });
       });
 
       it('Password incorrect', () => {
-        controller.login({ ...loginData, password: 'a' }, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectCredentialsError(localUser.tempId));
+        controller.login({ ...loginData, password: 'a' }).catch((err) => {
+          expect(err).toEqual(new errors.IncorrectCredentialsError());
         });
       });
     });
@@ -90,7 +82,7 @@ describe('Login', () => {
         .verified(false)
         .create();
 
-      const { userId, refreshToken, accessToken } = await controller.login(loginData, localUser);
+      const { userId, refreshToken, accessToken } = await controller.login(loginData);
       expect(userId).not.toBeUndefined();
       expect(userId.length).not.toBeLessThan(10);
       expect(refreshToken).not.toBeUndefined();

@@ -34,11 +34,11 @@ export class IncorrectArgError extends FullError {
   }
 }
 
-export class IncorrectArgType extends FullError {
+export class IncorrectArgTypeError extends FullError {
   constructor(err: string) {
-    super('IncorrectArgType');
+    super('IncorrectArgTypeError');
     this.message = err;
-    this.name = 'IncorrectArgType';
+    this.name = 'IncorrectArgTypeError';
     this.code = '004';
     this.status = 400;
   }
@@ -90,7 +90,9 @@ export class IncorrectArgLengthError extends FullError {
     this.message =
       min === undefined
         ? `Elm ${target} should be less than ${max} characters`
-        : `Elm ${target} should be more than ${min} and less than ${max} characters`;
+        : min !== max
+        ? `Elm ${target} should be more than ${min} and less than ${max} characters`
+        : `Elm ${target} should be ${min} characters`;
     this.name = 'IncorrectArgLengthError';
     this.code = '009';
     this.status = 400;

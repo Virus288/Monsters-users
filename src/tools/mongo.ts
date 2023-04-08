@@ -5,24 +5,33 @@ import Log from './logger/log';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import fakeData from '../../__tests__/utils/fakeData.json';
 import FakeFactory from '../../__tests__/utils/fakeFactory/src';
-import type { IRegisterDto } from '../modules/user/dto';
 import type { IProfileEntity } from '../modules/profile/entity';
+import type { IUserEntity } from '../modules/user/entity';
 
-const mongo = async (): Promise<void> => {
-  process.env.NODE_ENV === 'test' ? await startMockServer() : await startServer();
-};
+const fulfillDatabase = async (): Promise<void> => {
+  const users = fakeData.users as IUserEntity[];
+  const profiles = fakeData.profiles as IProfileEntity[];
 
-export const disconnect = async (): Promise<void> => {
-  await mongoose.disconnect();
-  await mongoose.connection.close();
-};
+  await Promise.all(
+    users.map(async (u) => {
+      const db = new FakeFactory();
+      return db.user
+        ._id(u._id ?? undefined)
+        .login(u.login)
+        .password(u.password)
+        .email(u.email)
+        .verified(u.verified)
+        .type(u.type)
+        .create();
+    }),
+  );
 
-const startServer = async (): Promise<void> => {
-  await mongoose.connect(getConfig().mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  } as ConnectOptions);
-  Log.log('Mongo', 'Started server');
+  await Promise.all(
+    profiles.map(async (p) => {
+      const db = new FakeFactory();
+      return db.profile.user(p.user).race(p.race).create();
+    }),
+  );
 };
 
 const startMockServer = async (): Promise<void> => {
@@ -33,23 +42,21 @@ const startMockServer = async (): Promise<void> => {
   Log.log('Mongo', 'Started mock server');
 };
 
-const fulfillDatabase = async (): Promise<void> => {
-  const users = fakeData.users as IRegisterDto[];
-  const profiles = fakeData.profiles as IProfileEntity[];
+const startServer = async (): Promise<void> => {
+  await mongoose.connect(getConfig().mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  } as ConnectOptions);
+  Log.log('Mongo', 'Started server');
+};
 
-  await Promise.all(
-    users.map(async (u) => {
-      const db = new FakeFactory();
-      return await db.user.login(u.login).password(u.password).email(u.email).verified(false).create();
-    }),
-  );
+const mongo = async (): Promise<void> => {
+  process.env.NODE_ENV === 'test' ? await startMockServer() : await startServer();
+};
 
-  await Promise.all(
-    profiles.map(async (p) => {
-      const db = new FakeFactory();
-      return await db.profile.user(p.user).race(p.race).create();
-    }),
-  );
+export const disconnect = async (): Promise<void> => {
+  await mongoose.disconnect();
+  await mongoose.connection.close();
 };
 
 export default mongo;

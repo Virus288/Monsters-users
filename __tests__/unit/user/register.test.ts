@@ -1,9 +1,9 @@
 import { describe, expect, it } from '@jest/globals';
 import Validation from '../../../src/modules/user/validation';
 import * as errors from '../../../src/errors';
-import { generateRandomName } from '../../../src/utils';
 import type { IRegisterDto } from '../../../src/modules/user/dto';
 import fakeData from '../../utils/fakeData.json';
+import { generateRandomName } from '../../utils';
 
 describe('Login', () => {
   const fakeUser = fakeData.users[0] as IRegisterDto;
@@ -33,7 +33,7 @@ describe('Login', () => {
         const func = (): void => Validation.validateRegister(clone);
 
         expect(func).toThrow(
-          new errors.IncorrectArgType('login should only contain arabic letters, numbers and special characters'),
+          new errors.IncorrectArgTypeError('login should only contain arabic letters, numbers and special characters'),
         );
       });
 
@@ -60,7 +60,7 @@ describe('Login', () => {
         const func = (): void => Validation.validateRegister(clone);
 
         expect(func).toThrow(
-          new errors.IncorrectArgType(
+          new errors.IncorrectArgTypeError(
             'password should contain at least 1 digit, 6 letter, 1 upper case letter and 1 lower case letter',
           ),
         );
@@ -88,7 +88,7 @@ describe('Login', () => {
         clone.email = 'a';
         const func = (): void => Validation.validateRegister(clone);
 
-        expect(func).toThrow(new errors.IncorrectArgType('Not valid email address'));
+        expect(func).toThrow(new errors.IncorrectArgTypeError('Not valid email address'));
       });
 
       it('Email too long', () => {
