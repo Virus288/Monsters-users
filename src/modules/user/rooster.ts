@@ -17,7 +17,11 @@ export default class Rooster extends RoosterFactory<IUser, typeof User, EModules
     return User.find({ email: data }).lean();
   }
 
-  async getByLogin(data: string): Promise<IUserEntity[]> {
-    return User.find({ login: data }).lean();
+  async getByLogin(data: string): Promise<IUserEntity | null> {
+    return User.findOne({ login: data }).lean();
+  }
+
+  async getById(id: string): Promise<IUserEntity | null> {
+    return User.findOne({ _id: id }).lean();
   }
 }

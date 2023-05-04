@@ -44,7 +44,7 @@ describe('Register', () => {
       const rooster = new Rooster();
       const user = await rooster.getByLogin('a');
 
-      expect(user).toEqual([]);
+      expect(user).toEqual(null);
     });
   });
 
@@ -53,7 +53,7 @@ describe('Register', () => {
       const rooster = new Rooster();
       await rooster.add(registerData);
       const user = await rooster.getByLogin(registerData.login);
-      const { login, password, email, verified, _id, type } = user[0]!;
+      const { login, password, email, verified, _id, type } = user!;
 
       expect(login).toEqual(registerData.login);
       expect(password.length).not.toBeLessThan(registerData.password.length);

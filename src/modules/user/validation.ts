@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import * as errors from '../../errors';
-import type { ILoginDto, IRegisterDto } from './dto';
+import type { ILoginDto, IRegisterDto, IUserDetailsDto } from './dto';
+import mongoose from 'mongoose';
 
 export default class Validator {
   static validateRegister(data: IRegisterDto): void {
@@ -12,6 +13,17 @@ export default class Validator {
   static validateLogin(data: ILoginDto): void {
     Validator.validateUserName(data.login);
     Validator.validatePassword(data.password);
+  }
+
+  static validateGetDetails(data: IUserDetailsDto): void {
+    if (!data.name) {
+      if (!data.id) throw new errors.MissingArgError('id');
+      const isValid = mongoose.Types.ObjectId.isValid(data.id);
+      if (!isValid) throw new errors.IncorrectArgError('Provided user id is invalid');
+    }
+    if (!data.id) {
+      if (!data.name) throw new errors.MissingArgError('name');
+    }
   }
 
   static validateEmail(email: string): void {
