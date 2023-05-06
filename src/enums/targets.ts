@@ -2,4 +2,5 @@
 export enum EUserTargets {
   Register = 'register',
   Login = 'login',
+  GetName = 'getName',
 }

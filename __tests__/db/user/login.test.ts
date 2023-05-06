@@ -30,7 +30,7 @@ describe('Login', () => {
       const rooster = new Rooster();
       const user = await rooster.getByLogin(loginData.login);
 
-      expect(user).toEqual([]);
+      expect(user).toEqual(null);
     });
 
     it('Incorrect target', async () => {
@@ -39,7 +39,7 @@ describe('Login', () => {
       const rooster = new Rooster();
       const user = await rooster.getByLogin('a');
 
-      expect(user).toEqual([]);
+      expect(user).toEqual(null);
     });
   });
 

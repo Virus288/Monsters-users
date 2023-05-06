@@ -46,6 +46,7 @@ const startServer = async (): Promise<void> => {
   await mongoose.connect(getConfig().mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    dbName: 'Users',
   } as ConnectOptions);
   Log.log('Mongo', 'Started server');
 };

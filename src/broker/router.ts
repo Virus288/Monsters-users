@@ -49,6 +49,8 @@ export default class Router {
         return this.user.login(payload.payload, payload.user);
       case enums.EUserTargets.Register:
         return this.user.register(payload.payload, payload.user);
+      case enums.EUserTargets.GetName:
+        return this.user.getDetails(payload.payload, payload.user);
       default:
         throw new errors.IncorrectTargetError();
     }

@@ -6,3 +6,8 @@ export interface ILoginDto {
 export interface IRegisterDto extends ILoginDto {
   email: string;
 }
+
+export interface IUserDetailsDto {
+  name?: string;
+  id?: string;
+}
