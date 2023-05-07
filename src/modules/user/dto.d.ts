@@ -11,3 +11,7 @@ export interface IUserDetailsDto {
   name?: string;
   id?: string;
 }
+
+export interface IRemoveUserDto {
+  name: string;
+}

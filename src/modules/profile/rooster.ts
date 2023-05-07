@@ -12,4 +12,12 @@ export default class Rooster extends RoosterFactory<IProfile, typeof Profile, EM
   async get(id: string): Promise<IProfileEntity | null> {
     return Profile.findOne({ user: id }).lean();
   }
+
+  async getById(id: string): Promise<IProfileEntity | null> {
+    return Profile.findOne({ _id: id }).lean();
+  }
+
+  async remove(id: string): Promise<null> {
+    return Profile.findOneAndRemove({ _id: id });
+  }
 }

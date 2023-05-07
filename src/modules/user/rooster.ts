@@ -24,4 +24,8 @@ export default class Rooster extends RoosterFactory<IUser, typeof User, EModules
   async getById(id: string): Promise<IUserEntity | null> {
     return User.findOne({ _id: id }).lean();
   }
+
+  async remove(id: string): Promise<null> {
+    return User.findOneAndRemove({ _id: id });
+  }
 }

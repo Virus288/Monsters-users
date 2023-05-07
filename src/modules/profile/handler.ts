@@ -20,4 +20,8 @@ export default class ProfileHandler extends HandlerFactory<EModules.Profiles> {
     await this.controller.addProfile(payload as IAddProfileDto, user);
     return State.Broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
   }
+
+  async remove(userId: string): Promise<void> {
+    return this.controller.remove(userId);
+  }
 }

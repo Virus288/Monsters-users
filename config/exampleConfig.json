@@ -1,5 +1,7 @@
 {
   "amqpURI": "rabbitUrl",
+  "redisURI": "redis://user:password@localhost:6379",
+  "redisTestURI": "redis://user:password@localhost:6379",
   "accessToken": "accessToken",
   "refToken": "refreshToken",
   "mongoURI": "mongodb://user:password@localhost:27017/Users"

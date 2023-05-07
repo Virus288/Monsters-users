@@ -1,56 +1,27 @@
 import type * as types from '../types';
 import * as enums from '../enums';
 import * as errors from '../errors';
-import UserController from '../modules/user/handler';
-import ProfileController from '../modules/profile/handler';
+import Handler from './handler';
 
 export default class Router {
-  private readonly _user: UserController;
-  private readonly _profile: ProfileController;
+  private readonly _handler: Handler;
 
   constructor() {
-    this._user = new UserController();
-    this._profile = new ProfileController();
+    this._handler = new Handler();
   }
 
-  private get user(): UserController {
-    return this._user;
-  }
-
-  private get profile(): ProfileController {
-    return this._profile;
+  private get handler(): Handler {
+    return this._handler;
   }
 
   async handleMessage(payload: types.IRabbitMessage): Promise<void> {
     switch (payload.target) {
       case enums.EMessageTargets.Profile:
-        return this.profileMessage(payload);
+        return this.handler.profileMessage(payload);
+      case enums.EMessageTargets.Shared:
+        return this.handler.sharedMessage(payload);
       case enums.EMessageTargets.User:
-        return this.userMessage(payload);
-      default:
-        throw new errors.IncorrectTargetError();
-    }
-  }
-
-  private async profileMessage(payload: types.IRabbitMessage): Promise<void> {
-    switch (payload.subTarget) {
-      case enums.EProfileTargets.Create:
-        return this.profile.add(payload.payload, payload.user);
-      case enums.EProfileTargets.Get:
-        return this.profile.get(payload.payload, payload.user);
-      default:
-        throw new errors.IncorrectTargetError();
-    }
-  }
-
-  private async userMessage(payload: types.IRabbitMessage): Promise<void> {
-    switch (payload.subTarget) {
-      case enums.EUserTargets.Login:
-        return this.user.login(payload.payload, payload.user);
-      case enums.EUserTargets.Register:
-        return this.user.register(payload.payload, payload.user);
-      case enums.EUserTargets.GetName:
-        return this.user.getDetails(payload.payload, payload.user);
+        return this.handler.userMessage(payload);
       default:
         throw new errors.IncorrectTargetError();
     }

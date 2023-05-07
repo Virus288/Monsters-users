@@ -1,7 +1,8 @@
-// eslint-disable-next-line import/prefer-default-export
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import Log from '../../src/tools/logger/log';
+import State from '../../src/tools/state';
+import Redis from '../../src/tools/redis';
 
 export const generateRandomName = (): string => {
   const vocabulary = 'ABCDEFGHIJKLMNOUPRSTUWZabcdefghijklmnouprstuwz';
@@ -38,8 +39,18 @@ export default class Connection {
       });
   }
 
-  private async handleConnect(): Promise<void> {
+  private async handleMongo(): Promise<void> {
     const server = await MongoMemoryServer.create();
     await mongoose.connect(server.getUri());
+  }
+
+  private async handleConnect(): Promise<void> {
+    this.handleRedis();
+    await this.handleMongo();
+  }
+
+  private handleRedis(): void {
+    State.Redis = new Redis();
+    State.Redis.init();
   }
 }

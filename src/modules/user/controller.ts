@@ -60,4 +60,8 @@ export default class Controller extends ControllerFactory<EModules.Users> {
     if (payload.name) return this.rooster.getByLogin(payload.name);
     return null;
   }
+
+  async remove(id: string): Promise<void> {
+    await this.rooster.remove(id);
+  }
 }

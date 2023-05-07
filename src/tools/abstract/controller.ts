@@ -8,7 +8,7 @@ export default abstract class ControllerFactory<T extends EModules> {
     this._rooster = rooster;
   }
 
-  get rooster(): IModulesControllers[T] {
+  protected get rooster(): IModulesControllers[T] {
     return this._rooster;
   }
 }

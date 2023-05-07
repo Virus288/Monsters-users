@@ -1,26 +1,28 @@
 import State from './tools/state';
-import errLogger from './tools/logger/logger';
 import Log from './tools/logger/log';
 import Broker from './broker';
 import mongo from './tools/mongo';
+import Redis from './tools/redis';
 
 class App {
   init(): void {
-    const broker = new Broker();
-
-    mongo()
+    this.start()
       .then(() => {
-        State.Broker = broker;
-        return broker.init();
+        Log.log('Server', 'Server started');
       })
       .catch((err) => {
-        Log.log('Server', 'Err while initializing mongoDB');
-        Log.log('Server', JSON.stringify(err));
-        errLogger.error(err);
-        errLogger.error(JSON.stringify(err));
-
-        broker.close();
+        Log.error('Server', 'Failed to init', JSON.stringify(err));
       });
+  }
+
+  private async start(): Promise<void> {
+    await mongo();
+
+    State.Broker = new Broker();
+    State.Redis = new Redis();
+
+    State.Broker.init();
+    State.Redis.init();
   }
 }
 
