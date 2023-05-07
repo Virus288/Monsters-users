@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import * as errors from '../../errors';
-import type { ILoginDto, IRegisterDto, IUserDetailsDto } from './dto';
+import type { ILoginDto, IRegisterDto, IRemoveUserDto, IUserDetailsDto } from './dto';
 import mongoose from 'mongoose';
 
 export default class Validator {
@@ -15,6 +15,11 @@ export default class Validator {
     Validator.validatePassword(data.password);
   }
 
+  static validateRemove(data: IRemoveUserDto): void {
+    if (!data.name) throw new errors.MissingArgError('name');
+    if (typeof data.name !== 'string') throw new errors.IncorrectArgTypeError('Name is not string');
+  }
+
   static validateGetDetails(data: IUserDetailsDto): void {
     if (!data.name) {
       if (!data.id) throw new errors.MissingArgError('id');
@@ -23,6 +28,14 @@ export default class Validator {
     }
     if (!data.id) {
       if (!data.name) throw new errors.MissingArgError('name');
+      if (typeof data.name !== 'string') throw new errors.IncorrectArgTypeError('Name is not string');
+    }
+
+    if (data.id && data.name) {
+      const isValid = mongoose.Types.ObjectId.isValid(data.id);
+      if (!isValid) throw new errors.IncorrectArgError('Provided user id is invalid');
+
+      if (typeof data.name !== 'string') throw new errors.IncorrectArgTypeError('Name is not string');
     }
   }
 

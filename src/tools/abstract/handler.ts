@@ -8,7 +8,7 @@ export default abstract class HandlerFactory<T extends EModules> {
     this._controller = controller;
   }
 
-  get controller(): IModulesHandlers[T] {
+  protected get controller(): IModulesHandlers[T] {
     return this._controller;
   }
 }

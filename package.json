@@ -18,10 +18,10 @@
     "listErrors": "node_modules/.bin/tsc --skipLibCheck",
     "lintStaged": "npx lint-staged",
     "test": "echo 'If you want to run all the tests, please use makefile'",
-    "test:watch": "jest --watch --config __tests__/jest.config.ts",
-    "test:e2e": "jest --runInBand --config __tests__/jest.config.e2e.ts",
-    "test:unit": "jest --config __tests__/jest.config.unit.ts",
-    "test:db": "jest --runInBand --config __tests__/jest.config.db.ts",
+    "test:watch": "cross-env NODE_ENV=test jest --watch --config __tests__/jest.config.ts",
+    "test:e2e": "cross-env NODE_ENV=test jest --runInBand --config __tests__/jest.config.e2e.ts",
+    "test:unit": "cross-env NODE_ENV=test jest --config __tests__/jest.config.unit.ts",
+    "test:db": "cross-env NODE_ENV=test jest --runInBand --config __tests__/jest.config.db.ts",
     "prepare": "husky install"
   },
   "lint-staged": {
@@ -40,6 +40,7 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.3",
     "node": "^19.8.1",
+    "redis": "^4.6.6",
     "winston": "^3.8.2",
     "winston-daily-rotate-file": "^4.7.1"
   },
@@ -65,6 +66,7 @@
     "mongodb-memory-server": "^8.11.4",
     "nodemon": "^2.0.22",
     "prettier": "^2.8.7",
+    "redis-memory-server": "^0.6.0",
     "rimraf": "^4.4.1",
     "supertest": "^6.3.1",
     "ts-jest": "^29.0.3",

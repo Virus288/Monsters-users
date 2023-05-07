@@ -103,6 +103,7 @@ export class IncorrectTargetError extends FullError {
   constructor() {
     super('IncorrectTargetError');
     this.message = 'Incorrect data target';
+    this.name = 'IncorrectTargetError';
     this.code = '010';
     this.status = 400;
   }
@@ -112,7 +113,28 @@ export class NotConnectedError extends FullError {
   constructor() {
     super('NotConnectedError');
     this.message = 'Rabbit is not connected';
+    this.name = 'NotConnectedError';
     this.code = '011';
     this.status = 500;
+  }
+}
+
+export class UserDoesNotExist extends FullError {
+  constructor() {
+    super('UserDoesNotExist');
+    this.message = 'User with provided id does not exist';
+    this.name = 'UserDoesNotExist';
+    this.code = '012';
+    this.status = 400;
+  }
+}
+
+export class NoPermission extends FullError {
+  constructor() {
+    super('NoPermission');
+    this.message = 'You have no permission to make that action';
+    this.name = 'NoPermission';
+    this.code = '013';
+    this.status = 400;
   }
 }

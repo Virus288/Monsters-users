@@ -1,5 +1,6 @@
 import type * as types from '../../types';
 import Validator from './validation';
+import * as errors from '../../errors';
 import { ProfileAlreadyExistsError } from '../../errors';
 import type { IProfileEntity } from './entity';
 import type { IAddProfileDto, IGetProfileDto } from './dto';
@@ -22,5 +23,11 @@ export default class Controller extends ControllerFactory<EModules.Profiles> {
     const exist = await this.rooster.get(user.userId!);
     if (exist) throw new ProfileAlreadyExistsError();
     return this.rooster.add({ ...data, user: user.userId! });
+  }
+
+  async remove(userId: string): Promise<void> {
+    const exist = await this.rooster.get(userId);
+    if (!exist) throw new errors.UserDoesNotExist();
+    await this.rooster.remove(exist._id);
   }
 }

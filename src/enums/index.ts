@@ -4,3 +4,4 @@ export * from './jwt';
 export * from './connection';
 export * from './profile';
 export * from './targets';
+export * from './redis';
