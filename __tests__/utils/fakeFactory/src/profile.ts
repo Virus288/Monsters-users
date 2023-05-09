@@ -40,6 +40,11 @@ export default class FakeProfile extends TemplateFactory<EFakeData.Profile> impl
     return this;
   }
 
+  initialized(initialized: boolean): this {
+    this.state.initialized = initialized;
+    return this;
+  }
+
   protected fillState(): void {
     this.state = { _id: undefined, exp: [0, 10], friends: [], lvl: 1, race: undefined, user: undefined };
   }

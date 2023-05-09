@@ -59,8 +59,8 @@ export default class Redis {
     });
   }
 
-  async addRemovedUser(user: string): Promise<void> {
-    await this.rooster.addToHash(enums.ERedisTargets.RemovedUsers, user);
+  async addRemovedUser(user: string, id: string): Promise<void> {
+    await this.rooster.addToHash(enums.ERedisTargets.RemovedUsers, id, user);
   }
 
   async getRemovedUsers(target: string): Promise<string | undefined> {

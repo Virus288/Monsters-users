@@ -24,4 +24,8 @@ export default class ProfileHandler extends HandlerFactory<EModules.Profiles> {
   async remove(userId: string): Promise<void> {
     return this.controller.remove(userId);
   }
+
+  async addBasic(id: string): Promise<void> {
+    return this.controller.addBasicProfile(id);
+  }
 }

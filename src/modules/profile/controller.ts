@@ -22,7 +22,11 @@ export default class Controller extends ControllerFactory<EModules.Profiles> {
     Validator.validateAddProfile(data);
     const exist = await this.rooster.get(user.userId!);
     if (exist) throw new ProfileAlreadyExistsError();
-    return this.rooster.add({ ...data, user: user.userId! });
+    await this.rooster.add({ ...data, user: user.userId! });
+  }
+
+  async addBasicProfile(user: string): Promise<void> {
+    return this.rooster.addDefault({ user });
   }
 
   async remove(userId: string): Promise<void> {

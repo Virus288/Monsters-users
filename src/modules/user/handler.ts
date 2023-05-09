@@ -18,9 +18,8 @@ export default class UserHandler extends HandlerFactory<EModules.Users> {
     return State.Broker.send(user.tempId, data, enums.EMessageTypes.Credentials);
   }
 
-  async register(payload: unknown, user: ILocalUser): Promise<void> {
-    await this.controller.register(payload as IRegisterDto);
-    return State.Broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
+  async register(payload: IRegisterDto): Promise<string> {
+    return this.controller.register(payload);
   }
 
   async getDetails(payload: unknown, user: ILocalUser): Promise<void> {
@@ -35,7 +34,7 @@ export default class UserHandler extends HandlerFactory<EModules.Users> {
     if (user._id.toString() !== userId) throw new errors.NoPermission();
 
     await this.controller.remove(user._id);
-    await State.Redis.addRemovedUser(name);
+    await State.Redis.addRemovedUser(name, userId);
     return user;
   }
 }

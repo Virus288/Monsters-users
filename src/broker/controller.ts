@@ -1,6 +1,6 @@
 import type { ILocalUser } from '../types';
 import Validator from '../modules/user/validation';
-import type { IRemoveUserDto } from '../modules/user/dto';
+import type { IRegisterDto, IRemoveUserDto } from '../modules/user/dto';
 import State from '../tools/state';
 import * as enums from '../enums';
 import type UserController from '../modules/user/handler';
@@ -29,6 +29,16 @@ export default class Controller {
 
     const { _id } = await this.user.remove(name, user.userId!);
     await this.profile.remove(_id);
+
+    return State.Broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
+  }
+
+  async register(payload: unknown, user: ILocalUser): Promise<void> {
+    const data = payload as IRegisterDto;
+    Validator.validateRegister(data);
+
+    const id = await this.user.register(data);
+    await this.profile.addBasic(id);
 
     return State.Broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
   }

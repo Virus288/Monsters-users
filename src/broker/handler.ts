@@ -44,16 +44,9 @@ export default class Handler {
       case enums.EUserTargets.Login:
         return this.user.login(payload.payload, payload.user);
       case enums.EUserTargets.Register:
-        return this.user.register(payload.payload, payload.user);
+        return this.controller.register(payload.payload, payload.user);
       case enums.EUserTargets.GetName:
         return this.user.getDetails(payload.payload, payload.user);
-      default:
-        throw new errors.IncorrectTargetError();
-    }
-  }
-
-  async sharedMessage(payload: types.IRabbitMessage): Promise<void> {
-    switch (payload.subTarget) {
       case enums.ESharedTargets.RemoveUser:
         return this.controller.removeUser(payload.payload, payload.user);
       default:
