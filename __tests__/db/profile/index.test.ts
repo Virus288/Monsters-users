@@ -4,7 +4,7 @@ import * as enums from '../../../src/enums';
 import { EUserRace } from '../../../src/enums';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import fakeData from '../../utils/fakeData.json';
+import { fakeData } from '../../utils';
 import FakeFactory from '../../utils/fakeFactory/src';
 import type { IRegisterDto } from '../../../src/modules/user/dto';
 

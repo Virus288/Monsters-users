@@ -11,12 +11,16 @@ export default class Rooster {
     return this._client;
   }
 
-  async addToHash(target: string, key: string, value?: string): Promise<void> {
-    await this.client.hSet(target, key, value ?? key);
-    await this.client.expire(`${target}:${value ?? key}`, 604800);
+  async addToHash(target: string, key: string, value: string): Promise<void> {
+    await this.client.hSet(target, key, value);
+    await this.client.expire(`${target}:${value}`, 604800);
   }
 
   async getFromHash(target: string, value: string): Promise<string | undefined> {
     return this.client.hGet(target, value);
+  }
+
+  async removeFromHash(target: string, value: string): Promise<void> {
+    await this.client.hDel(target, value);
   }
 }

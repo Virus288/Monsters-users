@@ -2,8 +2,7 @@ import { describe, expect, it } from '@jest/globals';
 import Validation from '../../../src/modules/user/validation';
 import * as errors from '../../../src/errors';
 import type { IRegisterDto } from '../../../src/modules/user/dto';
-import fakeData from '../../utils/fakeData.json';
-import { generateRandomName } from '../../utils';
+import { fakeData, generateRandomName } from '../../utils';
 
 describe('Login', () => {
   const fakeUser = fakeData.users[0] as IRegisterDto;

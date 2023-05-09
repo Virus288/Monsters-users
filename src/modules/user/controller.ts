@@ -7,6 +7,7 @@ import type { ILoginDto, IRegisterDto, IUserDetailsDto } from './dto';
 import ControllerFactory from '../../tools/abstract/controller';
 import type { EModules } from '../../tools/abstract/enums';
 import type { IUserEntity } from './entity';
+import State from '../../tools/state';
 
 export default class Controller extends ControllerFactory<EModules.Users> {
   constructor() {
@@ -37,11 +38,12 @@ export default class Controller extends ControllerFactory<EModules.Users> {
     };
   }
 
-  async register(payload: IRegisterDto): Promise<void> {
+  async register(payload: IRegisterDto): Promise<string> {
     Validator.validateRegister(payload);
 
     const { email, password, login } = payload;
     const users = await this.rooster.get(email);
+
     if (users && users.length > 0) {
       users.forEach((u) => {
         if (u.login === login) throw new errors.UsernameAlreadyInUseError();
@@ -50,8 +52,11 @@ export default class Controller extends ControllerFactory<EModules.Users> {
     }
 
     const hashed = utils.hashPassword(password);
+    const id = await this.rooster.add({ ...payload, password: hashed });
 
-    await this.rooster.add({ ...payload, password: hashed });
+    const user = await State.Redis.getRemovedUsers(id);
+    if (user) await State.Redis.removeRemovedUser(id);
+    return id;
   }
 
   async getDetails(payload: IUserDetailsDto): Promise<IUserEntity | null> {

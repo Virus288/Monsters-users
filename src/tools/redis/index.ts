@@ -33,19 +33,7 @@ export default class Redis {
     return this._rooster;
   }
 
-  init(): void {
-    if (process.env.NODE_ENV === 'test') this.startTestServer();
-
-    this.initClient()
-      .then(() => {
-        Log.log('Redis', 'Redis connected');
-      })
-      .catch((err) => {
-        Log.error('Redis', err);
-      });
-  }
-
-  async initClient(): Promise<void> {
+  async init(): Promise<void> {
     this.listen();
     await this.client.connect();
   }
@@ -61,15 +49,7 @@ export default class Redis {
     }
   }
 
-  async addRemovedUser(user: string): Promise<void> {
-    await this.rooster.addToHash(enums.ERedisTargets.RemovedUsers, user);
-  }
-
-  async getRemovedUsers(target: string): Promise<string | undefined> {
-    return this.rooster.getFromHash(enums.ERedisTargets.RemovedUsers, target);
-  }
-
-  private startTestServer(): void {
+  startTestServer(): void {
     this._memoryServer = new RedisMemoryServer({
       instance: {
         port: 6378,
@@ -77,6 +57,18 @@ export default class Redis {
       },
       autoStart: true,
     });
+  }
+
+  async addRemovedUser(user: string, id: string): Promise<void> {
+    await this.rooster.addToHash(enums.ERedisTargets.RemovedUsers, id, user);
+  }
+
+  async getRemovedUsers(target: string): Promise<string | undefined> {
+    return this.rooster.getFromHash(enums.ERedisTargets.RemovedUsers, target);
+  }
+
+  async removeRemovedUser(target: string): Promise<void> {
+    return this.rooster.removeFromHash(enums.ERedisTargets.RemovedUsers, target);
   }
 
   private listen(): void {

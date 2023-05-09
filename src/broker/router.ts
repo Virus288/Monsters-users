@@ -18,8 +18,6 @@ export default class Router {
     switch (payload.target) {
       case enums.EMessageTargets.Profile:
         return this.handler.profileMessage(payload);
-      case enums.EMessageTargets.Shared:
-        return this.handler.sharedMessage(payload);
       case enums.EMessageTargets.User:
         return this.handler.userMessage(payload);
       default:

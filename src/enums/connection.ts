@@ -22,5 +22,4 @@ export enum EAmqQueues {
 export enum EMessageTargets {
   User = 'user',
   Profile = 'profile',
-  Shared = 'shared',
 }

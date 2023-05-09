@@ -1,4 +1,4 @@
-import type { IRoosterAddData, IRoosterFactory, IRoosterGetData } from './types';
+import type { IRoosterAddData, IRoosterAddDefaultData, IRoosterFactory, IRoosterGetData } from './types';
 import type { Document, Model } from 'mongoose';
 import type { EModules } from './enums';
 
@@ -7,7 +7,7 @@ export default abstract class RoosterFactory<T extends Document, U extends Model
 {
   private readonly _model: U;
 
-  constructor(model: U) {
+  protected constructor(model: U) {
     this._model = model;
   }
 
@@ -15,7 +15,13 @@ export default abstract class RoosterFactory<T extends Document, U extends Model
     return this._model;
   }
 
-  async add(data: IRoosterAddData[Z]): Promise<void> {
+  async add(data: IRoosterAddData[Z]): Promise<string> {
+    const newElement = new this.model(data);
+    const callback = await newElement.save();
+    return callback._id as string;
+  }
+
+  async addDefault(data: IRoosterAddDefaultData[Z]): Promise<void> {
     const newElement = new this.model(data);
     await newElement.save();
   }

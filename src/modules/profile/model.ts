@@ -12,6 +12,7 @@ export const profileSchema = new mongoose.Schema({
     type: String,
     enum: enums.EUserRace,
     required: [true, 'Race not provided'],
+    default: enums.EUserRace.Human,
   },
   friends: {
     type: [String],
@@ -27,6 +28,11 @@ export const profileSchema = new mongoose.Schema({
     type: [Number, Number],
     required: false,
     default: [0, 10],
+  },
+  initialized: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
 });
 

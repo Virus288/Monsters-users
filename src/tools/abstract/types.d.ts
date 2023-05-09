@@ -23,13 +23,18 @@ export interface IRoosterAddData {
   [EModules.Profiles]: IAddProfileDto;
 }
 
+export interface IRoosterAddDefaultData {
+  [EModules.Users]: Partial<IRegisterDto>;
+  [EModules.Profiles]: Partial<IAddProfileDto>;
+}
+
 export interface IRoosterGetData {
   [EModules.Users]: IUserEntity[];
   [EModules.Profiles]: IProfileEntity | null;
 }
 
 interface IRoosterFactory<Z extends EModules> {
-  add(data: IRoosterAddData[Z]): Promise<void>;
+  add(data: IRoosterAddData[Z]): Promise<string>;
 
   get(data: unknown): Promise<IRoosterGetData[Z]>;
 }

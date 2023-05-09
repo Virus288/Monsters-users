@@ -7,4 +7,5 @@ export interface IProfileEntity {
   friends: string[];
   lvl: number;
   exp: [number, number];
+  initialized: boolean;
 }

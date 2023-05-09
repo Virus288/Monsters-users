@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 import Validation from '../../../src/modules/user/validation';
 import * as errors from '../../../src/errors';
-import fakeData from '../../utils/fakeData.json';
+import { fakeData } from '../../utils';
 import type { IRemoveUserDto } from '../../../src/modules/user/dto';
 import type { IUserEntity } from '../../../src/modules/user/entity';
 
