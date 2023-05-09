@@ -122,7 +122,7 @@ export class NotConnectedError extends FullError {
 export class UserDoesNotExist extends FullError {
   constructor() {
     super('UserDoesNotExist');
-    this.message = 'User with provided id does not exist';
+    this.message = 'Selected user does not exist';
     this.name = 'UserDoesNotExist';
     this.code = '012';
     this.status = 400;

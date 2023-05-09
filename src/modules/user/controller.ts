@@ -7,6 +7,7 @@ import type { ILoginDto, IRegisterDto, IUserDetailsDto } from './dto';
 import ControllerFactory from '../../tools/abstract/controller';
 import type { EModules } from '../../tools/abstract/enums';
 import type { IUserEntity } from './entity';
+import State from '../../tools/state';
 
 export default class Controller extends ControllerFactory<EModules.Users> {
   constructor() {
@@ -50,8 +51,9 @@ export default class Controller extends ControllerFactory<EModules.Users> {
     }
 
     const hashed = utils.hashPassword(password);
-
     await this.rooster.add({ ...payload, password: hashed });
+
+    await State.Redis.removeRemovedUser(payload.login);
   }
 
   async getDetails(payload: IUserDetailsDto): Promise<IUserEntity | null> {

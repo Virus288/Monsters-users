@@ -4,13 +4,11 @@ import mongoose from 'mongoose';
 import * as errors from '../../../src/errors';
 import Controller from '../../../src/modules/user/controller';
 import Handler from '../../../src/modules/user/handler';
-import fakeData from '../../utils/fakeData.json';
-import FakeFactory from '../../utils/fakeFactory/src';
 import type { IRemoveUserDto } from '../../../src/modules/user/dto';
 import type { IUserEntity } from '../../../src/modules/user/entity';
 import type { IProfileEntity } from '../../../src/modules/profile/entity';
 import State from '../../../src/tools/state';
-import Connection from '../../utils';
+import { Connection, fakeData, FakeFactory } from '../../utils';
 
 describe('Remove user', () => {
   const db = new FakeFactory();

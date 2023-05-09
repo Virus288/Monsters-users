@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import getConfig from './configLoader';
 import Log from './logger/log';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import fakeData from '../../__tests__/utils/fakeData.json';
+import { fakeData } from '../../__tests__/utils';
 import FakeFactory from '../../__tests__/utils/fakeFactory/src';
 import type { IProfileEntity } from '../modules/profile/entity';
 import type { IUserEntity } from '../modules/user/entity';

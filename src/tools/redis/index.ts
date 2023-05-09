@@ -33,19 +33,7 @@ export default class Redis {
     return this._rooster;
   }
 
-  init(): void {
-    if (process.env.NODE_ENV === 'test') this.startTestServer();
-
-    this.initClient()
-      .then(() => {
-        Log.log('Redis', 'Redis connected');
-      })
-      .catch((err) => {
-        Log.error('Redis', err);
-      });
-  }
-
-  async initClient(): Promise<void> {
+  async init(): Promise<void> {
     this.listen();
     await this.client.connect();
   }
@@ -61,6 +49,16 @@ export default class Redis {
     }
   }
 
+  startTestServer(): void {
+    this._memoryServer = new RedisMemoryServer({
+      instance: {
+        port: 6378,
+        ip: '127.0.0.1',
+      },
+      autoStart: true,
+    });
+  }
+
   async addRemovedUser(user: string): Promise<void> {
     await this.rooster.addToHash(enums.ERedisTargets.RemovedUsers, user);
   }
@@ -69,14 +67,8 @@ export default class Redis {
     return this.rooster.getFromHash(enums.ERedisTargets.RemovedUsers, target);
   }
 
-  private startTestServer(): void {
-    this._memoryServer = new RedisMemoryServer({
-      instance: {
-        port: 6378,
-        ip: '127.0.0.1',
-      },
-      autoStart: true,
-    });
+  async removeRemovedUser(target: string): Promise<void> {
+    return this.rooster.removeFromHash(enums.ERedisTargets.RemovedUsers, target);
   }
 
   private listen(): void {

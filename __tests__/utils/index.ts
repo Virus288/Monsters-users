@@ -1,9 +1,8 @@
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose from 'mongoose';
-import Log from '../../src/tools/logger/log';
-import State from '../../src/tools/state';
-import Redis from '../../src/tools/redis';
+import fakeData from './fakeData/fakeData.json';
+import FakeFactory from './fakeFactory/src';
+import Connection from './connections';
 
+// eslint-disable-next-line import/prefer-default-export
 export const generateRandomName = (): string => {
   const vocabulary = 'ABCDEFGHIJKLMNOUPRSTUWZabcdefghijklmnouprstuwz';
   let name = '';
@@ -13,44 +12,4 @@ export const generateRandomName = (): string => {
   return name;
 };
 
-export default class Connection {
-  connect(): void {
-    this.handleConnect()
-      .then(() => {
-        setTimeout(() => {
-          // Empty
-        }, 5000);
-      })
-      .catch((err) => {
-        return Log.error('Mongo', err);
-      });
-  }
-
-  close(): void {
-    mongoose.connection
-      .close()
-      .then(() => {
-        setTimeout(() => {
-          // Empty
-        }, 2000);
-      })
-      .catch((err) => {
-        Log.error('Mongoose', err);
-      });
-  }
-
-  private async handleMongo(): Promise<void> {
-    const server = await MongoMemoryServer.create();
-    await mongoose.connect(server.getUri());
-  }
-
-  private async handleConnect(): Promise<void> {
-    this.handleRedis();
-    await this.handleMongo();
-  }
-
-  private handleRedis(): void {
-    State.Redis = new Redis();
-    State.Redis.init();
-  }
-}
+export { fakeData, Connection, FakeFactory };

@@ -3,8 +3,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import * as errors from '../../../src/errors';
 import Controller from '../../../src/modules/user/controller';
-import fakeData from '../../utils/fakeData.json';
-import FakeFactory from '../../utils/fakeFactory/src';
+import { fakeData, FakeFactory } from '../../utils';
 import type { ILoginDto } from '../../../src/modules/user/dto';
 
 describe('Login', () => {

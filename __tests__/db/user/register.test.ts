@@ -3,8 +3,7 @@ import Rooster from '../../../src/modules/user/rooster';
 import * as enums from '../../../src/enums';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import fakeData from '../../utils/fakeData.json';
-import FakeFactory from '../../utils/fakeFactory/src';
+import { fakeData, FakeFactory } from '../../utils';
 import type { IRegisterDto } from '../../../src/modules/user/dto';
 
 describe('Register', () => {

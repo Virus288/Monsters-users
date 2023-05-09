@@ -3,10 +3,9 @@ import * as errors from '../../../src/errors';
 import type * as types from '../../../src/types';
 import * as enums from '../../../src/enums';
 import Controller from '../../../src/modules/profile/controller';
-import fakeData from '../../utils/fakeData.json';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import FakeFactory from '../../utils/fakeFactory/src';
+import { fakeData, FakeFactory } from '../../utils';
 import type { IAddProfileDto, IGetProfileDto } from '../../../src/modules/profile/dto';
 import type { IProfileEntity } from '../../../src/modules/profile/entity';
 

@@ -19,4 +19,8 @@ export default class Rooster {
   async getFromHash(target: string, value: string): Promise<string | undefined> {
     return this.client.hGet(target, value);
   }
+
+  async removeFromHash(target: string, value: string): Promise<void> {
+    await this.client.hDel(target, value);
+  }
 }
