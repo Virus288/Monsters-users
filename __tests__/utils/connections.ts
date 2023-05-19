@@ -18,8 +18,7 @@ export default class Connection {
   }
 
   close(): void {
-    mongoose.connection
-      .close()
+    this.disconnect()
       .then(() => {
         setTimeout(() => {
           // Empty
@@ -35,14 +34,20 @@ export default class Connection {
     await mongoose.connect(server.getUri());
   }
 
-  private async redis(): Promise<void> {
+  private redis(): void {
     State.Redis = new Redis();
     State.Redis.startTestServer();
-    await State.Redis.init();
+    State.Redis.init();
   }
 
   private async handleConnect(): Promise<void> {
-    await this.redis();
+    this.redis();
     await this.mongo();
+  }
+
+  private async disconnect(): Promise<void> {
+    State.Redis.close();
+    await mongoose.disconnect();
+    await mongoose.connection.close();
   }
 }

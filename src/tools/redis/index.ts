@@ -33,9 +33,16 @@ export default class Redis {
     return this._rooster;
   }
 
-  async init(): Promise<void> {
+  init(): void {
     this.listen();
-    await this.client.connect();
+    this.client
+      .connect()
+      .then(() => {
+        Log.log('Redis', 'Redis connected');
+      })
+      .catch((err) => {
+        Log.error('Redis', err);
+      });
   }
 
   close(): void {

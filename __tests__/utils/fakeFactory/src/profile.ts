@@ -30,7 +30,7 @@ export default class FakeProfile extends TemplateFactory<EFakeData.Profile> impl
     return this;
   }
 
-  exp(exp?: [number, number]): this {
+  exp(exp?: number[]): this {
     this.state.exp = exp;
     return this;
   }
@@ -45,7 +45,27 @@ export default class FakeProfile extends TemplateFactory<EFakeData.Profile> impl
     return this;
   }
 
+  inventory(inventory: string): this {
+    this.state.inventory = inventory;
+    return this;
+  }
+
+  party(party: string): this {
+    this.state.party = party;
+    return this;
+  }
+
   protected fillState(): void {
-    this.state = { _id: undefined, exp: [0, 10], friends: [], lvl: 1, race: undefined, user: undefined };
+    this.state = {
+      _id: undefined,
+      exp: [0, 10],
+      friends: [],
+      lvl: 1,
+      race: undefined,
+      user: undefined,
+      party: undefined,
+      inventory: undefined,
+      initialized: false,
+    };
   }
 }

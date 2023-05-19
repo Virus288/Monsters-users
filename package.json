@@ -10,7 +10,6 @@
     "start": "cross-env NODE_ENV=prod node build/src/main.js",
     "start:dev": "cross-env NODE_ENV=dev TS_NODE_FILES=true TS_NODE_TRANSPILE_ONLY=true nodemon build/src/main.js",
     "start:test": "cross-env NODE_ENV=test TS_NODE_FILES=true TS_NODE_TRANSPILE_ONLY=true ts-node build/src/main.js",
-    "clean": "rimraf coverage build tmp",
     "prebuild": "npm run lint",
     "build": "tsc -p tsconfig.release.json",
     "build:watch": "tsc -w -p tsconfig.release.json",
@@ -22,6 +21,7 @@
     "test:e2e": "jest --runInBand --config __tests__/jest.config.e2e.ts",
     "test:unit": "jest --config __tests__/jest.config.unit.ts",
     "test:db": "jest --runInBand --config __tests__/jest.config.db.ts",
+    "generate": "npx module-generator",
     "prepare": "husky install"
   },
   "lint-staged": {
@@ -64,6 +64,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^29.3.1",
     "mongodb-memory-server": "^8.11.4",
+    "module-generator": "github:Virus288/Monsters-cli#eaa8b36",
     "nodemon": "^2.0.22",
     "prettier": "^2.8.7",
     "redis-memory-server": "^0.6.0",

@@ -20,7 +20,7 @@ describe('Login', () => {
           const clone = structuredClone(register);
           delete clone[k];
           const func = (): void => Validation.validateRegister(clone);
-          expect(func).toThrow(new errors.IncorrectArgError(`${k} missing`));
+          expect(func).toThrow(new errors.MissingArgError(k));
         });
       });
     });

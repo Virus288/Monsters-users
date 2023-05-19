@@ -29,7 +29,7 @@ describe('Register', () => {
         const clone = structuredClone(registerData);
         clone.login = undefined!;
         controller.register(clone).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectArgError('login missing'));
+          expect(err).toEqual(new errors.MissingArgError('login'));
         });
       });
 
@@ -37,7 +37,7 @@ describe('Register', () => {
         const clone = structuredClone(registerData);
         clone.password = undefined!;
         controller.register(clone).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectArgError('password missing'));
+          expect(err).toEqual(new errors.MissingArgError('password'));
         });
       });
 
@@ -45,7 +45,7 @@ describe('Register', () => {
         const clone = structuredClone(registerData);
         clone.email = undefined!;
         controller.register(clone).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectArgError('email missing'));
+          expect(err).toEqual(new errors.MissingArgError('email'));
         });
       });
     });

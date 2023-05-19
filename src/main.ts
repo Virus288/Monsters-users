@@ -22,7 +22,7 @@ class App {
     State.Redis = new Redis();
 
     State.Broker.init();
-    await State.Redis.init();
+    State.Redis.init();
   }
 }
 

@@ -2,4 +2,5 @@
 export enum EModules {
   Users = 'users',
   Profiles = 'profiles',
+  Inventory = 'inventory',
 }

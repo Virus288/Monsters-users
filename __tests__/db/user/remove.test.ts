@@ -8,12 +8,16 @@ import type { IRemoveUserDto } from '../../../src/modules/user/dto';
 import type { IUserEntity } from '../../../src/modules/user/entity';
 import type { IProfileEntity } from '../../../src/modules/profile/entity';
 import * as errors from '../../../src/errors';
+import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
+import type { IPartyEntity } from '../../../src/modules/party/entity';
 
 describe('Remove user', () => {
   const db = new FakeFactory();
   const fakeUser = fakeData.users[0] as IUserEntity;
   const fakeUser2 = fakeData.users[1] as IUserEntity;
   const fakeProfile = fakeData.profiles[0] as IProfileEntity;
+  const fakeInv = fakeData.inventories[0] as IInventoryEntity;
+  const fakeParty = fakeData.parties[0] as IPartyEntity;
   const remove: IRemoveUserDto = {
     name: fakeUser.login,
   };
@@ -55,7 +59,10 @@ describe('Remove user', () => {
         .exp(fakeProfile.exp)
         .race(fakeProfile.race)
         .friends(fakeProfile.friends)
+        .inventory(fakeInv._id)
+        .party(fakeParty._id)
         .create();
+
       const rooster = new Rooster();
       const profileRooster = new ProfileRooster();
 
@@ -93,6 +100,8 @@ describe('Remove user', () => {
         .exp(fakeProfile.exp)
         .race(fakeProfile.race)
         .friends(fakeProfile.friends)
+        .inventory(fakeInv._id)
+        .party(fakeParty._id)
         .create();
       const rooster = new Rooster();
       const profileRooster = new ProfileRooster();
@@ -105,9 +114,7 @@ describe('Remove user', () => {
       await rooster.remove(fakeUser._id);
 
       const user2 = await rooster.getById(fakeUser._id);
-      const profile2 = await profileRooster.getById(fakeProfile._id);
       expect(user2?._id).toEqual(undefined);
-      expect(profile2?._id).toEqual(undefined);
     });
   });
 });

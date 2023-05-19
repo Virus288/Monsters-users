@@ -1,4 +1,10 @@
-import type { IRoosterAddData, IRoosterAddDefaultData, IRoosterFactory, IRoosterGetData } from './types';
+import type {
+  IRoosterAddData,
+  IRoosterAddDefaultData,
+  IRoosterFactory,
+  IRoosterGetData,
+  IRoosterUpdate,
+} from './types';
 import type { Document, Model } from 'mongoose';
 import type { EModules } from './enums';
 
@@ -28,5 +34,9 @@ export default abstract class RoosterFactory<T extends Document, U extends Model
 
   async get(_data: unknown): Promise<IRoosterGetData[Z]> {
     return this.model.find({}).lean();
+  }
+
+  async update(id: string, data: IRoosterUpdate[Z]): Promise<void> {
+    await this.model.findOneAndUpdate({ _id: id }, data);
   }
 }

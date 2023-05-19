@@ -138,3 +138,48 @@ export class NoPermission extends FullError {
     this.status = 400;
   }
 }
+
+export class IncorrectArgAmountError extends FullError {
+  constructor(target: string, min: number | undefined, max: number) {
+    super('IncorrectArgAmountError');
+    this.message =
+      min === undefined
+        ? `Elm ${target} should be less than ${max}`
+        : min !== max
+        ? `Elm ${target} should be more than ${min} and less than ${max}`
+        : `Elm ${target} should be ${min}`;
+    this.name = 'IncorrectArgAmountError';
+    this.code = '014';
+    this.status = 400;
+  }
+}
+
+export class InventoryDoesNotExist extends FullError {
+  constructor() {
+    super('InventoryDoesNotExist');
+    this.message = 'Selected inventory does not exist';
+    this.name = 'InventoryDoesNotExist';
+    this.code = '015';
+    this.status = 400;
+  }
+}
+
+export class ItemNotInInventory extends FullError {
+  constructor() {
+    super('ItemNotInInventory');
+    this.message = 'Selected item does not exist in your inventory';
+    this.name = 'ItemNotInInventory';
+    this.code = '016';
+    this.status = 400;
+  }
+}
+
+export class InsufficientAmount extends FullError {
+  constructor() {
+    super('InsufficientAmount');
+    this.message = 'Insufficient amount of items in inventory';
+    this.name = 'InsufficientAmount';
+    this.code = '017';
+    this.status = 400;
+  }
+}

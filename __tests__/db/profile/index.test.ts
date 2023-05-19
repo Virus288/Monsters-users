@@ -7,10 +7,14 @@ import mongoose from 'mongoose';
 import { fakeData } from '../../utils';
 import FakeFactory from '../../utils/fakeFactory/src';
 import type { IRegisterDto } from '../../../src/modules/user/dto';
+import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
+import type { IPartyEntity } from '../../../src/modules/party/entity';
 
 describe('Profile', () => {
   const db = new FakeFactory();
   const loginData = fakeData.users[0] as IRegisterDto;
+  const fakeInv = fakeData.inventories[0] as IInventoryEntity;
+  const fakeParty = fakeData.parties[0] as IPartyEntity;
 
   beforeAll(async () => {
     const server = await MongoMemoryServer.create();
@@ -41,7 +45,13 @@ describe('Profile', () => {
         .email(loginData.email)
         .verified(false)
         .create();
-      await db.profile.user(userId.toString()).race(EUserRace.Human).create();
+
+      await db.profile
+        .user(userId.toString())
+        .race(EUserRace.Human)
+        .inventory(fakeInv._id)
+        .party(fakeParty._id)
+        .create();
 
       const rooster = new Rooster();
       const profile = await rooster.get(new mongoose.Types.ObjectId().toString());
@@ -57,7 +67,12 @@ describe('Profile', () => {
         .email(loginData.email)
         .verified(false)
         .create();
-      await db.profile.user(userId.toString()).race(EUserRace.Human).create();
+      await db.profile
+        .user(userId.toString())
+        .race(EUserRace.Human)
+        .inventory(fakeInv._id)
+        .party(fakeParty._id)
+        .create();
 
       const rooster = new Rooster();
       const profile = await rooster.get(userId.toString());

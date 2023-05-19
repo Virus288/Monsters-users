@@ -19,7 +19,7 @@ describe('Login', () => {
           delete clone[k];
           const func = (): void => Validation.validateLogin(clone);
 
-          expect(func).toThrow(new errors.IncorrectArgError(`${k} missing`));
+          expect(func).toThrow(new errors.MissingArgError(k));
         });
       });
     });
