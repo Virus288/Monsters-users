@@ -1,13 +1,13 @@
-import type { IUserCredentials } from '../../types';
 import Rooster from './rooster';
-import * as errors from '../../errors';
 import Validator from './validation';
+import * as errors from '../../errors';
+import ControllerFactory from '../../tools/abstract/controller';
+import State from '../../tools/state';
 import * as utils from '../../tools/token';
 import type { ILoginDto, IRegisterDto, IUserDetailsDto } from './dto';
-import ControllerFactory from '../../tools/abstract/controller';
-import type { EModules } from '../../tools/abstract/enums';
 import type { IUserEntity } from './entity';
-import State from '../../tools/state';
+import type { EModules } from '../../tools/abstract/enums';
+import type { IUserCredentials } from '../../types';
 
 export default class Controller extends ControllerFactory<EModules.Users> {
   constructor() {

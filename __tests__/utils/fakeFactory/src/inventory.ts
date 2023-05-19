@@ -1,9 +1,9 @@
 import TemplateFactory from './abstracts';
-import type { EFakeData } from '../enums';
 import Inventory from '../../../../src/modules/inventory/model';
-import type { IAbstractBody } from '../types/data';
 import type { IInventoryEntity } from '../../../../src/modules/inventory/entity';
 import type { IInventoryItem } from '../../../../src/modules/inventory/types';
+import type { EFakeData } from '../enums';
+import type { IAbstractBody } from '../types/data';
 
 export default class FakeInventory
   extends TemplateFactory<EFakeData.Inventory>
@@ -23,15 +23,16 @@ export default class FakeInventory
     return this;
   }
 
-  user(user: string): this {
-    this.state.user = user;
+  userId(id?: string): this {
+    this.state.userId = id;
     return this;
   }
 
   protected fillState(): void {
     this.state = {
       items: [],
-      user: undefined,
+      userId: undefined,
+      _id: undefined,
     };
   }
 }

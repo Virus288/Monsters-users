@@ -1,9 +1,9 @@
-import type * as enums from '../../../../src/enums';
 import TemplateFactory from './abstracts';
-import type { EFakeData } from '../enums';
 import Profile from '../../../../src/modules/profile/model';
-import type { IAbstractBody } from '../types/data';
+import type * as enums from '../../../../src/enums';
 import type { IProfileEntity } from '../../../../src/modules/profile/entity';
+import type { EFakeData } from '../enums';
+import type { IAbstractBody } from '../types/data';
 
 export default class FakeProfile extends TemplateFactory<EFakeData.Profile> implements IAbstractBody<IProfileEntity> {
   constructor() {

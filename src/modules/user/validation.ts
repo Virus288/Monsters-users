@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
+import mongoose from 'mongoose';
 import * as errors from '../../errors';
 import type { ILoginDto, IRegisterDto, IRemoveUserDto, IUserDetailsDto } from './dto';
-import mongoose from 'mongoose';
 
 export default class Validator {
   static validateRegister(data: IRegisterDto): void {

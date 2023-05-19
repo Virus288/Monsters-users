@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import type { IParty } from './types';
 
 export const partySchema = new mongoose.Schema({
-  owner: {
+  leader: {
     type: mongoose.Types.ObjectId,
     required: [true, 'userId not provided'],
     unique: true,

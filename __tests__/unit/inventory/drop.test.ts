@@ -1,8 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
-import Validation from '../../../src/modules/inventory/validation';
 import * as errors from '../../../src/errors';
-import type { IDropItemDto } from '../../../src/modules/inventory/dto';
+import Validation from '../../../src/modules/inventory/validation';
 import { fakeData } from '../../utils';
+import type { IDropItemDto } from '../../../src/modules/inventory/dto';
 import type { IItemEntity } from '../../../src/modules/items/entity';
 
 describe('Drop items', () => {

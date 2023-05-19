@@ -1,12 +1,12 @@
-import type * as types from '../../types';
+import Rooster from './rooster';
 import Validator from './validation';
 import * as errors from '../../errors';
-import { ProfileAlreadyExistsError } from '../../errors';
-import type { IProfileEntity } from './entity';
-import type { IAddProfileDto, IGetProfileDto } from './dto';
+import { ProfileDoesNotExistsError } from '../../errors';
 import ControllerFactory from '../../tools/abstract/controller';
+import type { IAddProfileDto, IGetProfileDto } from './dto';
+import type { IProfileEntity } from './entity';
 import type { EModules } from '../../tools/abstract/enums';
-import Rooster from './rooster';
+import type * as types from '../../types';
 
 export default class Controller extends ControllerFactory<EModules.Profiles> {
   constructor() {
@@ -21,12 +21,12 @@ export default class Controller extends ControllerFactory<EModules.Profiles> {
   async addProfile(data: IAddProfileDto, user: types.ILocalUser): Promise<void> {
     Validator.validateAddProfile(data);
     const exist = await this.rooster.get(user.userId!);
-    if (exist) throw new ProfileAlreadyExistsError();
-    await this.rooster.add({ ...data, user: user.userId! });
+    if (!exist) throw new ProfileDoesNotExistsError();
+    await this.rooster.update(exist._id, { ...data, race: data.race });
   }
 
-  async addBasicProfile(user: string): Promise<void> {
-    return this.rooster.addDefault({ user });
+  async addBasicProfile(user: string, party: string, inventory: string): Promise<IProfileEntity> {
+    return this.rooster.addDefault({ user, party, inventory });
   }
 
   async remove(userId: string): Promise<void> {

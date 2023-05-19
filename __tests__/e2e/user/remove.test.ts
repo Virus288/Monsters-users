@@ -2,13 +2,13 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from
 import * as errors from '../../../src/errors';
 import Controller from '../../../src/modules/user/controller';
 import Handler from '../../../src/modules/user/handler';
-import type { IRemoveUserDto } from '../../../src/modules/user/dto';
-import type { IUserEntity } from '../../../src/modules/user/entity';
-import type { IProfileEntity } from '../../../src/modules/profile/entity';
 import State from '../../../src/tools/state';
-import { Connection, fakeData, FakeFactory } from '../../utils';
+import { Connection, FakeFactory, fakeData } from '../../utils';
 import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
+import type { IProfileEntity } from '../../../src/modules/profile/entity';
+import type { IRemoveUserDto } from '../../../src/modules/user/dto';
+import type { IUserEntity } from '../../../src/modules/user/entity';
 
 describe('Remove user', () => {
   const db = new FakeFactory();

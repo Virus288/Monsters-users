@@ -1,21 +1,20 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
-import * as errors from '../../../src/errors';
-import type * as types from '../../../src/types';
-import * as enums from '../../../src/enums';
-import Controller from '../../../src/modules/profile/controller';
 import mongoose from 'mongoose';
+import * as enums from '../../../src/enums';
+import * as errors from '../../../src/errors';
+import Controller from '../../../src/modules/profile/controller';
 import { Connection, fakeData, FakeFactory } from '../../utils';
-import type { IAddProfileDto, IGetProfileDto } from '../../../src/modules/profile/dto';
-import type { IProfileEntity } from '../../../src/modules/profile/entity';
 import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
+import type { IAddProfileDto, IGetProfileDto } from '../../../src/modules/profile/dto';
+import type { IProfileEntity } from '../../../src/modules/profile/entity';
+import type * as types from '../../../src/types';
 
 describe('Profile', () => {
   const db = new FakeFactory();
   const id = fakeData.users[0]!._id;
   const race: IAddProfileDto = {
     race: enums.EUserRace.Human,
-    user: new mongoose.Types.ObjectId().toString(),
   };
   const fake = fakeData.profiles[1] as IProfileEntity;
   const fakeInv = fakeData.inventories[0] as IInventoryEntity;
@@ -133,10 +132,20 @@ describe('Profile', () => {
       expect(profile.friends).toEqual(fake.friends);
     });
 
-    it('Added profile', async () => {
+    it('Initialized profile', async () => {
+      await db.profile
+        .user(localUser2.userId)
+        .race(fake.race)
+        .lvl(fake.lvl)
+        .exp(fake.exp)
+        .friends(fake.friends)
+        .inventory(fakeInv._id)
+        .party(fakeParty._id)
+        .create();
+
       const func = async (): Promise<void> => controller.addProfile(race, localUser2);
 
-      expect(await func()).not.toThrow();
+      expect(func).not.toThrow();
     });
   });
 });

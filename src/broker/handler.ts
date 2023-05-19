@@ -1,13 +1,15 @@
-import * as enums from '../enums';
-import type * as types from '../types/connection';
-import * as errors from '../errors';
-import UserController from '../modules/user/handler';
-import ProfileController from '../modules/profile/handler';
-import InventoryController from '../modules/inventory/handler';
 import Controller from './controller';
+import * as enums from '../enums';
+import * as errors from '../errors';
+import InventoryController from '../modules/inventory/handler';
+import PartyController from '../modules/party/handler';
+import ProfileController from '../modules/profile/handler';
+import UserController from '../modules/user/handler';
+import type * as types from '../types/connection';
 
 export default class Handler {
   private readonly _user: UserController;
+  private readonly _party: PartyController;
   private readonly _profile: ProfileController;
   private readonly _inventory: InventoryController;
   private readonly _controller: Controller;
@@ -16,7 +18,8 @@ export default class Handler {
     this._user = new UserController();
     this._profile = new ProfileController();
     this._inventory = new InventoryController();
-    this._controller = new Controller(this.user, this.profile);
+    this._party = new PartyController();
+    this._controller = new Controller(this.user, this.profile, this.inventory, this.party);
   }
 
   private get user(): UserController {
@@ -25,6 +28,10 @@ export default class Handler {
 
   private get inventory(): InventoryController {
     return this._inventory;
+  }
+
+  private get party(): PartyController {
+    return this._party;
   }
 
   private get profile(): ProfileController {
@@ -38,7 +45,7 @@ export default class Handler {
   async profileMessage(payload: types.IRabbitMessage): Promise<void> {
     switch (payload.subTarget) {
       case enums.EProfileTargets.Create:
-        return this.controller.addProfile(payload.payload, payload.user);
+        return this.profile.add(payload.payload, payload.user);
       case enums.EProfileTargets.Get:
         return this.profile.get(payload.payload, payload.user);
       default:
@@ -69,6 +76,13 @@ export default class Handler {
         return this.inventory.useItem(payload.payload, payload.user);
       case enums.EItemsTargets.Drop:
         return this.inventory.dropItem(payload.payload, payload.user);
+      default:
+        throw new errors.IncorrectTargetError();
+    }
+  }
+
+  partyMessage(payload: types.IRabbitMessage): void {
+    switch (payload.subTarget) {
       default:
         throw new errors.IncorrectTargetError();
     }

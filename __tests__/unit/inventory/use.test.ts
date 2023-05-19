@@ -1,9 +1,9 @@
 import { describe, expect, it } from '@jest/globals';
-import Validation from '../../../src/modules/inventory/validation';
 import * as errors from '../../../src/errors';
+import Validation from '../../../src/modules/inventory/validation';
 import { fakeData } from '../../utils';
-import type { IItemEntity } from '../../../src/modules/items/entity';
 import type { IUseItemDto } from '../../../src/modules/inventory/dto';
+import type { IItemEntity } from '../../../src/modules/items/entity';
 
 describe('Use items', () => {
   const fakeItem = fakeData.items[0] as IItemEntity;

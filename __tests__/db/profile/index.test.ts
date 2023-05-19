@@ -1,14 +1,14 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
-import Rooster from '../../../src/modules/profile/rooster';
-import * as enums from '../../../src/enums';
-import { EUserRace } from '../../../src/enums';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
+import * as enums from '../../../src/enums';
+import { EUserRace } from '../../../src/enums';
+import Rooster from '../../../src/modules/profile/rooster';
 import { fakeData } from '../../utils';
 import FakeFactory from '../../utils/fakeFactory/src';
-import type { IRegisterDto } from '../../../src/modules/user/dto';
 import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
+import type { IRegisterDto } from '../../../src/modules/user/dto';
 
 describe('Profile', () => {
   const db = new FakeFactory();

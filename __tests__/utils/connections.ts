@@ -1,8 +1,8 @@
-import Log from '../../src/tools/logger/log';
-import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import State from '../../src/tools/state';
+import mongoose from 'mongoose';
+import Log from '../../src/tools/logger/log';
 import Redis from '../../src/tools/redis';
+import State from '../../src/tools/state';
 
 export default class Connection {
   connect(): void {

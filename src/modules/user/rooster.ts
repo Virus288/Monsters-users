@@ -1,8 +1,8 @@
 import User from './model';
-import type { IUserEntity } from './entity';
 import RoosterFactory from '../../tools/abstract/rooster';
-import type { EModules } from '../../tools/abstract/enums';
+import type { IUserEntity } from './entity';
 import type { IUser } from './types';
+import type { EModules } from '../../tools/abstract/enums';
 
 export default class Rooster extends RoosterFactory<IUser, typeof User, EModules.Users> {
   constructor() {

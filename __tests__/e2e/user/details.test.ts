@@ -1,11 +1,11 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
-import * as errors from '../../../src/errors';
-import Controller from '../../../src/modules/user/controller';
-import type { IUserEntity } from '../../../src/modules/user/entity';
-import type { IUserDetailsDto } from '../../../src/modules/user/dto';
-import { Connection, fakeData, FakeFactory } from '../../utils';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
+import * as errors from '../../../src/errors';
+import Controller from '../../../src/modules/user/controller';
+import { Connection, FakeFactory, fakeData } from '../../utils';
+import type { IUserDetailsDto } from '../../../src/modules/user/dto';
+import type { IUserEntity } from '../../../src/modules/user/entity';
 
 describe('Get details', () => {
   const db = new FakeFactory();

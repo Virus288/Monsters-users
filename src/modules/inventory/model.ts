@@ -13,6 +13,11 @@ const itemSchema = new mongoose.Schema({
 });
 
 export const inventorySchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Types.ObjectId,
+    required: [true, 'userId not provided'],
+    unique: true,
+  },
   items: {
     type: [itemSchema],
     default: [],

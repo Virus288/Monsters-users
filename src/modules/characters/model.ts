@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import type { ICharacter } from './types';
 import * as enums from '../../enums';
+import type { ICharacter } from './types';
 
 export const characterSchema = new mongoose.Schema({
   name: {

@@ -1,6 +1,6 @@
-import * as errors from '../../errors';
-import * as enums from '../../enums';
 import mongoose from 'mongoose';
+import * as enums from '../../enums';
+import * as errors from '../../errors';
 import type { IAddProfileDto, IGetProfileDto } from './dto';
 
 export default class Validator {

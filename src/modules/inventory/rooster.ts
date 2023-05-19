@@ -1,8 +1,8 @@
 import Inventory from './model';
-import type { IInventoryEntity } from './entity';
 import RoosterFactory from '../../tools/abstract/rooster';
-import type { EModules } from '../../tools/abstract/enums';
+import type { IInventoryEntity } from './entity';
 import type { IInventory } from './types';
+import type { EModules } from '../../tools/abstract/enums';
 
 export default class Rooster extends RoosterFactory<IInventory, typeof Inventory, EModules.Inventory> {
   constructor() {
@@ -14,7 +14,7 @@ export default class Rooster extends RoosterFactory<IInventory, typeof Inventory
   }
 
   async getByUser(id: string): Promise<IInventoryEntity | null> {
-    return Inventory.findOne({ user: id }).lean();
+    return Inventory.findOne({ userId: id }).lean();
   }
 
   async remove(id: string): Promise<null> {
@@ -22,6 +22,6 @@ export default class Rooster extends RoosterFactory<IInventory, typeof Inventory
   }
 
   async update(id: string, data: Partial<IInventoryEntity>): Promise<void> {
-    await Inventory.findOneAndUpdate({ user: id }, data);
+    await Inventory.findOneAndUpdate({ userId: id }, data);
   }
 }

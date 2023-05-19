@@ -167,66 +167,73 @@
   "inventories": [
     {
       "_id": "6465b8bb0466b9fe1f766225",
+      "userId": "63e55edbe8a800060941121d",
       "items": []
     },
     {
       "_id": "6465b8bb0466b9fe1f766229",
+      "userId": "63e55edbe8a800060941121e",
       "items": []
     },
     {
       "_id": "6465b8bb0466b9fe1f76622b",
+      "userId": "63e55edbe8a800060941123d",
       "items": []
     },
     {
       "_id": "6465b8bb0466b9fe1f76622d",
+      "userId": "63e55edbe8a800060941124d",
       "items": []
     },
     {
       "_id": "6465b8bb0466b9fe1f76622f",
+      "userId": "63e55edbe8a800060941125d",
       "items": []
     },
     {
       "_id": "6465b8bb0466b9fe1f766231",
+      "userId": "63e55edbe8a800060941126d",
       "items": []
     },
     {
       "_id": "6465b8bb0466b9fe1f766233",
+      "userId": "63e55edbe8a800060941127d",
       "items": []
     }
   ],
   "parties": [
     {
-      "owner": "63e55edbe8a800060941121d",
+      "leader": "63e55edbe8a800060941121d",
       "characters": [],
       "_id": "64649e334e19dfa5f70fd7ba"
     },
     {
-      "owner": "63e55edbe8a800060941121e",
+      "leader": "63e55edbe8a800060941121e",
       "characters": [],
       "_id": "64649e334e19dfa5f70fd7c1"
     },
     {
-      "owner": "63e55edbe8a800060941123d",
+      "leader": "63e55edbe8a800060941123d",
       "characters": [],
       "_id": "64649e334e19dfa5f70fd7c7"
     },
     {
-      "owner": "63e55edbe8a800060941124d",
+      "leader": "63e55edbe8a800060941124d",
       "characters": [],
       "_id": "64649e344e19dfa5f70fd7cd"
     },
     {
-      "owner": "63e55edbe8a800060941125d",
+      "leader": "63e55edbe8a800060941125d",
       "characters": [],
       "_id": "64649e344e19dfa5f70fd7d3"
     },
     {
-      "owner": "63e55edbe8a800060941126d",
+      "leader": "63e55edbe8a800060941126d",
       "characters": [],
       "_id": "64649e344e19dfa5f70fd7d9"
     },
     {
-      "owner": "63e55edbe8a800060941127d",
+      "leader": "63e55edbe8a800060941127d",
       "characters": [],
       "_id": "64649e344e19dfa5f70fd7df"
     }

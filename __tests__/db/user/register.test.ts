@@ -1,9 +1,9 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
-import Rooster from '../../../src/modules/user/rooster';
-import * as enums from '../../../src/enums';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import { fakeData, FakeFactory } from '../../utils';
+import * as enums from '../../../src/enums';
+import Rooster from '../../../src/modules/user/rooster';
+import { FakeFactory, fakeData } from '../../utils';
 import type { IRegisterDto } from '../../../src/modules/user/dto';
 
 describe('Register', () => {

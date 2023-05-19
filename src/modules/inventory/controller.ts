@@ -1,10 +1,10 @@
 import Rooster from './rooster';
-import { InsufficientAmount, InventoryDoesNotExist, ItemNotInInventory } from '../../errors';
 import Validator from './validation';
-import type { IDropItemDto, IUseItemDto } from './dto';
+import { InsufficientAmount, InventoryDoesNotExist, ItemNotInInventory } from '../../errors';
 import ControllerFactory from '../../tools/abstract/controller';
-import type { EModules } from '../../tools/abstract/enums';
+import type { IDropItemDto, IUseItemDto } from './dto';
 import type { IInventoryEntity } from './entity';
+import type { EModules } from '../../tools/abstract/enums';
 
 export default class Controller extends ControllerFactory<EModules.Inventory> {
   constructor() {
@@ -27,7 +27,7 @@ export default class Controller extends ControllerFactory<EModules.Inventory> {
     if (!eq) throw new InventoryDoesNotExist();
 
     const exist = eq.items.find((e) => {
-      return e.itemId === itemId;
+      return e.itemId.toString() === itemId;
     });
 
     if (!exist) throw new ItemNotInInventory();
@@ -46,7 +46,7 @@ export default class Controller extends ControllerFactory<EModules.Inventory> {
     if (!eq) throw new InventoryDoesNotExist();
 
     const exist = eq.items.find((e) => {
-      return e.itemId === itemId;
+      return e.itemId.toString() === itemId;
     });
 
     if (!exist) throw new ItemNotInInventory();
@@ -54,5 +54,9 @@ export default class Controller extends ControllerFactory<EModules.Inventory> {
 
     eq.items = [...eq.items, { ...exist, quantity: (exist.quantity -= amount) }];
     await this.rooster.update(userId, eq);
+  }
+
+  async addBasicInventory(userId: string): Promise<IInventoryEntity> {
+    return this.rooster.addDefault({ userId });
   }
 }

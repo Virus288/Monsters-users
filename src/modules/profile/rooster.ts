@@ -1,8 +1,8 @@
 import Profile from './model';
-import type { IProfileEntity } from './entity';
 import RoosterFactory from '../../tools/abstract/rooster';
-import type { EModules } from '../../tools/abstract/enums';
+import type { IProfileEntity } from './entity';
 import type { IProfile } from './types';
+import type { EModules } from '../../tools/abstract/enums';
 
 export default class Rooster extends RoosterFactory<IProfile, typeof Profile, EModules.Profiles> {
   constructor() {

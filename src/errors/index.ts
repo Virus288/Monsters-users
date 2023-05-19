@@ -183,3 +183,23 @@ export class InsufficientAmount extends FullError {
     this.status = 400;
   }
 }
+
+export class PartyAlreadyExists extends FullError {
+  constructor() {
+    super('PartyAlreadyExists');
+    this.message = 'Party already exists';
+    this.name = 'PartyAlreadyExists';
+    this.code = '018';
+    this.status = 400;
+  }
+}
+
+export class ProfileDoesNotExistsError extends FullError {
+  constructor() {
+    super('ProfileDoesNotExistsError');
+    this.message = 'Profile does not exist';
+    this.name = 'ProfileDoesNotExistsError';
+    this.code = '019';
+    this.status = 400;
+  }
+}

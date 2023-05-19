@@ -1,9 +1,9 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
-import type { IFullError } from '../../../src/types';
 import * as errors from '../../../src/errors';
 import Controller from '../../../src/modules/user/controller';
+import { Connection, FakeFactory, fakeData } from '../../utils';
 import type { IRegisterDto } from '../../../src/modules/user/dto';
-import { Connection, fakeData, FakeFactory } from '../../utils';
+import type { IFullError } from '../../../src/types';
 
 describe('Register', () => {
   const connection = new Connection();

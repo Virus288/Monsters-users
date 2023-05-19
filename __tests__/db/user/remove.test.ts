@@ -1,15 +1,15 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
-import Rooster from '../../../src/modules/user/rooster';
-import ProfileRooster from '../../../src/modules/profile/rooster';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import { fakeData, FakeFactory } from '../../utils';
-import type { IRemoveUserDto } from '../../../src/modules/user/dto';
-import type { IUserEntity } from '../../../src/modules/user/entity';
-import type { IProfileEntity } from '../../../src/modules/profile/entity';
 import * as errors from '../../../src/errors';
+import ProfileRooster from '../../../src/modules/profile/rooster';
+import Rooster from '../../../src/modules/user/rooster';
+import { FakeFactory, fakeData } from '../../utils';
 import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
+import type { IProfileEntity } from '../../../src/modules/profile/entity';
+import type { IRemoveUserDto } from '../../../src/modules/user/dto';
+import type { IUserEntity } from '../../../src/modules/user/entity';
 
 describe('Remove user', () => {
   const db = new FakeFactory();

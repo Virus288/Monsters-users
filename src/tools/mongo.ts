@@ -1,14 +1,14 @@
-import type { ConnectOptions } from 'mongoose';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import getConfig from './configLoader';
 import Log from './logger/log';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import { fakeData } from '../../__tests__/utils';
 import FakeFactory from '../../__tests__/utils/fakeFactory/src';
-import type { IProfileEntity } from '../modules/profile/entity';
-import type { IUserEntity } from '../modules/user/entity';
 import type { IInventoryEntity } from '../modules/inventory/entity';
 import type { IPartyEntity } from '../modules/party/entity';
+import type { IProfileEntity } from '../modules/profile/entity';
+import type { IUserEntity } from '../modules/user/entity';
+import type { ConnectOptions } from 'mongoose';
 
 const fulfillDatabase = async (): Promise<void> => {
   const users = fakeData.users as IUserEntity[];
@@ -33,7 +33,7 @@ const fulfillDatabase = async (): Promise<void> => {
   await Promise.all(
     profiles.map(async (p) => {
       const db = new FakeFactory();
-      const party = parties.find((e) => e.owner === p.user)!;
+      const party = parties.find((e) => e._id === p.party)!;
       const inventory = inventories.find((e) => e._id === p.inventory)!;
 
       return db.profile.user(p.user).race(p.race).party(party._id).inventory(inventory._id).create();

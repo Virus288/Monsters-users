@@ -1,5 +1,5 @@
 export interface IPartyEntity {
   _id: string;
-  owner: string;
+  leader: string;
   characters: string[];
 }

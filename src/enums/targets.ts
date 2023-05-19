@@ -10,6 +10,11 @@ export enum EItemsTargets {
   Drop = 'drop',
 }
 
+export enum EPartyTargets {
+  Create = 'Create',
+  Get = 'get',
+}
+
 export enum ESharedTargets {
   RemoveUser = 'removeUser',
 }
