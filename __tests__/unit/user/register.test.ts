@@ -1,8 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
-import Validation from '../../../src/modules/user/validation';
 import * as errors from '../../../src/errors';
-import type { IRegisterDto } from '../../../src/modules/user/dto';
+import Validation from '../../../src/modules/user/validation';
 import { fakeData, generateRandomName } from '../../utils';
+import type { IRegisterDto } from '../../../src/modules/user/dto';
 
 describe('Login', () => {
   const fakeUser = fakeData.users[0] as IRegisterDto;
@@ -20,7 +20,7 @@ describe('Login', () => {
           const clone = structuredClone(register);
           delete clone[k];
           const func = (): void => Validation.validateRegister(clone);
-          expect(func).toThrow(new errors.IncorrectArgError(`${k} missing`));
+          expect(func).toThrow(new errors.MissingArgError(k));
         });
       });
     });

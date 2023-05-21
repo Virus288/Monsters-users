@@ -1,18 +1,29 @@
-import type { ILocalUser } from '../types';
-import Validator from '../modules/user/validation';
-import type { IRegisterDto, IRemoveUserDto } from '../modules/user/dto';
-import State from '../tools/state';
 import * as enums from '../enums';
-import type UserController from '../modules/user/handler';
+import UserValidator from '../modules/user/validation';
+import State from '../tools/state';
+import type InventoryController from '../modules/inventory/handler';
+import type PartyController from '../modules/party/handler';
 import type ProfileController from '../modules/profile/handler';
+import type { IRegisterDto, IRemoveUserDto } from '../modules/user/dto';
+import type UserController from '../modules/user/handler';
+import type { ILocalUser } from '../types';
 
 export default class Controller {
   private readonly _user: UserController;
   private readonly _profile: ProfileController;
+  private readonly _inventory: InventoryController;
+  private readonly _party: PartyController;
 
-  constructor(user: UserController, profile: ProfileController) {
+  constructor(
+    user: UserController,
+    profile: ProfileController,
+    inventory: InventoryController,
+    party: PartyController,
+  ) {
     this._user = user;
     this._profile = profile;
+    this._inventory = inventory;
+    this._party = party;
   }
 
   private get user(): UserController {
@@ -23,8 +34,16 @@ export default class Controller {
     return this._profile;
   }
 
+  private get party(): PartyController {
+    return this._party;
+  }
+
+  private get inventory(): InventoryController {
+    return this._inventory;
+  }
+
   async removeUser(payload: unknown, user: ILocalUser): Promise<void> {
-    Validator.validateRemove(payload as IRemoveUserDto);
+    UserValidator.validateRemove(payload as IRemoveUserDto);
     const { name } = payload as IRemoveUserDto;
 
     const { _id } = await this.user.remove(name, user.userId!);
@@ -35,10 +54,13 @@ export default class Controller {
 
   async register(payload: unknown, user: ILocalUser): Promise<void> {
     const data = payload as IRegisterDto;
-    Validator.validateRegister(data);
+    UserValidator.validateRegister(data);
 
     const id = await this.user.register(data);
-    await this.profile.addBasic(id);
+
+    const party = await this.party.addBasic(id);
+    const entity = await this.inventory.addBasic(id);
+    await this.profile.addBasic(id, party._id, entity._id);
 
     return State.Broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
   }

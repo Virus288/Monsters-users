@@ -1,10 +1,11 @@
-import type * as types from '../../types';
-import State from '../../tools/state';
-import * as enums from '../../enums';
 import Controller from './controller';
-import type { IAddProfileDto, IGetProfileDto } from './dto';
+import * as enums from '../../enums';
 import HandlerFactory from '../../tools/abstract/handler';
+import State from '../../tools/state';
+import type { IAddProfileDto, IGetProfileDto } from './dto';
+import type { IProfileEntity } from './entity';
 import type { EModules } from '../../tools/abstract/enums';
+import type * as types from '../../types';
 
 export default class ProfileHandler extends HandlerFactory<EModules.Profiles> {
   constructor() {
@@ -25,7 +26,7 @@ export default class ProfileHandler extends HandlerFactory<EModules.Profiles> {
     return this.controller.remove(userId);
   }
 
-  async addBasic(id: string): Promise<void> {
-    return this.controller.addBasicProfile(id);
+  async addBasic(id: string, party: string, inventory: string): Promise<IProfileEntity> {
+    return this.controller.addBasicProfile(id, party, inventory);
   }
 }

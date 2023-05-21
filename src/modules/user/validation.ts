@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
+import mongoose from 'mongoose';
 import * as errors from '../../errors';
 import type { ILoginDto, IRegisterDto, IRemoveUserDto, IUserDetailsDto } from './dto';
-import mongoose from 'mongoose';
 
 export default class Validator {
   static validateRegister(data: IRegisterDto): void {
@@ -43,7 +43,7 @@ export default class Validator {
     const regex = new RegExp(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/u, 'u');
     const isEmail = regex.test(email);
 
-    if (!email) throw new errors.IncorrectArgError('email missing');
+    if (!email) throw new errors.MissingArgError('email');
     if (!isEmail) throw new errors.IncorrectArgTypeError('Not valid email address');
     if (email.length > 200) {
       throw new errors.IncorrectArgLengthError('email', undefined, 200);
@@ -54,7 +54,7 @@ export default class Validator {
     const regex = new RegExp(/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*\d).*$/u, 'u');
     const isPassword = regex.test(password);
 
-    if (!password) throw new errors.IncorrectArgError('password missing');
+    if (!password) throw new errors.MissingArgError('password');
 
     if (password.length < 6 || password.length > 200) {
       throw new errors.IncorrectArgLengthError('password', 6, 200);
@@ -67,7 +67,7 @@ export default class Validator {
   }
 
   static validateUserName(name: string): void {
-    if (!name) throw new errors.IncorrectArgError('login missing');
+    if (!name) throw new errors.MissingArgError('login');
 
     const regex = new RegExp(/^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/u, 'u');
     const isIncorrect = regex.test(name);

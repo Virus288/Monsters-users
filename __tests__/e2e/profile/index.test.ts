@@ -1,22 +1,24 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
-import * as errors from '../../../src/errors';
-import type * as types from '../../../src/types';
-import * as enums from '../../../src/enums';
-import Controller from '../../../src/modules/profile/controller';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import { fakeData, FakeFactory } from '../../utils';
+import * as enums from '../../../src/enums';
+import * as errors from '../../../src/errors';
+import Controller from '../../../src/modules/profile/controller';
+import { Connection, fakeData, FakeFactory } from '../../utils';
+import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
+import type { IPartyEntity } from '../../../src/modules/party/entity';
 import type { IAddProfileDto, IGetProfileDto } from '../../../src/modules/profile/dto';
 import type { IProfileEntity } from '../../../src/modules/profile/entity';
+import type * as types from '../../../src/types';
 
 describe('Profile', () => {
   const db = new FakeFactory();
   const id = fakeData.users[0]!._id;
   const race: IAddProfileDto = {
-    race: enums.EUserRace.Elf,
-    user: new mongoose.Types.ObjectId().toString(),
+    race: enums.EUserRace.Human,
   };
   const fake = fakeData.profiles[1] as IProfileEntity;
+  const fakeInv = fakeData.inventories[0] as IInventoryEntity;
+  const fakeParty = fakeData.parties[0] as IPartyEntity;
   const userId: IGetProfileDto = {
     id,
   };
@@ -39,19 +41,18 @@ describe('Profile', () => {
     type: enums.EUserTypes.User,
   };
   const controller = new Controller();
+  const connection = new Connection();
 
-  beforeAll(async () => {
-    const server = await MongoMemoryServer.create();
-    await mongoose.connect(server.getUri());
+  beforeAll(() => {
+    connection.connect();
   });
 
   afterEach(async () => {
     await db.cleanUp();
   });
 
-  afterAll(async () => {
-    await mongoose.disconnect();
-    await mongoose.connection.close();
+  afterAll(() => {
+    connection.close();
   });
 
   describe('Should throw', () => {
@@ -95,7 +96,7 @@ describe('Profile', () => {
       });
 
       it('Profile already exists', async () => {
-        await db.profile.user(localUser2.userId).race(race.race).create();
+        await db.profile.user(localUser2.userId).race(race.race).inventory(fakeInv._id).party(fakeParty._id).create();
 
         try {
           await controller.addProfile(race, localUser2);
@@ -112,19 +113,15 @@ describe('Profile', () => {
   });
 
   describe('Should pass', () => {
-    it('Added profile', () => {
-      db.profile.user(localUser2.userId);
-
-      expect(async () => controller.addProfile(race, localUser2)).not.toThrow();
-    });
-
     it('Got profile', async () => {
       await db.profile
         .user(localUser3.userId)
         .race(fake.race)
         .lvl(fake.lvl)
-        .exp(fake.exp as [number, number])
+        .exp(fake.exp)
         .friends(fake.friends)
+        .inventory(fakeInv._id)
+        .party(fakeParty._id)
         .create();
 
       const profile = (await controller.getProfile({ id: localUser3.userId! }))!;
@@ -133,6 +130,22 @@ describe('Profile', () => {
       expect(profile.lvl).toEqual(fake.lvl);
       expect(profile.race).toEqual(fake.race);
       expect(profile.friends).toEqual(fake.friends);
+    });
+
+    it('Initialized profile', async () => {
+      await db.profile
+        .user(localUser2.userId)
+        .race(fake.race)
+        .lvl(fake.lvl)
+        .exp(fake.exp)
+        .friends(fake.friends)
+        .inventory(fakeInv._id)
+        .party(fakeParty._id)
+        .create();
+
+      const func = async (): Promise<void> => controller.addProfile(race, localUser2);
+
+      expect(func).not.toThrow();
     });
   });
 });

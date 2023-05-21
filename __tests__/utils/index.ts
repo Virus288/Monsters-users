@@ -1,6 +1,6 @@
+import Connection from './connections';
 import fakeData from './fakeData/fakeData.json';
 import FakeFactory from './fakeFactory/src';
-import Connection from './connections';
 
 // eslint-disable-next-line import/prefer-default-export
 export const generateRandomName = (): string => {

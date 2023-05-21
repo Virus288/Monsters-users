@@ -1,9 +1,9 @@
-import type * as enums from '../../../../src/enums';
 import TemplateFactory from './abstracts';
-import type { EFakeData } from '../enums';
 import Profile from '../../../../src/modules/profile/model';
-import type { IAbstractBody } from '../types/data';
+import type * as enums from '../../../../src/enums';
 import type { IProfileEntity } from '../../../../src/modules/profile/entity';
+import type { EFakeData } from '../enums';
+import type { IAbstractBody } from '../types/data';
 
 export default class FakeProfile extends TemplateFactory<EFakeData.Profile> implements IAbstractBody<IProfileEntity> {
   constructor() {
@@ -30,7 +30,7 @@ export default class FakeProfile extends TemplateFactory<EFakeData.Profile> impl
     return this;
   }
 
-  exp(exp?: [number, number]): this {
+  exp(exp?: number[]): this {
     this.state.exp = exp;
     return this;
   }
@@ -45,7 +45,27 @@ export default class FakeProfile extends TemplateFactory<EFakeData.Profile> impl
     return this;
   }
 
+  inventory(inventory: string): this {
+    this.state.inventory = inventory;
+    return this;
+  }
+
+  party(party: string): this {
+    this.state.party = party;
+    return this;
+  }
+
   protected fillState(): void {
-    this.state = { _id: undefined, exp: [0, 10], friends: [], lvl: 1, race: undefined, user: undefined };
+    this.state = {
+      _id: undefined,
+      exp: [0, 10],
+      friends: [],
+      lvl: 1,
+      race: undefined,
+      user: undefined,
+      party: undefined,
+      inventory: undefined,
+      initialized: false,
+    };
   }
 }

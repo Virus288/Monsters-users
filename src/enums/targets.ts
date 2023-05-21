@@ -4,6 +4,17 @@ export enum EUserTargets {
   GetName = 'getName',
 }
 
+export enum EItemsTargets {
+  Get = 'get',
+  Use = 'use',
+  Drop = 'drop',
+}
+
+export enum EPartyTargets {
+  Create = 'Create',
+  Get = 'get',
+}
+
 export enum ESharedTargets {
   RemoveUser = 'removeUser',
 }

@@ -1,7 +1,7 @@
-import jwt from 'jsonwebtoken';
-import * as enums from '../enums';
-import getConfig from './configLoader';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import getConfig from './configLoader';
+import * as enums from '../enums';
 
 export const generateAccessToken = (id: string, type: enums.EUserTypes): string => {
   return jwt.sign({ id, type }, getConfig().accessToken, {

@@ -1,14 +1,13 @@
 import { describe, expect, it } from '@jest/globals';
-import Validation from '../../../src/modules/profile/validation';
-import * as errors from '../../../src/errors';
-import * as enums from '../../../src/enums';
 import mongoose from 'mongoose';
+import * as enums from '../../../src/enums';
+import * as errors from '../../../src/errors';
+import Validation from '../../../src/modules/profile/validation';
 import type { IAddProfileDto, IGetProfileDto } from '../../../src/modules/profile/dto';
 
 describe('Profile', () => {
   const race: IAddProfileDto = {
     race: enums.EUserRace.Elf,
-    user: '2',
   };
   const userId: IGetProfileDto = {
     id: new mongoose.Types.ObjectId().toString(),

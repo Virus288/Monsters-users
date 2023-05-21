@@ -34,6 +34,14 @@ export const profileSchema = new mongoose.Schema({
     required: false,
     default: false,
   },
+  inventory: {
+    type: mongoose.Types.ObjectId,
+    required: [true, 'inventory not provided'],
+  },
+  party: {
+    type: mongoose.Types.ObjectId,
+    required: [true, 'party not provided'],
+  },
 });
 
 const Profile = mongoose.model<IProfile>('Profile', profileSchema);

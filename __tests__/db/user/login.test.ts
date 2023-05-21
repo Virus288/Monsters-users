@@ -1,8 +1,8 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
-import Rooster from '../../../src/modules/user/rooster';
-import * as enums from '../../../src/enums';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
+import * as enums from '../../../src/enums';
+import Rooster from '../../../src/modules/user/rooster';
 import { fakeData, FakeFactory } from '../../utils';
 import type { IRegisterDto } from '../../../src/modules/user/dto';
 
@@ -48,7 +48,7 @@ describe('Login', () => {
 
       const rooster = new Rooster();
       const user = await rooster.getByEmail(loginData.email);
-      const { login, password, email, verified, _id, type } = user[0]!;
+      const { login, password, email, verified, _id, type } = user!;
 
       expect(login).toEqual(loginData.login);
       expect(password.length).not.toBeLessThan(loginData.password.length);

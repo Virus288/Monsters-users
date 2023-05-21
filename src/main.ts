@@ -1,8 +1,8 @@
-import State from './tools/state';
-import Log from './tools/logger/log';
 import Broker from './broker';
+import Log from './tools/logger/log';
 import mongo from './tools/mongo';
 import Redis from './tools/redis';
+import State from './tools/state';
 
 class App {
   init(): void {
@@ -22,7 +22,7 @@ class App {
     State.Redis = new Redis();
 
     State.Broker.init();
-    await State.Redis.init();
+    State.Redis.init();
   }
 }
 

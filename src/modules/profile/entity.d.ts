@@ -6,6 +6,8 @@ export interface IProfileEntity {
   race: enums.EUserRace;
   friends: string[];
   lvl: number;
-  exp: [number, number];
+  exp: number[];
   initialized: boolean;
+  inventory: string;
+  party: string;
 }

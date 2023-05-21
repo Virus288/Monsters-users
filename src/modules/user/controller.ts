@@ -1,13 +1,13 @@
-import type { IUserCredentials } from '../../types';
 import Rooster from './rooster';
-import * as errors from '../../errors';
 import Validator from './validation';
+import * as errors from '../../errors';
+import ControllerFactory from '../../tools/abstract/controller';
+import State from '../../tools/state';
 import * as utils from '../../tools/token';
 import type { ILoginDto, IRegisterDto, IUserDetailsDto } from './dto';
-import ControllerFactory from '../../tools/abstract/controller';
-import type { EModules } from '../../tools/abstract/enums';
 import type { IUserEntity } from './entity';
-import State from '../../tools/state';
+import type { EModules } from '../../tools/abstract/enums';
+import type { IUserCredentials } from '../../types';
 
 export default class Controller extends ControllerFactory<EModules.Users> {
   constructor() {
@@ -22,19 +22,18 @@ export default class Controller extends ControllerFactory<EModules.Users> {
     }
 
     const { login, password } = payload;
-    const users = await this.rooster.get(login);
-    if (!users || users.length === 0) throw new errors.IncorrectCredentialsError();
+    const user = await this.rooster.getByLogin(login);
+    if (!user) throw new errors.IncorrectCredentialsError();
 
-    const target = users[0]!;
-    await Validator.compare(password, target.password);
+    await Validator.compare(password, user.password);
 
-    const accessToken = utils.generateAccessToken(target._id.toString(), target.type);
-    const refreshToken = utils.generateRefreshToken(target._id.toString(), target.type);
+    const accessToken = utils.generateAccessToken(user._id.toString(), user.type);
+    const refreshToken = utils.generateRefreshToken(user._id.toString(), user.type);
 
     return {
       accessToken,
       refreshToken,
-      userId: target._id.toString(),
+      userId: user._id.toString(),
     };
   }
 
@@ -42,13 +41,12 @@ export default class Controller extends ControllerFactory<EModules.Users> {
     Validator.validateRegister(payload);
 
     const { email, password, login } = payload;
-    const users = await this.rooster.get(email);
+    const byEmail = await this.rooster.getByEmail(email);
+    const byLogin = await this.rooster.getByLogin(login);
 
-    if (users && users.length > 0) {
-      users.forEach((u) => {
-        if (u.login === login) throw new errors.UsernameAlreadyInUseError();
-        if (u.email === email) throw new errors.UserAlreadyRegisteredError();
-      });
+    if (byEmail || byLogin) {
+      if (byLogin?.login === login) throw new errors.UsernameAlreadyInUseError();
+      if (byEmail?.email === email) throw new errors.UserAlreadyRegisteredError();
     }
 
     const hashed = utils.hashPassword(password);
@@ -61,7 +59,7 @@ export default class Controller extends ControllerFactory<EModules.Users> {
 
   async getDetails(payload: IUserDetailsDto): Promise<IUserEntity | null> {
     Validator.validateGetDetails(payload);
-    if (payload.id) return this.rooster.getById(payload.id);
+    if (payload.id) return this.rooster.get(payload.id);
     if (payload.name) return this.rooster.getByLogin(payload.name);
     return null;
   }

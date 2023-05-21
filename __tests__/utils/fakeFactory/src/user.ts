@@ -1,10 +1,10 @@
-import type * as enums from '../../../../src/enums';
 import TemplateFactory from './abstracts';
-import type { EFakeData } from '../enums';
 import User from '../../../../src/modules/user/model';
 import { hashPassword } from '../../../../src/tools/token';
-import type { IAbstractBody } from '../types/data';
+import type * as enums from '../../../../src/enums';
 import type { IUserEntity } from '../../../../src/modules/user/entity';
+import type { EFakeData } from '../enums';
+import type { IAbstractBody } from '../types/data';
 
 export default class FakeUser extends TemplateFactory<EFakeData.User> implements IAbstractBody<IUserEntity> {
   constructor() {
