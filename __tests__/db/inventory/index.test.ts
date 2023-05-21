@@ -8,7 +8,7 @@ import type { IItemEntity } from '../../../src/modules/items/entity';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
 import type { IProfileEntity } from '../../../src/modules/profile/entity';
 
-describe('Drop items', () => {
+describe('Inventory', () => {
   const db = new FakeFactory();
   const fakeProfile = fakeData.profiles[0] as IProfileEntity;
   const fakeItem = fakeData.items[0] as IItemEntity;
@@ -36,7 +36,7 @@ describe('Drop items', () => {
   describe('Should throw', () => {
     describe('Missing data', () => {
       it('Missing data in db', async () => {
-        const inv = await rooster.getById(fakeInv._id);
+        const inv = await rooster.get(fakeInv._id);
         expect(inv).toEqual(null);
       });
     });
@@ -65,7 +65,7 @@ describe('Drop items', () => {
         .userId(fakeProfile.user)
         .create();
 
-      const inv = await rooster.getById(fakeInv._id);
+      const inv = await rooster.get(fakeInv._id);
       expect(inv?._id.toString()).toEqual(fakeInv._id.toString());
       expect(inv?.items.length).toEqual(1);
       expect(inv?.userId.toString()).toEqual(fakeInv.userId.toString());
@@ -122,7 +122,7 @@ describe('Drop items', () => {
         .create();
 
       await rooster.remove(fakeInv._id);
-      const inv = await rooster.getById(fakeInv._id);
+      const inv = await rooster.get(fakeInv._id);
 
       expect(inv).toEqual(null);
     });
@@ -150,7 +150,7 @@ describe('Drop items', () => {
         .create();
 
       await rooster.update(fakeProfile.user, { items: [] });
-      const inv = await rooster.getById(fakeInv._id);
+      const inv = await rooster.get(fakeInv._id);
 
       expect(inv?.items.length).toEqual(0);
     });

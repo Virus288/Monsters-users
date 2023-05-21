@@ -75,7 +75,7 @@ describe('Profile', () => {
         .create();
 
       const rooster = new Rooster();
-      const profile = await rooster.get(userId.toString());
+      const profile = await rooster.getByUser(userId.toString());
       const { race, user, friends, lvl, exp } = profile!;
 
       expect(race).toEqual(enums.EUserRace.Human);

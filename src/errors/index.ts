@@ -194,12 +194,22 @@ export class PartyAlreadyExists extends FullError {
   }
 }
 
-export class ProfileDoesNotExistsError extends FullError {
+export class ProfileDoesNotExists extends FullError {
   constructor() {
-    super('ProfileDoesNotExistsError');
+    super('ProfileDoesNotExists');
     this.message = 'Profile does not exist';
-    this.name = 'ProfileDoesNotExistsError';
+    this.name = 'ProfileDoesNotExists';
     this.code = '019';
+    this.status = 400;
+  }
+}
+
+export class PartyDoesNotExist extends FullError {
+  constructor() {
+    super('PartyDoesNotExist');
+    this.message = 'Party does not exist';
+    this.name = 'PartyDoesNotExist';
+    this.code = '020';
     this.status = 400;
   }
 }

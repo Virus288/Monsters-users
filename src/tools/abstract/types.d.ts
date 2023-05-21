@@ -54,7 +54,7 @@ export interface IRoosterDefaultDataCallback {
 export type IRoosterUpdate = IRoosterAddDefaultData;
 
 export interface IRoosterGetData {
-  [EModules.Users]: IUserEntity[];
+  [EModules.Users]: IUserEntity | null;
   [EModules.Profiles]: IProfileEntity | null;
   [EModules.Inventory]: IInventoryEntity | null;
   [EModules.Party]: IPartyEntity | null;

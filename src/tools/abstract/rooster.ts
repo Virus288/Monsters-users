@@ -21,17 +21,20 @@ export default abstract class RoosterFactory<T extends Document, U extends Model
     return callback._id as string;
   }
 
+  /**
+   * Create element with default data. This requires to pass elements, required my schema
+   */
   async addDefault(data: types.IRoosterAddDefaultData[Z]): Promise<types.IRoosterDefaultDataCallback[Z]> {
     const newElement = new this.model(data);
     // #TODO Add fix for this. This is bad
     return (await newElement.save()) as unknown as types.IRoosterDefaultDataCallback[Z];
   }
 
-  async get(_data: unknown): Promise<types.IRoosterGetData[Z]> {
-    return this.model.find({}).lean();
-  }
-
   async update(id: string, data: types.IRoosterUpdate[Z]): Promise<void> {
     await this.model.findOneAndUpdate({ _id: id }, data);
+  }
+
+  async get(_id: unknown): Promise<types.IRoosterGetData[Z] | null> {
+    return this.model.findOne({ _id }).lean();
   }
 }

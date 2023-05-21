@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import * as errors from '../../../src/errors';
 import ProfileRooster from '../../../src/modules/profile/rooster';
 import Rooster from '../../../src/modules/user/rooster';
-import { FakeFactory, fakeData } from '../../utils';
+import { fakeData, FakeFactory } from '../../utils';
 import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
 import type { IProfileEntity } from '../../../src/modules/profile/entity';
@@ -66,8 +66,8 @@ describe('Remove user', () => {
       const rooster = new Rooster();
       const profileRooster = new ProfileRooster();
 
-      const user = await rooster.getById(fakeUser._id);
-      const profile = await profileRooster.getById(fakeProfile._id);
+      const user = await rooster.get(fakeUser._id);
+      const profile = await profileRooster.get(fakeProfile._id);
       expect(user?._id.toString()).toEqual(fakeUser._id);
       expect(profile?._id.toString()).toEqual(fakeProfile._id);
 
@@ -77,8 +77,8 @@ describe('Remove user', () => {
         expect(err).toEqual(new errors.NoPermission());
       }
 
-      const user2 = await rooster.getById(fakeUser._id);
-      const profile2 = await profileRooster.getById(fakeProfile._id);
+      const user2 = await rooster.get(fakeUser._id);
+      const profile2 = await profileRooster.get(fakeProfile._id);
       expect(user2?._id.toString()).toEqual(fakeUser._id);
       expect(profile2?._id.toString()).toEqual(fakeProfile._id);
     });
@@ -106,14 +106,14 @@ describe('Remove user', () => {
       const rooster = new Rooster();
       const profileRooster = new ProfileRooster();
 
-      const user = await rooster.getById(fakeUser._id);
-      const profile = await profileRooster.getById(fakeProfile._id);
+      const user = await rooster.get(fakeUser._id);
+      const profile = await profileRooster.get(fakeProfile._id);
       expect(user?._id.toString()).toEqual(fakeUser._id);
       expect(profile?._id.toString()).toEqual(fakeProfile._id);
 
       await rooster.remove(fakeUser._id);
 
-      const user2 = await rooster.getById(fakeUser._id);
+      const user2 = await rooster.get(fakeUser._id);
       expect(user2?._id).toEqual(undefined);
     });
   });

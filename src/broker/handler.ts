@@ -81,8 +81,12 @@ export default class Handler {
     }
   }
 
-  partyMessage(payload: types.IRabbitMessage): void {
+  async partyMessage(payload: types.IRabbitMessage): Promise<void> {
     switch (payload.subTarget) {
+      case enums.EPartyTargets.Get:
+        return this.party.get(payload.payload, payload.user);
+      case enums.EPartyTargets.Create:
+        return this.party.create(payload.payload, payload.user);
       default:
         throw new errors.IncorrectTargetError();
     }

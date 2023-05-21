@@ -1,6 +1,6 @@
 import Rooster from './rooster';
 import Validator from './validation';
-import { InventoryDoesNotExist, PartyAlreadyExists } from '../../errors';
+import { PartyAlreadyExists, PartyDoesNotExist } from '../../errors';
 import ControllerFactory from '../../tools/abstract/controller';
 import type { ICreatePartyDto, IGetPartyDto } from './dto';
 import type { IPartyEntity } from './entity';
@@ -16,8 +16,8 @@ export default class Controller extends ControllerFactory<EModules.Party> {
 
     const { id } = payload;
 
-    const eq = await this.rooster.getById(id);
-    if (!eq) throw new InventoryDoesNotExist();
+    const eq = await this.rooster.get(id);
+    if (!eq) throw new PartyDoesNotExist();
 
     return eq;
   }

@@ -11,7 +11,7 @@ import type { IPartyEntity } from '../../../src/modules/party/entity';
 import type { IProfileEntity } from '../../../src/modules/profile/entity';
 import type { IUserEntity } from '../../../src/modules/user/entity';
 
-describe('User items', () => {
+describe('Items - use', () => {
   const db = new FakeFactory();
   const fakeUser = fakeData.users[0] as IUserEntity;
   const fakeProfile = fakeData.profiles[0] as IProfileEntity;

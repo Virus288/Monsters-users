@@ -1,7 +1,7 @@
 import Rooster from './rooster';
 import Validator from './validation';
 import * as errors from '../../errors';
-import { ProfileDoesNotExistsError } from '../../errors';
+import { ProfileDoesNotExists } from '../../errors';
 import ControllerFactory from '../../tools/abstract/controller';
 import type { IAddProfileDto, IGetProfileDto } from './dto';
 import type { IProfileEntity } from './entity';
@@ -15,13 +15,13 @@ export default class Controller extends ControllerFactory<EModules.Profiles> {
 
   async getProfile(data: IGetProfileDto): Promise<IProfileEntity | null> {
     Validator.validateUserId(data);
-    return this.rooster.get(data.id);
+    return this.rooster.getByUser(data.id);
   }
 
   async addProfile(data: IAddProfileDto, user: types.ILocalUser): Promise<void> {
     Validator.validateAddProfile(data);
-    const exist = await this.rooster.get(user.userId!);
-    if (!exist) throw new ProfileDoesNotExistsError();
+    const exist = await this.rooster.getByUser(user.userId!);
+    if (!exist) throw new ProfileDoesNotExists();
     await this.rooster.update(exist._id, { ...data, race: data.race });
   }
 
@@ -30,7 +30,7 @@ export default class Controller extends ControllerFactory<EModules.Profiles> {
   }
 
   async remove(userId: string): Promise<void> {
-    const exist = await this.rooster.get(userId);
+    const exist = await this.rooster.getByUser(userId);
     if (!exist) throw new errors.UserDoesNotExist();
     await this.rooster.remove(exist._id);
   }

@@ -10,6 +10,7 @@ export default class Validator {
     const { leader, characters } = data;
     const isLeaverValid = mongoose.Types.ObjectId.isValid(leader);
     if (!isLeaverValid) throw new errors.IncorrectArgError('Provided Leader id is invalid');
+    if (!Array.isArray(characters)) throw new errors.IncorrectArgError('Provided characters list is invalid');
 
     if (characters.length > 0) {
       characters.forEach((ch) => {

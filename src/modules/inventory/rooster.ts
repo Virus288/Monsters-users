@@ -9,10 +9,6 @@ export default class Rooster extends RoosterFactory<IInventory, typeof Inventory
     super(Inventory);
   }
 
-  async getById(id: string): Promise<IInventoryEntity | null> {
-    return Inventory.findOne({ _id: id }).lean();
-  }
-
   async getByUser(id: string): Promise<IInventoryEntity | null> {
     return Inventory.findOne({ userId: id }).lean();
   }

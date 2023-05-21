@@ -9,10 +9,6 @@ export default class Rooster extends RoosterFactory<IParty, typeof Party, EModul
     super(Party);
   }
 
-  async getById(id: string): Promise<IPartyEntity | null> {
-    return Party.findOne({ _id: id }).lean();
-  }
-
   async getByLeader(id: string): Promise<IPartyEntity | null> {
     return Party.findOne({ leader: id }).lean();
   }

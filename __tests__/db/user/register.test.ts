@@ -3,7 +3,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import * as enums from '../../../src/enums';
 import Rooster from '../../../src/modules/user/rooster';
-import { FakeFactory, fakeData } from '../../utils';
+import { fakeData, FakeFactory } from '../../utils';
 import type { IRegisterDto } from '../../../src/modules/user/dto';
 
 describe('Register', () => {
@@ -29,7 +29,7 @@ describe('Register', () => {
       const rooster = new Rooster();
       const user = await rooster.getByEmail(registerData.email);
 
-      expect(user).toEqual([]);
+      expect(user).toEqual(null);
     });
 
     it('Incorrect target', async () => {
