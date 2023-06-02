@@ -1,9 +1,9 @@
-import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
+import { afterEach, describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
-import Controller from '../../../src/modules/party/controller';
-import { Connection, fakeData, FakeFactory } from '../../utils';
-import type { IGetPartyDto } from '../../../src/modules/party/dto';
+import Controller from '../../../src/modules/party/get';
+import { fakeData, FakeFactory } from '../../utils';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
+import type { IGetPartyDto } from '../../../src/modules/party/get/types';
 
 describe('Party - get', () => {
   const db = new FakeFactory();
@@ -12,18 +12,9 @@ describe('Party - get', () => {
     id: fakeParty._id,
   };
   const controller = new Controller();
-  const connection = new Connection();
-
-  beforeAll(() => {
-    connection.connect();
-  });
 
   afterEach(async () => {
     await db.cleanUp();
-  });
-
-  afterAll(() => {
-    connection.close();
   });
 
   describe('Should throw', () => {

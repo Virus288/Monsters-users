@@ -1,13 +1,13 @@
 import { describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
-import Validation from '../../../src/modules/party/validation';
+import AddPartyDto from '../../../src/modules/party/add/dto';
 import { fakeData } from '../../utils';
-import type { ICreatePartyDto } from '../../../src/modules/party/dto';
+import type { IAddPartyDto } from '../../../src/modules/party/add/types';
 import type { IUserEntity } from '../../../src/modules/user/entity';
 
 describe('Party - create', () => {
   const fakeUser = fakeData.users[0] as IUserEntity;
-  const create: ICreatePartyDto = {
+  const create: IAddPartyDto = {
     leader: fakeUser._id,
     characters: [],
   };
@@ -17,17 +17,23 @@ describe('Party - create', () => {
       it('Missing leader', () => {
         const clone = structuredClone(create);
         clone.leader = undefined!;
-        const func = (): void => Validation.validateCreate(clone);
 
-        expect(func).toThrow(new errors.MissingArgError('leader'));
+        try {
+          new AddPartyDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.MissingArgError('leader'));
+        }
       });
 
       it('Missing characters', () => {
         const clone = structuredClone(create);
         clone.characters = undefined!;
-        const func = (): void => Validation.validateCreate(clone);
 
-        expect(func).toThrow(new errors.MissingArgError('characters'));
+        try {
+          new AddPartyDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.MissingArgError('characters'));
+        }
       });
     });
 
@@ -35,23 +41,35 @@ describe('Party - create', () => {
       it('Incorrect id', () => {
         const clone = structuredClone(create);
         clone.leader = 'asd';
-        const func = (): void => Validation.validateCreate(clone);
-        expect(func).toThrow(new errors.IncorrectArgError('Provided Leader id is invalid'));
+
+        try {
+          new AddPartyDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.IncorrectArgTypeError('leader should be objectId'));
+        }
       });
 
       it('Incorrect characters', () => {
         const clone = structuredClone(create);
         clone.characters = 'asd' as unknown as string[];
-        const func = (): void => Validation.validateCreate(clone);
-        expect(func).toThrow(new errors.IncorrectArgError('Provided characters list is invalid'));
+
+        try {
+          new AddPartyDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.IncorrectArgTypeError('characters should be array'));
+        }
       });
     });
   });
 
   describe('Should pass', () => {
     it('Validated', () => {
-      const func = (): void => Validation.validateCreate(create);
-      expect(func).not.toThrow();
+      try {
+        const data = new AddPartyDto(create);
+        expect(data.leader).toEqual(create.leader);
+      } catch (err) {
+        expect(err).toBeUndefined();
+      }
     });
   });
 });

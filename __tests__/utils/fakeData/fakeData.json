@@ -34,7 +34,7 @@
       "password": "qwerty111",
       "password2": "qwerty111",
       "verified": false,
-      "type": "user"
+      "type": "admin"
     },
     {
       "_id": "63e55edbe8a800060941125d",
@@ -102,7 +102,7 @@
         0,
         10
       ],
-      "initialized": false,
+      "initialized": true,
       "inventory": "6465b8bb0466b9fe1f76622b",
       "party": "64649e334e19dfa5f70fd7c7",
       "_id": "64649e334e19dfa5f70fd7c9"

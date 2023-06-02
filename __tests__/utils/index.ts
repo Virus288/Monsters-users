@@ -2,8 +2,7 @@ import Connection from './connections';
 import fakeData from './fakeData/fakeData.json';
 import FakeFactory from './fakeFactory/src';
 
-// eslint-disable-next-line import/prefer-default-export
-export const generateRandomName = (): string => {
+const generateRandomName = (): string => {
   const vocabulary = 'ABCDEFGHIJKLMNOUPRSTUWZabcdefghijklmnouprstuwz';
   let name = '';
   for (let x = 0; x < 12; x++) {
@@ -12,4 +11,12 @@ export const generateRandomName = (): string => {
   return name;
 };
 
-export { fakeData, Connection, FakeFactory };
+const sleep = async (time: number): Promise<void> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, time);
+  });
+};
+
+export { fakeData, Connection, FakeFactory, generateRandomName, sleep };

@@ -1,18 +1,16 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose from 'mongoose';
 import * as enums from '../../../src/enums';
 import Rooster from '../../../src/modules/user/rooster';
-import { fakeData, FakeFactory } from '../../utils';
-import type { IRegisterDto } from '../../../src/modules/user/dto';
+import { Connection, fakeData, FakeFactory } from '../../utils';
+import type { IRegisterDto } from '../../../src/modules/user/register/types';
 
 describe('Login', () => {
+  const connection = new Connection();
   const db = new FakeFactory();
   const loginData = fakeData.users[0] as IRegisterDto;
 
   beforeAll(async () => {
-    const server = await MongoMemoryServer.create();
-    await mongoose.connect(server.getUri());
+    await connection.connect();
   });
 
   afterEach(async () => {
@@ -20,8 +18,7 @@ describe('Login', () => {
   });
 
   afterAll(async () => {
-    await mongoose.disconnect();
-    await mongoose.connection.close();
+    await connection.close();
   });
 
   describe('Should throw', () => {

@@ -1,40 +1,40 @@
 import type { EModules } from './enums';
-import type InventoryController from '../../modules/inventory/controller';
-import type { IAddItemDto } from '../../modules/inventory/dto';
+import type { IAddItemDto } from '../../modules/inventory/addBasic/types';
 import type { IInventoryEntity } from '../../modules/inventory/entity';
+import type InventoryGet from '../../modules/inventory/get';
 import type InventoryRooster from '../../modules/inventory/rooster';
-import type IPartyController from '../../modules/party/controller';
-import type { ICreatePartyDto } from '../../modules/party/dto';
+import type { IAddPartyDto } from '../../modules/party/add/types';
 import type { IPartyEntity } from '../../modules/party/entity';
-import type IPartyRooster from '../../modules/party/rooster';
-import type ProfileController from '../../modules/profile/controller';
-import type { IAddProfileDto } from '../../modules/profile/dto';
+import type PartyGet from '../../modules/party/get';
+import type PartyRooster from '../../modules/party/rooster';
+import type { IAddProfileDto } from '../../modules/profile/add/types';
 import type { IProfileEntity } from '../../modules/profile/entity';
+import type ProfileGet from '../../modules/profile/get';
 import type ProfileRooster from '../../modules/profile/rooster';
-import type UserController from '../../modules/user/controller';
-import type { IRegisterDto } from '../../modules/user/dto';
 import type { IUserEntity } from '../../modules/user/entity';
+import type UserGet from '../../modules/user/get';
+import type { IRegisterDto } from '../../modules/user/register/types';
 import type UserRooster from '../../modules/user/rooster';
 
-export interface IModulesHandlers {
-  [EModules.Users]: UserController;
-  [EModules.Profiles]: ProfileController;
-  [EModules.Inventory]: InventoryController;
-  [EModules.Party]: IPartyController;
+export interface IModulesGetControllers {
+  [EModules.Users]: UserGet;
+  [EModules.Party]: PartyGet;
+  [EModules.Profiles]: ProfileGet;
+  [EModules.Inventory]: InventoryGet;
 }
 
 export interface IModulesControllers {
   [EModules.Users]: UserRooster;
   [EModules.Profiles]: ProfileRooster;
   [EModules.Inventory]: InventoryRooster;
-  [EModules.Party]: IPartyRooster;
+  [EModules.Party]: PartyRooster;
 }
 
 export interface IRoosterAddData {
   [EModules.Users]: IRegisterDto;
   [EModules.Profiles]: IAddProfileDto;
   [EModules.Inventory]: IAddItemDto;
-  [EModules.Party]: ICreatePartyDto;
+  [EModules.Party]: IAddPartyDto;
 }
 
 export interface IRoosterAddDefaultData {

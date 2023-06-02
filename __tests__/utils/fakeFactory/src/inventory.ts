@@ -28,7 +28,7 @@ export default class FakeInventory
     return this;
   }
 
-  protected fillState(): void {
+  protected override fillState(): void {
     this.state = {
       items: [],
       userId: undefined,

@@ -24,7 +24,7 @@ export default class FakeParty extends TemplateFactory<EFakeData.Party> implemen
     return this;
   }
 
-  protected fillState(): void {
+  protected override fillState(): void {
     this.state = {
       _id: undefined,
       leader: undefined,

@@ -1,11 +1,12 @@
 import * as enums from '../enums';
-import UserValidator from '../modules/user/validation';
+import RemoveUserDto from '../modules/user/remove/dto';
 import State from '../tools/state';
 import type InventoryController from '../modules/inventory/handler';
 import type PartyController from '../modules/party/handler';
 import type ProfileController from '../modules/profile/handler';
-import type { IRegisterDto, IRemoveUserDto } from '../modules/user/dto';
 import type UserController from '../modules/user/handler';
+import type { IRegisterDto } from '../modules/user/register/types';
+import type { IRemoveUserDto } from '../modules/user/remove/types';
 import type { ILocalUser } from '../types';
 
 export default class Controller {
@@ -43,8 +44,7 @@ export default class Controller {
   }
 
   async removeUser(payload: unknown, user: ILocalUser): Promise<void> {
-    UserValidator.validateRemove(payload as IRemoveUserDto);
-    const { name } = payload as IRemoveUserDto;
+    const { name } = new RemoveUserDto(payload as IRemoveUserDto);
 
     const { _id } = await this.user.remove(name, user.userId!);
     await this.profile.remove(_id);
@@ -53,14 +53,11 @@ export default class Controller {
   }
 
   async register(payload: unknown, user: ILocalUser): Promise<void> {
-    const data = payload as IRegisterDto;
-    UserValidator.validateRegister(data);
-
-    const id = await this.user.register(data);
+    const id = await this.user.register(payload as IRegisterDto);
 
     const party = await this.party.addBasic(id);
-    const entity = await this.inventory.addBasic(id);
-    await this.profile.addBasic(id, party._id, entity._id);
+    const inventory = await this.inventory.addBasic(id);
+    await this.profile.addBasic(id, party._id, inventory._id);
 
     return State.Broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
   }

@@ -4,7 +4,6 @@ import * as enums from '../enums';
 import { NotConnectedError } from '../errors';
 import getConfig from '../tools/configLoader';
 import Log from '../tools/logger/log';
-import type { FullError } from '../errors';
 import type * as types from '../types';
 
 export default class Broker {
@@ -59,7 +58,7 @@ export default class Broker {
   }
 
   private initCommunication(): void {
-    if (this._connectionTries++ > enums.ERabbit.RetryLimit) {
+    if (this._connectionTries++ > parseInt(Number(enums.ERabbit.RetryLimit).toString())) {
       Log.error('Rabbit', 'Gave up connecting to rabbit. Is rabbit dead?');
       return;
     }
@@ -74,8 +73,9 @@ export default class Broker {
         this.createChannels();
       })
       .catch((err) => {
+        const error = err as types.IFullError;
         Log.warn('Rabbit', 'Error connecting to RabbitMQ, retrying in 1 second');
-        Log.error('Rabbit', err);
+        Log.error('Rabbit', error.message, error.stack);
         this._retryTimeout = setTimeout(() => this.initCommunication(), 1000);
         return (this._connection = undefined);
       });
@@ -84,7 +84,7 @@ export default class Broker {
   private createChannels(): void {
     if (this._channel) return;
     if (!this._connection) throw new NotConnectedError();
-    if (this._channelTries++ > enums.ERabbit.RetryLimit) {
+    if (this._channelTries++ > parseInt(Number(enums.ERabbit.RetryLimit).toString())) {
       Log.error('Rabbit', 'Error creating rabbit connection channel, stopped retrying');
     }
 
@@ -98,7 +98,8 @@ export default class Broker {
         return this.createQueue();
       })
       .catch((err) => {
-        Log.error('Rabbit', err);
+        const error = err as types.IFullError;
+        Log.error('Rabbit', error.message, error.stack);
         Log.error(
           'Rabbit',
           `Error creating rabbit connection channel, retrying in 1 second: ${(err as types.IFullError).message}`,
@@ -149,8 +150,9 @@ export default class Broker {
         this.createChannels();
       })
       .catch((err) => {
+        const error = err as types.IFullError;
         Log.error('Rabbit', "Couldn't create channels");
-        Log.error('Rabbit', err);
+        return Log.error('Rabbit', error.message, error.stack);
       });
   }
 
@@ -164,7 +166,8 @@ export default class Broker {
 
   private errorWrapper(func: () => Promise<void>, user: string): void {
     func().catch((err) => {
-      const { message, name, code, status } = err as FullError;
+      const { message, name, code, status, stack } = err as types.IFullError;
+      Log.error('Modules', 'Generic err', message, stack);
       if (!status) {
         this.send(user, { message, name, code, status: 500 }, enums.EMessageTypes.Error);
       } else {

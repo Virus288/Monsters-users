@@ -1,6 +1,4 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose from 'mongoose';
 import Rooster from '../../../src/modules/inventory/rooster';
 import { Connection, fakeData, FakeFactory } from '../../utils';
 import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
@@ -18,9 +16,7 @@ describe('Inventory', () => {
   const connection = new Connection();
 
   beforeAll(async () => {
-    const server = await MongoMemoryServer.create();
-    await mongoose.connect(server.getUri());
-    connection.connect();
+    await connection.connect();
   });
 
   afterEach(async () => {
@@ -28,9 +24,7 @@ describe('Inventory', () => {
   });
 
   afterAll(async () => {
-    await mongoose.disconnect();
-    await mongoose.connection.close();
-    connection.close();
+    await connection.close();
   });
 
   describe('Should throw', () => {

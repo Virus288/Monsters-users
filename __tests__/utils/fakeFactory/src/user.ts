@@ -41,7 +41,7 @@ export default class FakeUser extends TemplateFactory<EFakeData.User> implements
     return this;
   }
 
-  protected fillState(): void {
+  protected override fillState(): void {
     this.state = {
       _id: undefined,
       email: undefined,

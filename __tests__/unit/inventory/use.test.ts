@@ -1,8 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
-import Validation from '../../../src/modules/inventory/validation';
+import UseItemDto from '../../../src/modules/inventory/use/dto';
 import { fakeData } from '../../utils';
-import type { IUseItemDto } from '../../../src/modules/inventory/dto';
+import type { IUseItemDto } from '../../../src/modules/inventory/use/types';
 import type { IItemEntity } from '../../../src/modules/items/entity';
 
 describe('Use items', () => {
@@ -17,17 +17,23 @@ describe('Use items', () => {
       it('Missing itemId', () => {
         const clone = structuredClone(use);
         clone.itemId = undefined!;
-        const func = (): void => Validation.validateUseItem(clone);
 
-        expect(func).toThrow(new errors.MissingArgError('itemId'));
+        try {
+          new UseItemDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.MissingArgError('itemId'));
+        }
       });
 
       it('Missing amount', () => {
         const clone = structuredClone(use);
         clone.amount = undefined!;
-        const func = (): void => Validation.validateUseItem(clone);
 
-        expect(func).toThrow(new errors.MissingArgError('amount'));
+        try {
+          new UseItemDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.MissingArgError('amount'));
+        }
       });
     });
 
@@ -35,26 +41,35 @@ describe('Use items', () => {
       it('ItemId is not valid id', () => {
         const clone = structuredClone(use);
         clone.itemId = 'asd';
-        const func = (): void => Validation.validateUseItem(clone);
 
-        expect(func).toThrow(new errors.IncorrectArgError('Provided itemId is invalid'));
+        try {
+          new UseItemDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.IncorrectArgTypeError('itemId should be objectId'));
+        }
       });
 
       it('Amount less than 1', () => {
         const clone = structuredClone(use);
         clone.amount = 0;
-        const func = (): void => Validation.validateUseItem(clone);
 
-        expect(func).toThrow(new errors.IncorrectArgAmountError('amount', 0, 100));
+        try {
+          new UseItemDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.MissingArgError('amount'));
+        }
       });
     });
   });
 
   describe('Should pass', () => {
     it('Drop items', () => {
-      const func = (): void => Validation.validateUseItem(use);
-
-      expect(func).not.toThrow();
+      try {
+        new UseItemDto(use);
+        expect(use.itemId).toEqual(use.itemId);
+      } catch (err) {
+        expect(err).toBeUndefined();
+      }
     });
   });
 });

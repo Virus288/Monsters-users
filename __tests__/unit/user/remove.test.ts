@@ -1,9 +1,9 @@
 import { describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
-import Validation from '../../../src/modules/user/validation';
+import RemoveUserDto from '../../../src/modules/user/remove/dto';
 import { fakeData } from '../../utils';
-import type { IRemoveUserDto } from '../../../src/modules/user/dto';
 import type { IUserEntity } from '../../../src/modules/user/entity';
+import type { IRemoveUserDto } from '../../../src/modules/user/remove/types';
 
 describe('Remove', () => {
   const fakeUser = fakeData.users[0] as IUserEntity;
@@ -17,9 +17,12 @@ describe('Remove', () => {
         return it(`Missing ${k}`, () => {
           const clone = structuredClone(remove);
           delete clone[k];
-          const func = (): void => Validation.validateRemove(clone);
 
-          expect(func).toThrow(new errors.MissingArgError(k));
+          try {
+            new RemoveUserDto(clone);
+          } catch (err) {
+            expect(err).toEqual(new errors.MissingArgError(k));
+          }
         });
       });
     });
@@ -28,17 +31,24 @@ describe('Remove', () => {
       it('Name is not string', () => {
         const clone = structuredClone(remove);
         clone.name = 1 as unknown as string;
-        const func = (): void => Validation.validateRemove(clone);
 
-        expect(func).toThrow(new errors.IncorrectArgTypeError('Name is not string'));
+        try {
+          new RemoveUserDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.IncorrectArgTypeError('name should be a string'));
+        }
       });
     });
   });
 
   describe('Should pass', () => {
     it('Remove user', () => {
-      const func = (): void => Validation.validateRemove(remove);
-      expect(func).not.toThrow();
+      try {
+        const data = new RemoveUserDto(remove);
+        expect(data.name).toEqual(remove.name);
+      } catch (err) {
+        expect(err).toBeUndefined();
+      }
     });
   });
 });

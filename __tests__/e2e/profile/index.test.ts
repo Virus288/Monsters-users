@@ -1,13 +1,15 @@
-import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
+import { afterEach, describe, expect, it } from '@jest/globals';
 import mongoose from 'mongoose';
 import * as enums from '../../../src/enums';
 import * as errors from '../../../src/errors';
-import Controller from '../../../src/modules/profile/controller';
-import { Connection, fakeData, FakeFactory } from '../../utils';
+import AddController from '../../../src/modules/profile/add';
+import GetController from '../../../src/modules/profile/get';
+import { fakeData, FakeFactory } from '../../utils';
 import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
-import type { IAddProfileDto, IGetProfileDto } from '../../../src/modules/profile/dto';
+import type { IAddProfileDto } from '../../../src/modules/profile/add/types';
 import type { IProfileEntity } from '../../../src/modules/profile/entity';
+import type { IGetProfileDto } from '../../../src/modules/profile/get/types';
 import type * as types from '../../../src/types';
 
 describe('Profile', () => {
@@ -40,19 +42,11 @@ describe('Profile', () => {
     validated: true,
     type: enums.EUserTypes.User,
   };
-  const controller = new Controller();
-  const connection = new Connection();
-
-  beforeAll(() => {
-    connection.connect();
-  });
+  const addController = new AddController();
+  const getController = new GetController();
 
   afterEach(async () => {
     await db.cleanUp();
-  });
-
-  afterAll(() => {
-    connection.close();
   });
 
   describe('Should throw', () => {
@@ -61,7 +55,7 @@ describe('Profile', () => {
         const clone = structuredClone(race);
         clone.race = undefined!;
 
-        controller.addProfile(clone, localUser).catch((err) => {
+        addController.add(clone, localUser).catch((err) => {
           expect(err).toEqual(new errors.MissingArgError('race'));
         });
       });
@@ -70,7 +64,7 @@ describe('Profile', () => {
         const clone = structuredClone(userId);
         clone.id = undefined!;
 
-        controller.getProfile(clone).catch((err) => {
+        getController.get(clone).catch((err) => {
           expect(err).toEqual(new errors.MissingArgError('id'));
         });
       });
@@ -81,8 +75,8 @@ describe('Profile', () => {
         const clone = structuredClone(race);
         clone.race = 'test' as enums.EUserRace;
 
-        controller.addProfile(clone, localUser).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectArgTypeError('Race has incorrect type'));
+        addController.add(clone, localUser).catch((err) => {
+          expect(err).toEqual(new errors.IncorrectArgTypeError('race has incorrect type'));
         });
       });
 
@@ -90,8 +84,8 @@ describe('Profile', () => {
         const clone = structuredClone(userId);
         clone.id = 'asd';
 
-        controller.getProfile(clone).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectArgTypeError('Provided user id is invalid'));
+        getController.get(clone).catch((err) => {
+          expect(err).toEqual(new errors.IncorrectArgTypeError('id should be objectId'));
         });
       });
 
@@ -99,14 +93,14 @@ describe('Profile', () => {
         await db.profile.user(localUser2.userId).race(race.race).inventory(fakeInv._id).party(fakeParty._id).create();
 
         try {
-          await controller.addProfile(race, localUser2);
+          await addController.add(race, localUser2);
         } catch (err) {
           expect(err).not.toBeUndefined();
         }
       });
 
       it('Profile does not exist', async () => {
-        const profile = await controller.getProfile(userId);
+        const profile = await getController.get(userId);
         expect(profile).toBeNull();
       });
     });
@@ -124,7 +118,7 @@ describe('Profile', () => {
         .party(fakeParty._id)
         .create();
 
-      const profile = (await controller.getProfile({ id: localUser3.userId! }))!;
+      const profile = (await getController.get({ id: localUser3.userId! }))!;
 
       expect(profile.user.toString()).toEqual(localUser3.userId);
       expect(profile.lvl).toEqual(fake.lvl);
@@ -143,7 +137,7 @@ describe('Profile', () => {
         .party(fakeParty._id)
         .create();
 
-      const func = async (): Promise<void> => controller.addProfile(race, localUser2);
+      const func = async (): Promise<void> => addController.add(race, localUser2);
 
       expect(func).not.toThrow();
     });

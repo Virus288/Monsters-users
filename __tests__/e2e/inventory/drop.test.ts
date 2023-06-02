@@ -1,10 +1,8 @@
-import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose from 'mongoose';
+import { afterEach, describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
-import Controller from '../../../src/modules/inventory/controller';
-import { Connection, fakeData, FakeFactory } from '../../utils';
-import type { IDropItemDto } from '../../../src/modules/inventory/dto';
+import Controller from '../../../src/modules/inventory/drop';
+import { fakeData, FakeFactory } from '../../utils';
+import type { IDropItemDto } from '../../../src/modules/inventory/drop/types';
 import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
 import type { IItemEntity } from '../../../src/modules/items/entity';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
@@ -23,22 +21,9 @@ describe('Items - drop', () => {
     amount: 2,
   };
   const controller = new Controller();
-  const connection = new Connection();
-
-  beforeAll(async () => {
-    const server = await MongoMemoryServer.create();
-    await mongoose.connect(server.getUri());
-    connection.connect();
-  });
 
   afterEach(async () => {
     await db.cleanUp();
-  });
-
-  afterAll(async () => {
-    await mongoose.disconnect();
-    await mongoose.connection.close();
-    connection.close();
   });
 
   describe('Should throw', () => {
@@ -65,7 +50,7 @@ describe('Items - drop', () => {
         const clone = structuredClone(drop);
         clone.itemId = 'a';
         controller.drop(clone, fakeUser._id).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectArgError('Provided itemId is invalid'));
+          expect(err).toEqual(new errors.IncorrectArgTypeError('itemId should be objectId'));
         });
       });
 
@@ -73,7 +58,7 @@ describe('Items - drop', () => {
         const clone = structuredClone(drop);
         clone.amount = 0!;
         controller.drop(clone, fakeUser._id).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectArgAmountError('amount', 0, 100));
+          expect(err).toEqual(new errors.MissingArgError('amount'));
         });
       });
 
