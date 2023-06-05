@@ -1,28 +1,16 @@
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@jest/globals';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose from 'mongoose';
+import { afterEach, beforeEach, describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
-import Controller from '../../../src/modules/user/controller';
-import { FakeFactory, fakeData } from '../../utils';
-import type { ILoginDto } from '../../../src/modules/user/dto';
+import Controller from '../../../src/modules/user/login';
+import { fakeData, FakeFactory } from '../../utils';
+import type { ILoginDto } from '../../../src/modules/user/login/types';
 
 describe('Login', () => {
   const db = new FakeFactory();
   const loginData = fakeData.users[0] as ILoginDto;
   const controller = new Controller();
 
-  beforeAll(async () => {
-    const server = await MongoMemoryServer.create();
-    await mongoose.connect(server.getUri());
-  });
-
   afterEach(async () => {
     await db.cleanUp();
-  });
-
-  afterAll(async () => {
-    await mongoose.disconnect();
-    await mongoose.connection.close();
   });
 
   describe('Should throw', () => {
@@ -31,7 +19,7 @@ describe('Login', () => {
         const clone = structuredClone(loginData);
         clone.login = undefined!;
         controller.login(clone).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectCredentialsError());
+          expect(err).toEqual(new errors.MissingArgError('login'));
         });
       });
 
@@ -39,7 +27,7 @@ describe('Login', () => {
         const clone = structuredClone(loginData);
         clone.password = undefined!;
         controller.login(clone).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectCredentialsError());
+          expect(err).toEqual(new errors.MissingArgError('password'));
         });
       });
     });
@@ -60,13 +48,13 @@ describe('Login', () => {
 
       it('Login incorrect', () => {
         controller.login({ ...loginData, login: 'a' }).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectCredentialsError());
+          expect(err).toEqual(new errors.IncorrectArgLengthError('login', 3, 30));
         });
       });
 
       it('Password incorrect', () => {
         controller.login({ ...loginData, password: 'a' }).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectCredentialsError());
+          expect(err).toEqual(new errors.IncorrectArgLengthError('password', 6, 200));
         });
       });
     });

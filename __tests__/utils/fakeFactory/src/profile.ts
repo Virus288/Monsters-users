@@ -55,7 +55,7 @@ export default class FakeProfile extends TemplateFactory<EFakeData.Profile> impl
     return this;
   }
 
-  protected fillState(): void {
+  protected override fillState(): void {
     this.state = {
       _id: undefined,
       exp: [0, 10],

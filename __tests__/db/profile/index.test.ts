@@ -1,24 +1,23 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import * as enums from '../../../src/enums';
 import { EUserRace } from '../../../src/enums';
 import Rooster from '../../../src/modules/profile/rooster';
-import { fakeData } from '../../utils';
+import { Connection, fakeData } from '../../utils';
 import FakeFactory from '../../utils/fakeFactory/src';
 import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
-import type { IRegisterDto } from '../../../src/modules/user/dto';
+import type { IRegisterDto } from '../../../src/modules/user/register/types';
 
 describe('Profile', () => {
+  const connection = new Connection();
   const db = new FakeFactory();
   const loginData = fakeData.users[0] as IRegisterDto;
   const fakeInv = fakeData.inventories[0] as IInventoryEntity;
   const fakeParty = fakeData.parties[0] as IPartyEntity;
 
   beforeAll(async () => {
-    const server = await MongoMemoryServer.create();
-    await mongoose.connect(server.getUri());
+    await connection.connect();
   });
 
   afterEach(async () => {
@@ -26,8 +25,7 @@ describe('Profile', () => {
   });
 
   afterAll(async () => {
-    await mongoose.disconnect();
-    await mongoose.connection.close();
+    await connection.close();
   });
 
   describe('Should throw', () => {

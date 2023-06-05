@@ -1,8 +1,9 @@
 import { describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
-import Validation from '../../../src/modules/user/validation';
+import LoginDto from '../../../src/modules/user/login/dto';
 import { fakeData } from '../../utils';
-import type { ILoginDto, IRegisterDto } from '../../../src/modules/user/dto';
+import type { ILoginDto } from '../../../src/modules/user/login/types';
+import type { IRegisterDto } from '../../../src/modules/user/register/types';
 
 describe('Login', () => {
   const fakeUser = fakeData.users[0] as IRegisterDto;
@@ -17,9 +18,12 @@ describe('Login', () => {
         return it(`Missing ${k}`, () => {
           const clone = structuredClone(login);
           delete clone[k];
-          const func = (): void => Validation.validateLogin(clone);
 
-          expect(func).toThrow(new errors.MissingArgError(k));
+          try {
+            new LoginDto(clone);
+          } catch (err) {
+            expect(err).toEqual(new errors.MissingArgError(k));
+          }
         });
       });
     });
@@ -28,34 +32,44 @@ describe('Login', () => {
       it('Login too short', () => {
         const clone = structuredClone(fakeUser);
         clone.login = 'bc';
-        const func = (): void => Validation.validateLogin(clone);
-
-        expect(func).toThrow(new errors.IncorrectArgLengthError('login', 3, 30));
+        try {
+          new LoginDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.IncorrectArgLengthError('login', 3, 30));
+        }
       });
 
       it('Login too long', () => {
         const clone = structuredClone(fakeUser);
         clone.login =
           'asssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss';
-        const func = (): void => Validation.validateLogin(clone);
-
-        expect(func).toThrow(new errors.IncorrectArgLengthError('login', 3, 30));
+        try {
+          new LoginDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.IncorrectArgLengthError('login', 3, 30));
+        }
       });
 
       it('Incorrect password', () => {
         const clone = structuredClone(fakeUser);
         clone.password = 'abc';
-        const func = (): void => Validation.validateLogin(clone);
-
-        expect(func).toThrow(new errors.IncorrectArgLengthError('password', 6, 200));
+        try {
+          new LoginDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.IncorrectArgLengthError('password', 6, 200));
+        }
       });
     });
   });
 
   describe('Should pass', () => {
     it('Validated login', () => {
-      const func = (): void => Validation.validateLogin(login);
-      expect(func).not.toThrow();
+      try {
+        const data = new LoginDto(login);
+        expect(data.password).toEqual(login.password);
+      } catch (err) {
+        expect(err).toBeUndefined();
+      }
     });
   });
 });

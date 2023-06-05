@@ -74,11 +74,11 @@ export class UsernameAlreadyInUseError extends FullError {
   }
 }
 
-export class ProfileAlreadyExistsError extends FullError {
+export class ProfileAlreadyInitializedError extends FullError {
   constructor() {
-    super('ProfileAlreadyExistsError');
-    this.message = 'Profile already exists';
-    this.name = 'ProfileAlreadyExistsError';
+    super('ProfileAlreadyInitializedError');
+    this.message = 'Profile already initialized';
+    this.name = 'ProfileAlreadyInitializedError';
     this.code = '008';
     this.status = 400;
   }
@@ -89,10 +89,10 @@ export class IncorrectArgLengthError extends FullError {
     super('IncorrectArgLengthError');
     this.message =
       min === undefined
-        ? `Elm ${target} should be less than ${max} characters`
+        ? `${target} should be less than ${max} characters`
         : min !== max
-        ? `Elm ${target} should be more than ${min} and less than ${max} characters`
-        : `Elm ${target} should be ${min} characters`;
+        ? `${target} should be more than ${min} and less than ${max} characters`
+        : `${target} should be ${min} characters`;
     this.name = 'IncorrectArgLengthError';
     this.code = '009';
     this.status = 400;
@@ -144,10 +144,10 @@ export class IncorrectArgAmountError extends FullError {
     super('IncorrectArgAmountError');
     this.message =
       min === undefined
-        ? `Elm ${target} should be less than ${max}`
+        ? `${target} should be less than ${max}`
         : min !== max
-        ? `Elm ${target} should be more than ${min} and less than ${max}`
-        : `Elm ${target} should be ${min}`;
+        ? `${target} should be more than ${min} and less than ${max}`
+        : `${target} should be ${min}`;
     this.name = 'IncorrectArgAmountError';
     this.code = '014';
     this.status = 400;
@@ -210,6 +210,26 @@ export class PartyDoesNotExist extends FullError {
     this.message = 'Party does not exist';
     this.name = 'PartyDoesNotExist';
     this.code = '020';
+    this.status = 400;
+  }
+}
+
+export class ElementTooShortError extends FullError {
+  constructor(target: string, min: number) {
+    super('ElementTooShortError');
+    this.message = `Element ${target} is too short. Minimum length is ${min}`;
+    this.name = 'ElementTooShortError';
+    this.code = '021';
+    this.status = 400;
+  }
+}
+
+export class ElementTooLongError extends FullError {
+  constructor(target: string, min: number) {
+    super('ElementTooShortError');
+    this.message = `Element ${target} is too long. Maximum length is ${min}`;
+    this.name = 'ElementTooShortError';
+    this.code = '022';
     this.status = 400;
   }
 }

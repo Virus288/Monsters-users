@@ -1,14 +1,14 @@
 import type { EModules } from './enums';
-import type { IModulesHandlers } from './types';
+import type { IModulesGetControllers } from './types';
 
 export default abstract class HandlerFactory<T extends EModules> {
-  private readonly _controller: IModulesHandlers[T];
+  private readonly _getController: IModulesGetControllers[T];
 
-  protected constructor(controller: IModulesHandlers[T]) {
-    this._controller = controller;
+  protected constructor(getController: IModulesGetControllers[T]) {
+    this._getController = getController;
   }
 
-  protected get controller(): IModulesHandlers[T] {
-    return this._controller;
+  protected get getController(): IModulesGetControllers[T] {
+    return this._getController;
   }
 }

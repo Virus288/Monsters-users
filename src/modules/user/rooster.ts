@@ -17,10 +17,6 @@ export default class Rooster extends RoosterFactory<IUser, typeof User, EModules
     return User.findOne({ login: data }).lean();
   }
 
-  async getByEmailAndLogin(data: string): Promise<IUserEntity[]> {
-    return User.find({ $or: [{ login: data }, { email: data }] }).lean();
-  }
-
   async remove(id: string): Promise<null> {
     return User.findOneAndRemove({ _id: id });
   }

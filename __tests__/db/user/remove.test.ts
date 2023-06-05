@@ -1,17 +1,16 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose from 'mongoose';
 import * as errors from '../../../src/errors';
 import ProfileRooster from '../../../src/modules/profile/rooster';
 import Rooster from '../../../src/modules/user/rooster';
-import { fakeData, FakeFactory } from '../../utils';
+import { Connection, fakeData, FakeFactory } from '../../utils';
 import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
 import type { IProfileEntity } from '../../../src/modules/profile/entity';
-import type { IRemoveUserDto } from '../../../src/modules/user/dto';
 import type { IUserEntity } from '../../../src/modules/user/entity';
+import type { IRemoveUserDto } from '../../../src/modules/user/remove/types';
 
 describe('Remove user', () => {
+  const connection = new Connection();
   const db = new FakeFactory();
   const fakeUser = fakeData.users[0] as IUserEntity;
   const fakeUser2 = fakeData.users[1] as IUserEntity;
@@ -23,8 +22,7 @@ describe('Remove user', () => {
   };
 
   beforeAll(async () => {
-    const server = await MongoMemoryServer.create();
-    await mongoose.connect(server.getUri());
+    await connection.connect();
   });
 
   afterEach(async () => {
@@ -32,8 +30,7 @@ describe('Remove user', () => {
   });
 
   afterAll(async () => {
-    await mongoose.disconnect();
-    await mongoose.connection.close();
+    await connection.close();
   });
 
   describe('Should throw', () => {

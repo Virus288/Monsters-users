@@ -17,7 +17,7 @@ export default class Rooster extends RoosterFactory<IInventory, typeof Inventory
     return Inventory.findOneAndRemove({ _id: id });
   }
 
-  async update(id: string, data: Partial<IInventoryEntity>): Promise<void> {
+  override async update(id: string, data: Partial<IInventoryEntity>): Promise<void> {
     await Inventory.findOneAndUpdate({ userId: id }, data);
   }
 }

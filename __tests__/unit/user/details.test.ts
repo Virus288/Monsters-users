@@ -1,9 +1,9 @@
 import { describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
-import Validation from '../../../src/modules/user/validation';
+import UserDetailsDto from '../../../src/modules/user/get/dto';
 import { fakeData } from '../../utils';
-import type { IUserDetailsDto } from '../../../src/modules/user/dto';
 import type { IUserEntity } from '../../../src/modules/user/entity';
+import type { IUserDetailsDto } from '../../../src/modules/user/get/types';
 
 describe('Details', () => {
   const fakeUser = fakeData.users[0] as IUserEntity;
@@ -18,9 +18,12 @@ describe('Details', () => {
         const clone = structuredClone(details);
         delete clone.name;
         delete clone.id;
-        const func = (): void => Validation.validateGetDetails(clone);
 
-        expect(func).toThrow(new errors.MissingArgError('id'));
+        try {
+          new UserDetailsDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.MissingArgError('id'));
+        }
       });
     });
 
@@ -28,25 +31,35 @@ describe('Details', () => {
       it('Id not proper id', () => {
         const clone = structuredClone(details);
         clone.id = 'aa';
-        const func = (): void => Validation.validateGetDetails(clone);
 
-        expect(func).toThrow(new errors.IncorrectArgError('Provided user id is invalid'));
+        try {
+          new UserDetailsDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.IncorrectArgTypeError('id should be objectId'));
+        }
       });
 
       it('Name is not typeof string', () => {
         const clone = structuredClone(details);
         clone.name = 2 as unknown as string;
-        const func = (): void => Validation.validateGetDetails(clone);
 
-        expect(func).toThrow(new errors.IncorrectArgTypeError('Name is not string'));
+        try {
+          new UserDetailsDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.IncorrectArgTypeError('name should be a string'));
+        }
       });
     });
   });
 
   describe('Should pass', () => {
     it('Get user details', () => {
-      const func = (): void => Validation.validateGetDetails(details);
-      expect(func).not.toThrow();
+      try {
+        const data = new UserDetailsDto(details);
+        expect(data.name).toEqual(details.name);
+      } catch (err) {
+        expect(err).toBeUndefined();
+      }
     });
   });
 });

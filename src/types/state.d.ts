@@ -9,7 +9,6 @@ export interface IState {
 export interface IConfigInterface {
   amqpURI: string;
   redisURI: string;
-  redisTestURI: string;
   accessToken: string;
   refToken: string;
   mongoURI: string;

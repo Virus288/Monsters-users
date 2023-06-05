@@ -1,11 +1,9 @@
-import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose from 'mongoose';
+import { afterEach, describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
-import Controller from '../../../src/modules/user/controller';
-import { Connection, FakeFactory, fakeData } from '../../utils';
-import type { IUserDetailsDto } from '../../../src/modules/user/dto';
+import Controller from '../../../src/modules/user/get';
+import { fakeData, FakeFactory } from '../../utils';
 import type { IUserEntity } from '../../../src/modules/user/entity';
+import type { IUserDetailsDto } from '../../../src/modules/user/get/types';
 
 describe('Get details', () => {
   const db = new FakeFactory();
@@ -15,22 +13,9 @@ describe('Get details', () => {
     name: fakeUser.login,
   };
   const controller = new Controller();
-  const connection = new Connection();
-
-  beforeAll(async () => {
-    const server = await MongoMemoryServer.create();
-    await mongoose.connect(server.getUri());
-    connection.connect();
-  });
 
   afterEach(async () => {
     await db.cleanUp();
-  });
-
-  afterAll(async () => {
-    await mongoose.disconnect();
-    await mongoose.connection.close();
-    connection.close();
   });
 
   describe('Should throw', () => {
@@ -39,7 +24,7 @@ describe('Get details', () => {
         const clone = structuredClone(details);
         delete clone.name;
         delete clone.id;
-        controller.getDetails(clone).catch((err) => {
+        controller.get(clone).catch((err) => {
           expect(err).toEqual(new errors.MissingArgError('id'));
         });
       });
@@ -49,23 +34,24 @@ describe('Get details', () => {
       it('Id not proper id', () => {
         const clone = structuredClone(details);
         clone.id = 'aa';
-        controller.getDetails(clone).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectArgError('Provided user id is invalid'));
+        8;
+        controller.get(clone).catch((err) => {
+          expect(err).toEqual(new errors.IncorrectArgTypeError('id should be objectId'));
         });
       });
 
       it('Name is not typeof string', () => {
         const clone = structuredClone(details);
         clone.name = 2 as unknown as string;
-        controller.getDetails(clone).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectArgTypeError('Name is not string'));
+        controller.get(clone).catch((err) => {
+          expect(err).toEqual(new errors.IncorrectArgTypeError('name should be a string'));
         });
       });
 
       it('User with provided id does not exist', () => {
         const clone = structuredClone(details);
         clone.name = 'a';
-        controller.getDetails(clone).catch((err) => {
+        controller.get(clone).catch((err) => {
           expect(err).toEqual(new errors.UserDoesNotExist());
         });
       });
@@ -82,8 +68,8 @@ describe('Get details', () => {
         .verified(fakeUser.verified)
         .create();
 
-      const user = await controller.getDetails(details);
-      expect(user?._id.toString()).toEqual(fakeUser._id);
+      const user = await controller.get(details);
+      expect(user?.login).toEqual(fakeUser.login);
     });
   });
 });

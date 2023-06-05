@@ -1,9 +1,9 @@
 import { describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
-import Validation from '../../../src/modules/party/validation';
+import GetPartyDto from '../../../src/modules/party/get/dto';
 import { fakeData } from '../../utils';
-import type { IGetPartyDto } from '../../../src/modules/party/dto';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
+import type { IGetPartyDto } from '../../../src/modules/party/get/types';
 
 describe('Party - get', () => {
   const fakeParty = fakeData.parties[0] as IPartyEntity;
@@ -16,9 +16,12 @@ describe('Party - get', () => {
       it('Missing id', () => {
         const clone = structuredClone(get);
         clone.id = undefined!;
-        const func = (): void => Validation.validateGet(clone);
 
-        expect(func).toThrow(new errors.MissingArgError('id'));
+        try {
+          new GetPartyDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.MissingArgError('id'));
+        }
       });
     });
 
@@ -26,16 +29,24 @@ describe('Party - get', () => {
       it('Incorrect id', () => {
         const clone = structuredClone(get);
         clone.id = 'asd';
-        const func = (): void => Validation.validateGet(clone);
-        expect(func).toThrow(new errors.IncorrectArgTypeError('Provided party id is invalid'));
+
+        try {
+          new GetPartyDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.IncorrectArgTypeError('id should be objectId'));
+        }
       });
     });
   });
 
   describe('Should pass', () => {
     it('Validated', () => {
-      const func = (): void => Validation.validateGet(get);
-      expect(func).not.toThrow();
+      try {
+        const data = new GetPartyDto(get);
+        expect(data.id).toEqual(get.id);
+      } catch (err) {
+        expect(err).toBeUndefined();
+      }
     });
   });
 });

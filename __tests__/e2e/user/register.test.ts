@@ -1,26 +1,21 @@
-import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
+import { afterEach, describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
-import Controller from '../../../src/modules/user/controller';
-import { Connection, FakeFactory, fakeData } from '../../utils';
-import type { IRegisterDto } from '../../../src/modules/user/dto';
-import type { IFullError } from '../../../src/types';
+import GetController from '../../../src/modules/user/get';
+import Controller from '../../../src/modules/user/register';
+import { fakeData, FakeFactory } from '../../utils';
+import type { IUserDetailsDto } from '../../../src/modules/user/get/types';
+import type { IRegisterDto } from '../../../src/modules/user/register/types';
 
 describe('Register', () => {
-  const connection = new Connection();
   const db = new FakeFactory();
-  const registerData = fakeData.users[1] as IRegisterDto;
+  const registerData = fakeData.users[3] as IRegisterDto;
   const controller = new Controller();
-
-  beforeAll(() => {
-    connection.connect();
-  });
+  const details: IUserDetailsDto = {
+    name: registerData.login,
+  };
 
   afterEach(async () => {
     await db.cleanUp();
-  });
-
-  afterAll(() => {
-    connection.close();
   });
 
   describe('Should throw', () => {
@@ -130,7 +125,7 @@ describe('Register', () => {
 
       it('Email incorrect', () => {
         controller.register({ ...registerData, email: 'a' }).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectArgError('Not valid email address'));
+          expect(err).toEqual(new errors.IncorrectArgTypeError('email invalid'));
         });
       });
 
@@ -149,12 +144,12 @@ describe('Register', () => {
   });
 
   describe('Should pass', () => {
-    it('Validated', () => {
-      controller.register({ ...registerData, email: 'test22@test.test' }).catch((err) => {
-        const error = err as IFullError;
-        // #TODO Add proper test
-        expect(error.name).toEqual('MongoNotConnectedError');
-      });
+    it('Validated', async () => {
+      const getController = new GetController();
+
+      await controller.register({ ...registerData, email: 'test22@test.test' });
+      const user = await getController.get(details);
+      expect(user?.login).toEqual(details.name);
     });
   });
 });

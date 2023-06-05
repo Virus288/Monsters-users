@@ -1,8 +1,9 @@
 import Broker from './broker';
 import Log from './tools/logger/log';
-import mongo from './tools/mongo';
+import Mongo from './tools/mongo';
 import Redis from './tools/redis';
 import State from './tools/state';
+import type { IFullError } from './types';
 
 class App {
   init(): void {
@@ -11,18 +12,20 @@ class App {
         Log.log('Server', 'Server started');
       })
       .catch((err) => {
-        Log.error('Server', 'Failed to init', JSON.stringify(err));
+        const error = err as IFullError;
+        return Log.error('Server', 'Failed to init', error.message, error.stack);
       });
   }
 
   private async start(): Promise<void> {
-    await mongo();
+    const mongo = new Mongo();
+    await mongo.init();
 
     State.Broker = new Broker();
     State.Redis = new Redis();
 
     State.Broker.init();
-    State.Redis.init();
+    await State.Redis.init();
   }
 }
 

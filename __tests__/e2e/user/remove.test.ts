@@ -1,14 +1,14 @@
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@jest/globals';
+import { afterEach, beforeEach, describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
-import Controller from '../../../src/modules/user/controller';
 import Handler from '../../../src/modules/user/handler';
+import Controller from '../../../src/modules/user/remove/';
 import State from '../../../src/tools/state';
-import { Connection, FakeFactory, fakeData } from '../../utils';
+import { fakeData, FakeFactory } from '../../utils';
 import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
 import type { IProfileEntity } from '../../../src/modules/profile/entity';
-import type { IRemoveUserDto } from '../../../src/modules/user/dto';
 import type { IUserEntity } from '../../../src/modules/user/entity';
+import type { IRemoveUserDto } from '../../../src/modules/user/remove/types';
 
 describe('Remove user', () => {
   const db = new FakeFactory();
@@ -22,18 +22,9 @@ describe('Remove user', () => {
   };
   const controller = new Controller();
   const handler = new Handler();
-  const connection = new Connection();
-
-  beforeAll(() => {
-    connection.connect();
-  });
 
   afterEach(async () => {
     await db.cleanUp();
-  });
-
-  afterAll(() => {
-    connection.close();
   });
 
   describe('Should throw', () => {
@@ -92,7 +83,6 @@ describe('Remove user', () => {
         .create();
 
       await handler.remove(remove.name, fakeUser._id);
-
       const cached = await State.Redis.getRemovedUsers(fakeUser._id);
       expect(cached).toEqual(fakeUser.login);
     });

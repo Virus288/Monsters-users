@@ -1,11 +1,9 @@
-import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose from 'mongoose';
+import { afterEach, describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
-import Controller from '../../../src/modules/inventory/controller';
-import { Connection, fakeData, FakeFactory } from '../../utils';
-import type { IUseItemDto } from '../../../src/modules/inventory/dto';
+import Controller from '../../../src/modules/inventory/use';
+import { fakeData, FakeFactory } from '../../utils';
 import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
+import type { IUseItemDto } from '../../../src/modules/inventory/use/types';
 import type { IItemEntity } from '../../../src/modules/items/entity';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
 import type { IProfileEntity } from '../../../src/modules/profile/entity';
@@ -23,22 +21,9 @@ describe('Items - use', () => {
     amount: 2,
   };
   const controller = new Controller();
-  const connection = new Connection();
-
-  beforeAll(async () => {
-    const server = await MongoMemoryServer.create();
-    await mongoose.connect(server.getUri());
-    connection.connect();
-  });
 
   afterEach(async () => {
     await db.cleanUp();
-  });
-
-  afterAll(async () => {
-    await mongoose.disconnect();
-    await mongoose.connection.close();
-    connection.close();
   });
 
   describe('Should throw', () => {
@@ -65,7 +50,7 @@ describe('Items - use', () => {
         const clone = structuredClone(use);
         clone.itemId = 'a';
         controller.use(clone, fakeUser._id).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectArgError('Provided itemId is invalid'));
+          expect(err).toEqual(new errors.IncorrectArgTypeError('itemId should be objectId'));
         });
       });
 
@@ -73,7 +58,7 @@ describe('Items - use', () => {
         const clone = structuredClone(use);
         clone.amount = 0!;
         controller.use(clone, fakeUser._id).catch((err) => {
-          expect(err).toEqual(new errors.IncorrectArgAmountError('amount', 0, 100));
+          expect(err).toEqual(new errors.MissingArgError('amount'));
         });
       });
 

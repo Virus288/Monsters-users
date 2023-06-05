@@ -5,49 +5,25 @@ import Redis from '../../src/tools/redis';
 import State from '../../src/tools/state';
 
 export default class Connection {
-  connect(): void {
-    this.handleConnect()
-      .then(() => {
-        setTimeout(() => {
-          // Empty
-        }, 5000);
-      })
-      .catch((err) => {
-        return Log.error('Mongo', err);
-      });
+  async connect(): Promise<void> {
+    await this.redis();
+    await this.mongo();
   }
 
-  close(): void {
-    this.disconnect()
-      .then(() => {
-        setTimeout(() => {
-          // Empty
-        }, 2000);
-      })
-      .catch((err) => {
-        Log.error('Mongoose', err);
-      });
+  async close(): Promise<void> {
+    await State.Redis.close();
+    await mongoose.disconnect();
+    Log.log('Mongo', 'Mongo disconnected');
   }
 
   private async mongo(): Promise<void> {
     const server = await MongoMemoryServer.create();
     await mongoose.connect(server.getUri());
+    Log.log('Mongo', 'Mongo started');
   }
 
-  private redis(): void {
+  private async redis(): Promise<void> {
     State.Redis = new Redis();
-    State.Redis.startTestServer();
-    State.Redis.init();
-  }
-
-  private async handleConnect(): Promise<void> {
-    this.redis();
-    await this.mongo();
-  }
-
-  private async disconnect(): Promise<void> {
-    State.Redis.close();
-    await mongoose.disconnect();
-    await mongoose.connection.close();
+    await State.Redis.init();
   }
 }

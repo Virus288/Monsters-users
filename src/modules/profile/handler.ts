@@ -1,32 +1,57 @@
-import Controller from './controller';
+import AddController from './add';
+import AddBasicController from './addBasic';
+import GetController from './get';
+import RemoveController from './remove';
 import * as enums from '../../enums';
 import HandlerFactory from '../../tools/abstract/handler';
 import State from '../../tools/state';
-import type { IAddProfileDto, IGetProfileDto } from './dto';
+import type { IAddProfileDto } from './add/types';
+import type { IAddBasicProfileDto } from './addBasic/types';
 import type { IProfileEntity } from './entity';
+import type { IGetProfileDto } from './get/types';
+import type { IRemoveProfileDto } from './remove/types';
 import type { EModules } from '../../tools/abstract/enums';
 import type * as types from '../../types';
 
 export default class ProfileHandler extends HandlerFactory<EModules.Profiles> {
+  private readonly _removeController: RemoveController;
+  private readonly _addBasicController: AddBasicController;
+  private readonly _addController: AddController;
+
   constructor() {
-    super(new Controller());
+    super(new GetController());
+    this._removeController = new RemoveController();
+    this._addBasicController = new AddBasicController();
+    this._addController = new AddController();
+  }
+
+  private get removeController(): RemoveController {
+    return this._removeController;
+  }
+
+  private get addBasicController(): AddBasicController {
+    return this._addBasicController;
+  }
+
+  private get addController(): AddController {
+    return this._addController;
   }
 
   async get(payload: unknown, user: types.ILocalUser): Promise<void> {
-    const profile = await this.controller.getProfile(payload as IGetProfileDto);
-    return State.Broker.send(user.tempId, profile, enums.EMessageTypes.Send);
+    const callBack = await this.getController.get(payload as IGetProfileDto);
+    return State.Broker.send(user.tempId, callBack, enums.EMessageTypes.Send);
   }
 
   async add(payload: unknown, user: types.ILocalUser): Promise<void> {
-    await this.controller.addProfile(payload as IAddProfileDto, user);
+    await this.addController.add(payload as IAddProfileDto, user);
     return State.Broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
   }
 
-  async remove(userId: string): Promise<void> {
-    return this.controller.remove(userId);
+  async addBasic(userId: string, party: string, inventory: string): Promise<IProfileEntity> {
+    return this.addBasicController.add({ userId, party, inventory } as IAddBasicProfileDto);
   }
 
-  async addBasic(id: string, party: string, inventory: string): Promise<IProfileEntity> {
-    return this.controller.addBasicProfile(id, party, inventory);
+  async remove(id: string): Promise<void> {
+    return this.removeController.remove({ id } as IRemoveProfileDto);
   }
 }

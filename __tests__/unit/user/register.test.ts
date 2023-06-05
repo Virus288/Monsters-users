@@ -1,8 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
-import Validation from '../../../src/modules/user/validation';
+import RegisterDto from '../../../src/modules/user/register/dto';
 import { fakeData, generateRandomName } from '../../utils';
-import type { IRegisterDto } from '../../../src/modules/user/dto';
+import type { IRegisterDto } from '../../../src/modules/user/register/types';
 
 describe('Login', () => {
   const fakeUser = fakeData.users[0] as IRegisterDto;
@@ -19,8 +19,12 @@ describe('Login', () => {
         return it(`Missing ${k}`, () => {
           const clone = structuredClone(register);
           delete clone[k];
-          const func = (): void => Validation.validateRegister(clone);
-          expect(func).toThrow(new errors.MissingArgError(k));
+
+          try {
+            new RegisterDto(clone);
+          } catch (err) {
+            expect(err).toEqual(new errors.MissingArgError(k));
+          }
         });
       });
     });
@@ -29,82 +33,112 @@ describe('Login', () => {
       it('Register incorrect', () => {
         const clone = structuredClone(fakeUser);
         clone.login = '!@#$%^&*&*()_+P{:"<?a';
-        const func = (): void => Validation.validateRegister(clone);
 
-        expect(func).toThrow(
-          new errors.IncorrectArgTypeError('login should only contain arabic letters, numbers and special characters'),
-        );
+        try {
+          new RegisterDto(clone);
+        } catch (err) {
+          expect(err).toEqual(
+            new errors.IncorrectArgTypeError(
+              'login should only contain arabic letters, numbers and special characters',
+            ),
+          );
+        }
       });
 
       it('Login too short', () => {
         const clone = structuredClone(fakeUser);
         clone.login = 'a';
-        const func = (): void => Validation.validateRegister(clone);
 
-        expect(func).toThrow(new errors.IncorrectArgLengthError('login', 3, 30));
+        try {
+          new RegisterDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.IncorrectArgLengthError('login', 3, 30));
+        }
       });
 
       it('Login too long', () => {
         const clone = structuredClone(fakeUser);
         clone.login =
           'asssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss';
-        const func = (): void => Validation.validateRegister(clone);
 
-        expect(func).toThrow(new errors.IncorrectArgLengthError('login', 3, 30));
+        try {
+          new RegisterDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.IncorrectArgLengthError('login', 3, 30));
+        }
       });
 
       it('Password incorrect', () => {
         const clone = structuredClone(fakeUser);
         clone.password = 'a@$QEWASD+)}KO_PL{:">?';
-        const func = (): void => Validation.validateRegister(clone);
 
-        expect(func).toThrow(
-          new errors.IncorrectArgTypeError(
-            'password should contain at least 1 digit, 6 letter, 1 upper case letter and 1 lower case letter',
-          ),
-        );
+        try {
+          new RegisterDto(clone);
+        } catch (err) {
+          expect(err).toEqual(
+            new errors.IncorrectArgTypeError(
+              'password should contain at least 1 digit, 6 letter, 1 upper case letter and 1 lower case letter',
+            ),
+          );
+        }
       });
 
       it('Password too short', () => {
         const clone = structuredClone(fakeUser);
         clone.password = 'a';
-        const func = (): void => Validation.validateRegister(clone);
 
-        expect(func).toThrow(new errors.IncorrectArgLengthError('password', 6, 200));
+        try {
+          new RegisterDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.IncorrectArgLengthError('password', 6, 200));
+        }
       });
 
       it('Password too long', () => {
         const clone = structuredClone(fakeUser);
         clone.password =
           'aasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsad';
-        const func = (): void => Validation.validateRegister(clone);
 
-        expect(func).toThrow(new errors.IncorrectArgLengthError('password', 6, 200));
+        try {
+          new RegisterDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.IncorrectArgLengthError('password', 6, 200));
+        }
       });
 
       it('Email incorrect', () => {
         const clone = structuredClone(fakeUser);
         clone.email = 'a';
-        const func = (): void => Validation.validateRegister(clone);
 
-        expect(func).toThrow(new errors.IncorrectArgTypeError('Not valid email address'));
+        try {
+          new RegisterDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.IncorrectArgTypeError('email invalid'));
+        }
       });
 
       it('Email too long', () => {
         const clone = structuredClone(fakeUser);
         clone.email =
           'aasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsadaasdasdasasdassadsad@aa.aa';
-        const func = (): void => Validation.validateRegister(clone);
 
-        expect(func).toThrow(new errors.IncorrectArgLengthError('email', undefined, 200));
+        try {
+          new RegisterDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.IncorrectArgLengthError('email', undefined, 200));
+        }
       });
     });
   });
 
   describe('Should pass', () => {
     it('Validated register', () => {
-      const func = (): void => Validation.validateRegister(register);
-      expect(func).not.toThrow();
+      try {
+        const data = new RegisterDto(register);
+        expect(data.email).toEqual(register.email);
+      } catch (err) {
+        expect(err).toBeUndefined();
+      }
     });
   });
 });

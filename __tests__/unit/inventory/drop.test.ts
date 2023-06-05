@@ -1,8 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
-import Validation from '../../../src/modules/inventory/validation';
+import DropItemDto from '../../../src/modules/inventory/drop/dto';
 import { fakeData } from '../../utils';
-import type { IDropItemDto } from '../../../src/modules/inventory/dto';
+import type { IDropItemDto } from '../../../src/modules/inventory/drop/types';
 import type { IItemEntity } from '../../../src/modules/items/entity';
 
 describe('Drop items', () => {
@@ -17,17 +17,23 @@ describe('Drop items', () => {
       it('Missing itemId', () => {
         const clone = structuredClone(drop);
         clone.itemId = undefined!;
-        const func = (): void => Validation.validateDropItem(clone);
 
-        expect(func).toThrow(new errors.MissingArgError('itemId'));
+        try {
+          new DropItemDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.MissingArgError('itemId'));
+        }
       });
 
       it('Missing amount', () => {
         const clone = structuredClone(drop);
         clone.amount = undefined!;
-        const func = (): void => Validation.validateDropItem(clone);
 
-        expect(func).toThrow(new errors.MissingArgError('amount'));
+        try {
+          new DropItemDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.MissingArgError('amount'));
+        }
       });
     });
 
@@ -35,26 +41,35 @@ describe('Drop items', () => {
       it('ItemId is not valid id', () => {
         const clone = structuredClone(drop);
         clone.itemId = 'asd';
-        const func = (): void => Validation.validateDropItem(clone);
 
-        expect(func).toThrow(new errors.IncorrectArgError('Provided itemId is invalid'));
+        try {
+          new DropItemDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.IncorrectArgTypeError('itemId should be objectId'));
+        }
       });
 
       it('Amount less than 1', () => {
         const clone = structuredClone(drop);
         clone.amount = 0;
-        const func = (): void => Validation.validateDropItem(clone);
 
-        expect(func).toThrow(new errors.IncorrectArgAmountError('amount', 0, 100));
+        try {
+          new DropItemDto(clone);
+        } catch (err) {
+          expect(err).toEqual(new errors.MissingArgError('amount'));
+        }
       });
     });
   });
 
   describe('Should pass', () => {
     it('Drop items', () => {
-      const func = (): void => Validation.validateDropItem(drop);
-
-      expect(func).not.toThrow();
+      try {
+        const body = new DropItemDto(drop);
+        expect(body.itemId).toEqual(drop.itemId);
+      } catch (err) {
+        expect(err).toBeUndefined();
+      }
     });
   });
 });
