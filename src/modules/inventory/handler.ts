@@ -39,17 +39,17 @@ export default class Handler extends HandlerFactory<EModules.Inventory> {
 
   async get(user: ILocalUser): Promise<void> {
     const callback = await this.getController.get({ userId: user.userId! } as IGetInventoryDto);
-    return State.Broker.send(user.tempId, callback, enums.EMessageTypes.Send);
+    return State.broker.send(user.tempId, callback, enums.EMessageTypes.Send);
   }
 
   async useItem(payload: unknown, user: ILocalUser): Promise<void> {
     await this.useController.use(payload as IUseItemDto, user.userId!);
-    return State.Broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
+    return State.broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
   }
 
   async dropItem(payload: unknown, user: ILocalUser): Promise<void> {
     await this.dropController.drop(payload as IDropItemDto, user.userId!);
-    return State.Broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
+    return State.broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
   }
 
   async addBasic(userId: string): Promise<IInventoryEntity> {

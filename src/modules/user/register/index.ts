@@ -27,8 +27,8 @@ export default class Controller extends ControllerFactory<EModules.Users> {
     const hashed = utils.hashPassword(password);
     const id = await this.rooster.add({ ...payload, password: hashed });
 
-    const user = await State.Redis.getRemovedUsers(id);
-    if (user) await State.Redis.removeRemovedUser(id);
+    const user = await State.redis.getRemovedUsers(id);
+    if (user) await State.redis.removeRemovedUser(id);
     return id;
   }
 }

@@ -31,12 +31,12 @@ export default class Handler extends HandlerFactory<EModules.Party> {
 
   async get(payload: unknown, user: ILocalUser): Promise<void> {
     const callback = await this.getController.get(payload as IGetPartyDto);
-    return State.Broker.send(user.tempId, callback, enums.EMessageTypes.Send);
+    return State.broker.send(user.tempId, callback, enums.EMessageTypes.Send);
   }
 
   async create(payload: unknown, user: ILocalUser): Promise<void> {
     await this.addController.add(payload as IAddPartyDto, user.userId!);
-    return State.Broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
+    return State.broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
   }
 
   async addBasic(leader: string): Promise<IPartyEntity> {
