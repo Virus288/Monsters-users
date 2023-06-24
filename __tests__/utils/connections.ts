@@ -5,13 +5,17 @@ import Redis from '../../src/tools/redis';
 import State from '../../src/tools/state';
 
 export default class Connection {
+  constructor() {
+    State.redis = new Redis();
+  }
+
   async connect(): Promise<void> {
     await this.redis();
     await this.mongo();
   }
 
   async close(): Promise<void> {
-    await State.Redis.close();
+    await State.redis.close();
     await mongoose.disconnect();
     Log.log('Mongo', 'Mongo disconnected');
   }
@@ -23,7 +27,6 @@ export default class Connection {
   }
 
   private async redis(): Promise<void> {
-    State.Redis = new Redis();
-    await State.Redis.init();
+    await State.redis.init();
   }
 }

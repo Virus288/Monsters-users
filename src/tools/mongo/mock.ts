@@ -25,32 +25,11 @@ export default class Mock {
     await mongoose.connect(server.getUri());
 
     await this.fulfillDatabase();
-    this.resetMockServer();
     Log.log('Mongo', 'Started mock server');
   }
 
-  private resetMockServer(): void {
-    let amount = 30;
-    setInterval(async () => {
-      switch (amount) {
-        case 0:
-          Log.log('Mock server', 'Cleaning data');
-          amount = 30;
-          await this.resetData();
-          break;
-        default:
-          amount -= 10;
-          Log.log('Mock server', `${amount} second to cleaning server`);
-      }
-    }, 10000);
-  }
-
-  private async resetData(): Promise<void> {
-    await this.fakeFactory.cleanUp();
-  }
-
   private async fulfillDatabase(): Promise<void> {
-    const users = [fakeData.users[0]] as IUserEntity[];
+    const users = fakeData.users as IUserEntity[];
     const profiles = fakeData.profiles as IProfileEntity[];
     const inventories = fakeData.inventories as IInventoryEntity[];
     const parties = fakeData.parties as IPartyEntity[];
@@ -76,12 +55,11 @@ export default class Mock {
     await Promise.all(
       params.map(async (p) => {
         for (const m of Object.getOwnPropertyNames(Object.getPrototypeOf(target))) {
-          if (m === 'constructor' || m === 'create' || m === 'fillState' || typeof target[m] === 'function') return;
+          if (m === 'constructor' || m === 'create' || m === 'fillState' || typeof target[m] !== 'function') continue;
 
           const method = target[m] as (arg: unknown) => void;
           method.call(target, p[m]);
         }
-
         await target.create();
       }),
     );

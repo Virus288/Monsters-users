@@ -41,7 +41,7 @@ export default class UserHandler extends HandlerFactory<EModules.Users> {
   async login(payload: unknown, user: ILocalUser): Promise<void> {
     try {
       const callback = await this.loginController.login(payload as ILoginDto);
-      return State.Broker.send(user.tempId, callback, enums.EMessageTypes.Credentials);
+      return State.broker.send(user.tempId, callback, enums.EMessageTypes.Credentials);
     } catch (err) {
       throw new errors.IncorrectCredentialsError();
     }
@@ -53,7 +53,7 @@ export default class UserHandler extends HandlerFactory<EModules.Users> {
 
   async getDetails(payload: unknown, user: ILocalUser): Promise<void> {
     const callback = await this.getController.get(payload as IUserDetailsDto);
-    return State.Broker.send(user.tempId, callback, enums.EMessageTypes.Send);
+    return State.broker.send(user.tempId, callback, enums.EMessageTypes.Send);
   }
 
   async remove(name: string, userId: string): Promise<IUserEntity> {
@@ -64,7 +64,7 @@ export default class UserHandler extends HandlerFactory<EModules.Users> {
     if (user._id.toString() !== userId) throw new errors.NoPermission();
 
     await this.removeController.remove(user._id);
-    await State.Redis.addRemovedUser(name, userId);
+    await State.redis.addRemovedUser(name, userId);
     return user;
   }
 }

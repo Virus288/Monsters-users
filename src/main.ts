@@ -7,25 +7,32 @@ import type { IFullError } from './types';
 
 class App {
   init(): void {
-    this.start()
-      .then(() => {
-        Log.log('Server', 'Server started');
-      })
-      .catch((err) => {
-        const error = err as IFullError;
-        return Log.error('Server', 'Failed to init', error.message, error.stack);
-      });
+    this.start().catch((err) => {
+      const { stack, message } = err as IFullError;
+      Log.log('Server', 'Err while initializing app');
+      Log.log('Server', message, stack);
+
+      return this.kill();
+    });
+  }
+
+  async kill(): Promise<void> {
+    State.broker.close();
+    await State.redis.close();
+
+    Log.log('Server', 'Server closed');
   }
 
   private async start(): Promise<void> {
     const mongo = new Mongo();
     await mongo.init();
 
-    State.Broker = new Broker();
-    State.Redis = new Redis();
+    State.broker = new Broker();
+    State.redis = new Redis();
 
-    State.Broker.init();
-    await State.Redis.init();
+    State.broker.init();
+    await State.redis.init();
+    Log.log('Server', 'Server started');
   }
 }
 

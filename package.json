@@ -9,8 +9,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=prod node build/src/main.js",
     "start:dev": "concurrently 'npm run build:watch' 'cross-env NODE_ENV=dev TS_NODE_FILES=true TS_NODE_TRANSPILE_ONLY=true nodemon build/src/main.js'",
-    "start:test": "concurrently 'npm run build:watch' 'cross-env NODE_ENV=test TS_NODE_FILES=true TS_NODE_TRANSPILE_ONLY=true ts-node build/src/main.js'",
-    "prebuild": "npm run lint",
+    "start:test": "cross-env NODE_ENV=test TS_NODE_FILES=true TS_NODE_TRANSPILE_ONLY=true ts-node src/main.ts",
     "build": "tsc -p tsconfig.release.json",
     "build:watch": "tsc -w -p tsconfig.release.json",
     "lint": "cross-env NODE_ENV=development eslint . --ext .ts --fix",
@@ -70,7 +69,6 @@
     "supertest": "^6.3.1",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
-    "tsutils": "^3.21.0",
     "typescript": "5.0.4"
   }
 }

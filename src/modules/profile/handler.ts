@@ -39,16 +39,16 @@ export default class ProfileHandler extends HandlerFactory<EModules.Profiles> {
 
   async get(payload: unknown, user: types.ILocalUser): Promise<void> {
     const callBack = await this.getController.get(payload as IGetProfileDto);
-    return State.Broker.send(user.tempId, callBack, enums.EMessageTypes.Send);
+    return State.broker.send(user.tempId, callBack, enums.EMessageTypes.Send);
   }
 
   async add(payload: unknown, user: types.ILocalUser): Promise<void> {
     await this.addController.add(payload as IAddProfileDto, user);
-    return State.Broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
+    return State.broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
   }
 
-  async addBasic(userId: string, party: string, inventory: string): Promise<IProfileEntity> {
-    return this.addBasicController.add({ userId, party, inventory } as IAddBasicProfileDto);
+  async addBasic(user: string, party: string, inventory: string): Promise<IProfileEntity> {
+    return this.addBasicController.add({ user, party, inventory } as IAddBasicProfileDto);
   }
 
   async remove(id: string): Promise<void> {

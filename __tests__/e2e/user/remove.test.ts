@@ -83,7 +83,7 @@ describe('Remove user', () => {
         .create();
 
       await handler.remove(remove.name, fakeUser._id);
-      const cached = await State.Redis.getRemovedUsers(fakeUser._id);
+      const cached = await State.redis.getRemovedUsers(fakeUser._id);
       expect(cached).toEqual(fakeUser.login);
     });
   });

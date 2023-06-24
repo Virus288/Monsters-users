@@ -5,7 +5,7 @@ import type { IProfile } from './types';
 export const profileSchema = new mongoose.Schema({
   user: {
     type: mongoose.Types.ObjectId,
-    required: [true, 'userId not provided'],
+    required: [true, 'user not provided'],
     unique: true,
   },
   race: {

@@ -49,16 +49,16 @@ export default class Controller {
     const { _id } = await this.user.remove(name, user.userId!);
     await this.profile.remove(_id);
 
-    return State.Broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
+    return State.broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
   }
 
   async register(payload: unknown, user: ILocalUser): Promise<void> {
-    const id = await this.user.register(payload as IRegisterDto);
+    const id = (await this.user.register(payload as IRegisterDto)).toString();
 
     const party = await this.party.addBasic(id);
     const inventory = await this.inventory.addBasic(id);
-    await this.profile.addBasic(id, party._id, inventory._id);
+    await this.profile.addBasic(id, party._id.toString(), inventory._id.toString());
 
-    return State.Broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
+    return State.broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
   }
 }

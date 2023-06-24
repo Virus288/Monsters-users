@@ -1,5 +1,5 @@
 export interface IAddBasicProfileDto {
-  userId: string;
+  user: string;
   party: string;
   inventory: string;
 }
