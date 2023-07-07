@@ -29,8 +29,8 @@ export default class RegisterDto implements IRegisterDto {
       .isString()
       .hasLength(200, 6)
       .isRegexCompatible(
-        new RegExp(/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*\d).*$/u, 'u'),
-        'password should contain at least 1 digit, 6 letter, 1 upper case letter and 1 lower case letter',
+        new RegExp(/(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[\W_])(?!\S*\s)[a-zA-Z0-9\W_]{8,}/u, 'u'),
+        'password should contain at least 8 characters with: at least 1 digit, 1 letter, 1 upper case letter and 1 lower case letter',
       );
 
     new Validation(this.email, 'email')

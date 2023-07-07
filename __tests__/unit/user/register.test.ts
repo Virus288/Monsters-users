@@ -6,12 +6,20 @@ import type { IRegisterDto } from '../../../src/modules/user/register/types';
 
 describe('Login', () => {
   const fakeUser = fakeData.users[0] as IRegisterDto;
-  const password = `${generateRandomName()}123`;
+  const password = 'asdzxc123;21qwdsaxII';
   const register: IRegisterDto = {
     login: generateRandomName(),
     password,
     email: `${generateRandomName()}@test.test`,
   };
+  const passwords: string[] = [
+    'abc123abc123',
+    'abc123ABC123',
+    '999999999',
+    'abcabcabc',
+    '8sad8as8da8sd8sa',
+    'asbasb123ASB',
+  ];
 
   describe('Should throw', () => {
     describe('No data passed', () => {
@@ -68,19 +76,21 @@ describe('Login', () => {
         }
       });
 
-      it('Password incorrect', () => {
-        const clone = structuredClone(fakeUser);
-        clone.password = 'a@$QEWASD+)}KO_PL{:">?';
+      passwords.forEach((p) => {
+        it('Password incorrect', () => {
+          const clone = structuredClone(fakeUser);
+          clone.password = p;
 
-        try {
-          new RegisterDto(clone);
-        } catch (err) {
-          expect(err).toEqual(
-            new errors.IncorrectArgTypeError(
-              'password should contain at least 1 digit, 6 letter, 1 upper case letter and 1 lower case letter',
-            ),
-          );
-        }
+          try {
+            new RegisterDto(clone);
+          } catch (err) {
+            expect(err).toEqual(
+              new errors.IncorrectArgTypeError(
+                'password should contain at least 8 characters with: at least 1 digit, 1 letter, 1 upper case letter and 1 lower case letter',
+              ),
+            );
+          }
+        });
       });
 
       it('Password too short', () => {
