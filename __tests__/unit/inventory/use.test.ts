@@ -56,7 +56,7 @@ describe('Use items', () => {
         try {
           new UseItemDto(clone);
         } catch (err) {
-          expect(err).toEqual(new errors.MissingArgError('amount'));
+          expect(err).toEqual(new errors.IncorrectArgLengthError('amount', 1, 100));
         }
       });
     });
