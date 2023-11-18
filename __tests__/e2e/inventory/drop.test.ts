@@ -58,7 +58,7 @@ describe('Items - drop', () => {
         const clone = structuredClone(drop);
         clone.amount = 0!;
         controller.drop(clone, fakeUser._id).catch((err) => {
-          expect(err).toEqual(new errors.MissingArgError('amount'));
+          expect(err).toEqual(new errors.IncorrectArgLengthError('amount', 1, 100));
         });
       });
 
