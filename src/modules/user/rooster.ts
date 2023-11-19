@@ -18,6 +18,6 @@ export default class Rooster extends RoosterFactory<IUser, typeof User, EModules
   }
 
   async remove(id: string): Promise<null> {
-    return User.findOneAndRemove({ _id: id });
+    return User.findOneAndDelete({ _id: id });
   }
 }
