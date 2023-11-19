@@ -46,6 +46,10 @@ jobs:
           mkdir -p config
           echo '{
             "amqpURI": "rabbitUrl",
+            "redisURI": "redisUrl",
+            "redisTestURI": "redisTesUrl",
+            "accessToken": "accessToken",
+            "refToken": "refreshToken",
             "mongoURI": "mongoUrl"
           }' > config/devConfig.json
           cp config/devConfig.json config/prodConfig.json

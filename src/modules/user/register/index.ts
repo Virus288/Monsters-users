@@ -19,7 +19,7 @@ export default class Controller extends ControllerFactory<EModules.Users> {
     const byEmail = await this.rooster.getByEmail(email);
     const byLogin = await this.rooster.getByLogin(login);
 
-    if (byEmail || byLogin) {
+    if (byEmail ?? byLogin) {
       if (byLogin?.login === login) throw new errors.UsernameAlreadyInUseError();
       if (byEmail?.email === email) throw new errors.UserAlreadyRegisteredError();
     }

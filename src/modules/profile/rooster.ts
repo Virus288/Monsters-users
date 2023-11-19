@@ -14,6 +14,6 @@ export default class Rooster extends RoosterFactory<IProfile, typeof Profile, EM
   }
 
   async remove(id: string): Promise<null> {
-    return Profile.findOneAndRemove({ _id: id });
+    return Profile.findOneAndDelete({ _id: id });
   }
 }
