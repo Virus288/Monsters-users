@@ -1,4 +1,3 @@
-import type User from '../../../../src/modules/user/model';
 import type { EFakeData } from '../enums';
 import type { IFakeModel, IFakeState } from '../types/data';
 import type mongoose from 'mongoose';
@@ -46,8 +45,7 @@ export default abstract class TemplateFactory<T extends EFakeData> {
   async cleanUp(): Promise<void> {
     await Promise.all(
       Object.values(this.states).map(async (k) => {
-        // #TODO This is bad. Union type should be compatible but is not according to "@typescript-eslint/eslint-plugin"
-        await (this._target as typeof User).findOneAndDelete({ _id: k._id! });
+        return (this._target as mongoose.Model<unknown>).findOneAndDelete({ _id: k._id! });
       }),
     );
     this.states = [];
