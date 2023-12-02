@@ -91,8 +91,8 @@ export class IncorrectArgLengthError extends FullError {
       min === undefined
         ? `${target} should be less than ${max} characters`
         : min !== max
-        ? `${target} should be more than ${min} and less than ${max} characters`
-        : `${target} should be ${min} characters`;
+          ? `${target} should be more than ${min} and less than ${max} characters`
+          : `${target} should be ${min} characters`;
     this.name = 'IncorrectArgLengthError';
     this.code = '009';
     this.status = 400;
@@ -146,8 +146,8 @@ export class IncorrectArgAmountError extends FullError {
       min === undefined
         ? `${target} should be less than ${max}`
         : min !== max
-        ? `${target} should be more than ${min} and less than ${max}`
-        : `${target} should be ${min}`;
+          ? `${target} should be more than ${min} and less than ${max}`
+          : `${target} should be ${min}`;
     this.name = 'IncorrectArgAmountError';
     this.code = '014';
     this.status = 400;
