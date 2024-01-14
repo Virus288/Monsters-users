@@ -2,7 +2,6 @@ import LoginDto from './dto';
 import Utils from './utils';
 import * as errors from '../../../errors';
 import ControllerFactory from '../../../tools/abstract/controller';
-import * as utils from '../../../tools/token';
 import Rooster from '../rooster';
 import type { ILoginDto } from './types';
 import type { EModules } from '../../../tools/abstract/enums';
@@ -28,13 +27,8 @@ export default class Controller extends ControllerFactory<EModules.Users> {
 
     await this.utils.compare(password, user.password);
 
-    const accessToken = utils.generateAccessToken(user._id.toString(), user.type);
-    const refreshToken = utils.generateRefreshToken(user._id.toString(), user.type);
-
     return {
-      accessToken,
-      refreshToken,
-      userId: user._id.toString(),
+      id: user._id.toString(),
     };
   }
 }

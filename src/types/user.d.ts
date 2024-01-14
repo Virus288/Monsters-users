@@ -8,7 +8,5 @@ export interface ILocalUser {
 }
 
 export interface IUserCredentials {
-  accessToken: string;
-  refreshToken: string;
-  userId: string;
+  id: string;
 }
