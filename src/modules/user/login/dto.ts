@@ -28,7 +28,7 @@ export default class LoginDto implements ILoginDto {
       .hasLength(200, 6)
       .isRegexCompatible(
         new RegExp(/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*\d).*$/u, 'u'),
-        'password should contain at least 8 characters with: at least 1 digit, 1 letter, 1 upper case letter and 1 lower case letter',
+        'password should contain min. 8 characters with at least 1 digit, 1 letter, 1 upper case letter and 1 lower case letter',
       );
   }
 }

@@ -86,7 +86,7 @@ describe('Login', () => {
           } catch (err) {
             expect(err).toEqual(
               new errors.IncorrectArgTypeError(
-                'password should contain at least 8 characters with: at least 1 digit, 1 letter, 1 upper case letter and 1 lower case letter',
+                'password should contain min. 8 characters with at least 1 digit, 1 letter, 1 upper case letter and 1 lower case letter',
               ),
             );
           }

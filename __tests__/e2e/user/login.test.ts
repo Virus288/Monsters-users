@@ -69,13 +69,9 @@ describe('Login', () => {
         .verified(false)
         .create();
 
-      const { userId, refreshToken, accessToken } = await controller.login(loginData);
-      expect(userId).not.toBeUndefined();
-      expect(userId.length).not.toBeLessThan(10);
-      expect(refreshToken).not.toBeUndefined();
-      expect(refreshToken.length).not.toBeLessThan(20);
-      expect(accessToken).not.toBeUndefined();
-      expect(accessToken.length).not.toBeLessThan(20);
+      const { id } = await controller.login(loginData);
+      expect(id).not.toBeUndefined();
+      expect(id.length).not.toBeLessThan(10);
     });
   });
 });
