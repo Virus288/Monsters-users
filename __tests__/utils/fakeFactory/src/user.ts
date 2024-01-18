@@ -1,6 +1,6 @@
 import TemplateFactory from './abstracts';
 import User from '../../../../src/modules/user/model';
-import { hashPassword } from '../../../../src/tools/token';
+import { hashPassword } from '../../../../src/modules/user/utils';
 import type * as enums from '../../../../src/enums';
 import type { IUserEntity } from '../../../../src/modules/user/entity';
 import type { EFakeData } from '../enums';

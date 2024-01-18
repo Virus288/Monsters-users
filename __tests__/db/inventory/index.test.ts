@@ -1,19 +1,19 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
 import Rooster from '../../../src/modules/inventory/rooster';
-import { Connection, fakeData, FakeFactory } from '../../utils';
+import * as utils from '../../utils';
 import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
 import type { IItemEntity } from '../../../src/modules/items/entity';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
 import type { IProfileEntity } from '../../../src/modules/profile/entity';
 
 describe('Inventory', () => {
-  const db = new FakeFactory();
-  const fakeProfile = fakeData.profiles[0] as IProfileEntity;
-  const fakeItem = fakeData.items[0] as IItemEntity;
-  const fakeInv = fakeData.inventories[0] as IInventoryEntity;
-  const fakeParty = fakeData.parties[0] as IPartyEntity;
+  const db = new utils.FakeFactory();
+  const fakeProfile = utils.fakeData.profiles[0] as IProfileEntity;
+  const fakeItem = utils.fakeData.items[0] as IItemEntity;
+  const fakeInv = utils.fakeData.inventories[0] as IInventoryEntity;
+  const fakeParty = utils.fakeData.parties[0] as IPartyEntity;
   const rooster = new Rooster();
-  const connection = new Connection();
+  const connection = new utils.Connection();
 
   beforeAll(async () => {
     await connection.connect();

@@ -2,8 +2,8 @@ import RegisterDto from './dto';
 import * as errors from '../../../errors';
 import ControllerFactory from '../../../tools/abstract/controller';
 import State from '../../../tools/state';
-import * as utils from '../../../tools/token';
 import Rooster from '../rooster';
+import * as utils from '../utils';
 import type { IRegisterDto } from './types';
 import type { EModules } from '../../../tools/abstract/enums';
 

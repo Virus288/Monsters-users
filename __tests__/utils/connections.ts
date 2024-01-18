@@ -1,7 +1,7 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
+import Redis from '../../src/connections/redis';
 import Log from '../../src/tools/logger/log';
-import Redis from '../../src/tools/redis';
 import State from '../../src/tools/state';
 
 export default class Connection {

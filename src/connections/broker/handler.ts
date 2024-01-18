@@ -1,11 +1,11 @@
 import Controller from './controller';
-import * as enums from '../enums';
-import * as errors from '../errors';
-import InventoryController from '../modules/inventory/handler';
-import PartyController from '../modules/party/handler';
-import ProfileController from '../modules/profile/handler';
-import UserController from '../modules/user/handler';
-import type * as types from '../types/connection';
+import * as enums from '../../enums';
+import * as errors from '../../errors';
+import InventoryController from '../../modules/inventory/handler';
+import PartyController from '../../modules/party/handler';
+import ProfileController from '../../modules/profile/handler';
+import UserController from '../../modules/user/handler';
+import type * as types from '../../types/connection';
 
 export default class Handler {
   private readonly _user: UserController;

@@ -1,12 +1,12 @@
 import { describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
 import RemoveUserDto from '../../../src/modules/user/remove/dto';
-import { fakeData } from '../../utils';
+import * as utils from '../../utils';
 import type { IUserEntity } from '../../../src/modules/user/entity';
 import type { IRemoveUserDto } from '../../../src/modules/user/remove/types';
 
 describe('Remove', () => {
-  const fakeUser = fakeData.users[0] as IUserEntity;
+  const fakeUser = utils.fakeData.users[0] as IUserEntity;
   const remove: IRemoveUserDto = {
     name: fakeUser.login,
   };

@@ -1,12 +1,12 @@
 import { describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
 import DropItemDto from '../../../src/modules/inventory/drop/dto';
-import { fakeData } from '../../utils';
+import * as utils from '../../utils';
 import type { IDropItemDto } from '../../../src/modules/inventory/drop/types';
 import type { IItemEntity } from '../../../src/modules/items/entity';
 
 describe('Drop items', () => {
-  const fakeItem = fakeData.items[0] as IItemEntity;
+  const fakeItem = utils.fakeData.items[0] as IItemEntity;
   const drop: IDropItemDto = {
     itemId: fakeItem._id,
     amount: 1,

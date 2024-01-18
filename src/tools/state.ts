@@ -1,6 +1,6 @@
-import type Mongo from './mongo';
-import type Redis from './redis';
-import type Broker from '../broker';
+import type Broker from '../connections/broker';
+import type Mongo from '../connections/mongo';
+import type Redis from '../connections/redis';
 import type { IState } from '../types';
 
 class State implements IState {

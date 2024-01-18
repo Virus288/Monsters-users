@@ -1,13 +1,13 @@
-import * as enums from '../enums';
-import RemoveUserDto from '../modules/user/remove/dto';
-import State from '../tools/state';
-import type InventoryController from '../modules/inventory/handler';
-import type PartyController from '../modules/party/handler';
-import type ProfileController from '../modules/profile/handler';
-import type UserController from '../modules/user/handler';
-import type { IRegisterDto } from '../modules/user/register/types';
-import type { IRemoveUserDto } from '../modules/user/remove/types';
-import type { ILocalUser } from '../types';
+import * as enums from '../../enums';
+import RemoveUserDto from '../../modules/user/remove/dto';
+import State from '../../tools/state';
+import type InventoryController from '../../modules/inventory/handler';
+import type PartyController from '../../modules/party/handler';
+import type ProfileController from '../../modules/profile/handler';
+import type UserController from '../../modules/user/handler';
+import type { IRegisterDto } from '../../modules/user/register/types';
+import type { IRemoveUserDto } from '../../modules/user/remove/types';
+import type { ILocalUser } from '../../types';
 
 export default class Controller {
   private readonly _user: UserController;

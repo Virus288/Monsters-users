@@ -1,13 +1,13 @@
 import { afterEach, describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
 import Controller from '../../../src/modules/party/add';
-import { fakeData, FakeFactory } from '../../utils';
+import * as utils from '../../utils';
 import type { IAddPartyDto } from '../../../src/modules/party/add/types';
 import type { IUserEntity } from '../../../src/modules/user/entity';
 
 describe('Party - create', () => {
-  const db = new FakeFactory();
-  const fakeUser = fakeData.users[0] as IUserEntity;
+  const db = new utils.FakeFactory();
+  const fakeUser = utils.fakeData.users[0] as IUserEntity;
   const create: IAddPartyDto = {
     leader: fakeUser._id,
     characters: [],

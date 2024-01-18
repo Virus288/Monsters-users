@@ -3,7 +3,7 @@ import * as errors from '../../../src/errors';
 import Handler from '../../../src/modules/user/handler';
 import Controller from '../../../src/modules/user/remove/';
 import State from '../../../src/tools/state';
-import { fakeData, FakeFactory } from '../../utils';
+import * as utils from '../../utils';
 import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
 import type { IProfileEntity } from '../../../src/modules/profile/entity';
@@ -11,12 +11,12 @@ import type { IUserEntity } from '../../../src/modules/user/entity';
 import type { IRemoveUserDto } from '../../../src/modules/user/remove/types';
 
 describe('Remove user', () => {
-  const db = new FakeFactory();
-  const fakeUser = fakeData.users[0] as IUserEntity;
-  const fakeUser2 = fakeData.users[1] as IUserEntity;
-  const fakeProfile = fakeData.profiles[0] as IProfileEntity;
-  const fakeInv = fakeData.inventories[0] as IInventoryEntity;
-  const fakeParty = fakeData.parties[0] as IPartyEntity;
+  const db = new utils.FakeFactory();
+  const fakeUser = utils.fakeData.users[0] as IUserEntity;
+  const fakeUser2 = utils.fakeData.users[1] as IUserEntity;
+  const fakeProfile = utils.fakeData.profiles[0] as IProfileEntity;
+  const fakeInv = utils.fakeData.inventories[0] as IInventoryEntity;
+  const fakeParty = utils.fakeData.parties[0] as IPartyEntity;
   const remove: IRemoveUserDto = {
     name: fakeUser.login,
   };

@@ -1,5 +1,5 @@
 import AddProfileDto from './dto';
-import { ProfileAlreadyInitializedError, ProfileDoesNotExists } from '../../../errors';
+import * as errors from '../../../errors';
 import ControllerFactory from '../../../tools/abstract/controller';
 import Rooster from '../rooster';
 import type { IAddProfileDto } from './types';
@@ -15,8 +15,8 @@ export default class Controller extends ControllerFactory<EModules.Profiles> {
     const payload = new AddProfileDto(data);
 
     const exist = await this.rooster.getByUser(user.userId!);
-    if (!exist) throw new ProfileDoesNotExists();
-    if (exist.initialized) throw new ProfileAlreadyInitializedError();
+    if (!exist) throw new errors.ProfileDoesNotExists();
+    if (exist.initialized) throw new errors.ProfileAlreadyInitializedError();
     await this.rooster.update(exist._id, { ...payload, race: payload.race, initialized: true });
   }
 }
