@@ -2,7 +2,7 @@ import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/glob
 import * as errors from '../../../src/errors';
 import ProfileRooster from '../../../src/modules/profile/rooster';
 import Rooster from '../../../src/modules/user/rooster';
-import { Connection, fakeData, FakeFactory } from '../../utils';
+import * as utils from '../../utils';
 import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
 import type { IProfileEntity } from '../../../src/modules/profile/entity';
@@ -10,13 +10,13 @@ import type { IUserEntity } from '../../../src/modules/user/entity';
 import type { IRemoveUserDto } from '../../../src/modules/user/remove/types';
 
 describe('Remove user', () => {
-  const connection = new Connection();
-  const db = new FakeFactory();
-  const fakeUser = fakeData.users[0] as IUserEntity;
-  const fakeUser2 = fakeData.users[1] as IUserEntity;
-  const fakeProfile = fakeData.profiles[0] as IProfileEntity;
-  const fakeInv = fakeData.inventories[0] as IInventoryEntity;
-  const fakeParty = fakeData.parties[0] as IPartyEntity;
+  const connection = new utils.Connection();
+  const db = new utils.FakeFactory();
+  const fakeUser = utils.fakeData.users[0] as IUserEntity;
+  const fakeUser2 = utils.fakeData.users[1] as IUserEntity;
+  const fakeProfile = utils.fakeData.profiles[0] as IProfileEntity;
+  const fakeInv = utils.fakeData.inventories[0] as IInventoryEntity;
+  const fakeParty = utils.fakeData.parties[0] as IPartyEntity;
   const remove: IRemoveUserDto = {
     name: fakeUser.login,
   };

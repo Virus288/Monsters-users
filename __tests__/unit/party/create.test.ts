@@ -1,12 +1,12 @@
 import { describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
 import AddPartyDto from '../../../src/modules/party/add/dto';
-import { fakeData } from '../../utils';
+import * as utils from '../../utils';
 import type { IAddPartyDto } from '../../../src/modules/party/add/types';
 import type { IUserEntity } from '../../../src/modules/user/entity';
 
 describe('Party - create', () => {
-  const fakeUser = fakeData.users[0] as IUserEntity;
+  const fakeUser = utils.fakeData.users[0] as IUserEntity;
   const create: IAddPartyDto = {
     leader: fakeUser._id,
     characters: [],

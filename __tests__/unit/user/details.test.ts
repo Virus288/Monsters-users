@@ -1,12 +1,12 @@
 import { describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
 import UserDetailsDto from '../../../src/modules/user/get/dto';
-import { fakeData } from '../../utils';
+import * as utils from '../../utils';
 import type { IUserEntity } from '../../../src/modules/user/entity';
 import type { IUserDetailsDto } from '../../../src/modules/user/get/types';
 
 describe('Details', () => {
-  const fakeUser = fakeData.users[0] as IUserEntity;
+  const fakeUser = utils.fakeData.users[0] as IUserEntity;
   const details: IUserDetailsDto = {
     id: fakeUser._id,
     name: fakeUser.login,

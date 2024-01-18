@@ -1,5 +1,5 @@
 import DropItemDto from './dto';
-import { InsufficientAmount, InventoryDoesNotExist, ItemNotInInventory } from '../../../errors';
+import * as errors from '../../../errors';
 import ControllerFactory from '../../../tools/abstract/controller';
 import Rooster from '../rooster';
 import type { IDropItemDto } from './types';
@@ -14,14 +14,14 @@ export default class Controller extends ControllerFactory<EModules.Inventory> {
     const { itemId, amount } = new DropItemDto(data);
 
     const eq = await this.rooster.getByUser(userId);
-    if (!eq) throw new InventoryDoesNotExist();
+    if (!eq) throw new errors.InventoryDoesNotExist();
 
     const exist = eq.items.find((e) => {
       return e.itemId.toString() === itemId;
     });
 
-    if (!exist) throw new ItemNotInInventory();
-    if (exist.quantity < amount) throw new InsufficientAmount();
+    if (!exist) throw new errors.ItemNotInInventory();
+    if (exist.quantity < amount) throw new errors.InsufficientAmount();
 
     eq.items = [...eq.items, { ...exist, quantity: (exist.quantity -= amount) }];
     await this.rooster.update(userId, eq);

@@ -1,13 +1,13 @@
 import { afterEach, describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
 import Controller from '../../../src/modules/party/get';
-import { fakeData, FakeFactory } from '../../utils';
+import * as utils from '../../utils';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
 import type { IGetPartyDto } from '../../../src/modules/party/get/types';
 
 describe('Party - get', () => {
-  const db = new FakeFactory();
-  const fakeParty = fakeData.parties[0] as IPartyEntity;
+  const db = new utils.FakeFactory();
+  const fakeParty = utils.fakeData.parties[0] as IPartyEntity;
   const get: IGetPartyDto = {
     id: fakeParty._id,
   };

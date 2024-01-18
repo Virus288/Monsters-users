@@ -2,13 +2,13 @@ import { afterEach, describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
 import GetController from '../../../src/modules/user/get';
 import Controller from '../../../src/modules/user/register';
-import { fakeData, FakeFactory } from '../../utils';
+import * as utils from '../../utils';
 import type { IUserDetailsDto } from '../../../src/modules/user/get/types';
 import type { IRegisterDto } from '../../../src/modules/user/register/types';
 
 describe('Register', () => {
-  const db = new FakeFactory();
-  const registerData = fakeData.users[3] as IRegisterDto;
+  const db = new utils.FakeFactory();
+  const registerData = utils.fakeData.users[3] as IRegisterDto;
   const controller = new Controller();
   const details: IUserDetailsDto = {
     name: registerData.login,

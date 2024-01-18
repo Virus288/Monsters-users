@@ -1,7 +1,7 @@
-import Broker from './broker';
+import Broker from './connections/broker';
+import Mongo from './connections/mongo';
+import Redis from './connections/redis';
 import Log from './tools/logger/log';
-import Mongo from './tools/mongo';
-import Redis from './tools/redis';
 import State from './tools/state';
 import type { IFullError } from './types';
 

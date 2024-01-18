@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
 import Controller from '../../../src/modules/inventory/drop';
-import { fakeData, FakeFactory } from '../../utils';
+import * as utils from '../../utils';
 import type { IDropItemDto } from '../../../src/modules/inventory/drop/types';
 import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
 import type { IItemEntity } from '../../../src/modules/items/entity';
@@ -10,12 +10,12 @@ import type { IProfileEntity } from '../../../src/modules/profile/entity';
 import type { IUserEntity } from '../../../src/modules/user/entity';
 
 describe('Items - drop', () => {
-  const db = new FakeFactory();
-  const fakeUser = fakeData.users[0] as IUserEntity;
-  const fakeProfile = fakeData.profiles[0] as IProfileEntity;
-  const fakeItem = fakeData.items[0] as IItemEntity;
-  const fakeInv = fakeData.inventories[0] as IInventoryEntity;
-  const fakeParty = fakeData.parties[0] as IPartyEntity;
+  const db = new utils.FakeFactory();
+  const fakeUser = utils.fakeData.users[0] as IUserEntity;
+  const fakeProfile = utils.fakeData.profiles[0] as IProfileEntity;
+  const fakeItem = utils.fakeData.items[0] as IItemEntity;
+  const fakeInv = utils.fakeData.inventories[0] as IInventoryEntity;
+  const fakeParty = utils.fakeData.parties[0] as IPartyEntity;
   const drop: IDropItemDto = {
     itemId: fakeItem._id,
     amount: 2,

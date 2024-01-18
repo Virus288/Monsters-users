@@ -1,12 +1,12 @@
 import { describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
 import GetPartyDto from '../../../src/modules/party/get/dto';
-import { fakeData } from '../../utils';
+import * as utils from '../../utils';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
 import type { IGetPartyDto } from '../../../src/modules/party/get/types';
 
 describe('Party - get', () => {
-  const fakeParty = fakeData.parties[0] as IPartyEntity;
+  const fakeParty = utils.fakeData.parties[0] as IPartyEntity;
   const get: IGetPartyDto = {
     id: fakeParty._id,
   };

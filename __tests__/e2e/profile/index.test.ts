@@ -4,7 +4,8 @@ import * as enums from '../../../src/enums';
 import * as errors from '../../../src/errors';
 import AddController from '../../../src/modules/profile/add';
 import GetController from '../../../src/modules/profile/get';
-import { fakeData, FakeFactory } from '../../utils';
+import * as utils from '../../utils';
+import { fakeData } from '../../utils';
 import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
 import type { IAddProfileDto } from '../../../src/modules/profile/add/types';
@@ -13,8 +14,8 @@ import type { IGetProfileDto } from '../../../src/modules/profile/get/types';
 import type * as types from '../../../src/types';
 
 describe('Profile', () => {
-  const db = new FakeFactory();
-  const id = fakeData.users[0]!._id;
+  const db = new utils.FakeFactory();
+  const id = utils.fakeData.users[0]!._id;
   const race: IAddProfileDto = {
     race: enums.EUserRace.Human,
   };

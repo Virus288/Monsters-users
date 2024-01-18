@@ -1,12 +1,12 @@
 import { describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
 import LoginDto from '../../../src/modules/user/login/dto';
-import { fakeData } from '../../utils';
+import * as utils from '../../utils';
 import type { ILoginDto } from '../../../src/modules/user/login/types';
 import type { IRegisterDto } from '../../../src/modules/user/register/types';
 
 describe('Login', () => {
-  const fakeUser = fakeData.users[0] as IRegisterDto;
+  const fakeUser = utils.fakeData.users[0] as IRegisterDto;
   const login: ILoginDto = {
     login: 'Test',
     password: 'Test123',

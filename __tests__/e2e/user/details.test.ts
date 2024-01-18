@@ -1,13 +1,13 @@
 import { afterEach, describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
 import Controller from '../../../src/modules/user/get';
-import { fakeData, FakeFactory } from '../../utils';
+import * as utils from '../../utils';
 import type { IUserEntity } from '../../../src/modules/user/entity';
 import type { IUserDetailsDto } from '../../../src/modules/user/get/types';
 
 describe('Get details', () => {
-  const db = new FakeFactory();
-  const fakeUser = fakeData.users[0] as IUserEntity;
+  const db = new utils.FakeFactory();
+  const fakeUser = utils.fakeData.users[0] as IUserEntity;
   const details: IUserDetailsDto = {
     id: fakeUser._id,
     name: fakeUser.login,

@@ -1,13 +1,13 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
 import Rooster from '../../../src/modules/party/rooster';
-import { Connection, fakeData, FakeFactory } from '../../utils';
+import * as utils from '../../utils';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
 
 describe('Party', () => {
-  const db = new FakeFactory();
-  const fakeParty = fakeData.parties[0] as IPartyEntity;
+  const db = new utils.FakeFactory();
+  const fakeParty = utils.fakeData.parties[0] as IPartyEntity;
   const rooster = new Rooster();
-  const connection = new Connection();
+  const connection = new utils.Connection();
 
   beforeAll(async () => {
     await connection.connect();

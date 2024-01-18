@@ -1,13 +1,13 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from '@jest/globals';
 import * as enums from '../../../src/enums';
 import Rooster from '../../../src/modules/user/rooster';
-import { Connection, fakeData, FakeFactory } from '../../utils';
+import * as utils from '../../utils';
 import type { IRegisterDto } from '../../../src/modules/user/register/types';
 
 describe('Login', () => {
-  const connection = new Connection();
-  const db = new FakeFactory();
-  const loginData = fakeData.users[0] as IRegisterDto;
+  const connection = new utils.Connection();
+  const db = new utils.FakeFactory();
+  const loginData = utils.fakeData.users[0] as IRegisterDto;
 
   beforeAll(async () => {
     await connection.connect();

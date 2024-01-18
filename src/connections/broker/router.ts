@@ -1,7 +1,7 @@
 import Handler from './handler';
-import * as enums from '../enums';
-import * as errors from '../errors';
-import type * as types from '../types';
+import * as enums from '../../enums';
+import * as errors from '../../errors';
+import type * as types from '../../types';
 
 export default class Router {
   private readonly _handler: Handler;

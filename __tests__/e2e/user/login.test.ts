@@ -1,12 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
 import Controller from '../../../src/modules/user/login';
-import { fakeData, FakeFactory } from '../../utils';
+import * as utils from '../../utils';
 import type { ILoginDto } from '../../../src/modules/user/login/types';
 
 describe('Login', () => {
-  const db = new FakeFactory();
-  const loginData = fakeData.users[0] as ILoginDto;
+  const db = new utils.FakeFactory();
+  const loginData = utils.fakeData.users[0] as ILoginDto;
   const controller = new Controller();
 
   afterEach(async () => {
