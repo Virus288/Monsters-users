@@ -148,7 +148,7 @@ describe('Register', () => {
       const getController = new GetController();
 
       await controller.register({ ...registerData, email: 'test22@test.test' });
-      const user = await getController.get(details);
+      const [user] = await getController.get([details]);
       expect(user?.login).toEqual(details.name);
     });
   });

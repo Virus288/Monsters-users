@@ -22,7 +22,7 @@ export default abstract class RoosterFactory<T extends Document, U extends Model
   }
 
   /**
-   * Create element with default data. This requires to pass elements, required my schema
+   * Create element with default data
    * #TODO Rewrite interface, so it will require data, required by mongoose schema
    */
   async addDefault(data: types.IRoosterAddDefaultData[Z]): Promise<types.IRoosterDefaultDataCallback[Z]> {

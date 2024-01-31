@@ -24,7 +24,7 @@ describe('Get details', () => {
         const clone = structuredClone(details);
         delete clone.name;
         delete clone.id;
-        controller.get(clone).catch((err) => {
+        controller.get([clone]).catch((err) => {
           expect(err).toEqual(new errors.MissingArgError('id'));
         });
       });
@@ -35,7 +35,7 @@ describe('Get details', () => {
         const clone = structuredClone(details);
         clone.id = 'aa';
         8;
-        controller.get(clone).catch((err) => {
+        controller.get([clone]).catch((err) => {
           expect(err).toEqual(new errors.IncorrectArgTypeError('id should be objectId'));
         });
       });
@@ -43,7 +43,7 @@ describe('Get details', () => {
       it('Name is not typeof string', () => {
         const clone = structuredClone(details);
         clone.name = 2 as unknown as string;
-        controller.get(clone).catch((err) => {
+        controller.get([clone]).catch((err) => {
           expect(err).toEqual(new errors.IncorrectArgTypeError('name should be a string'));
         });
       });
@@ -51,7 +51,7 @@ describe('Get details', () => {
       it('User with provided id does not exist', () => {
         const clone = structuredClone(details);
         clone.name = 'a';
-        controller.get(clone).catch((err) => {
+        controller.get([clone]).catch((err) => {
           expect(err).toEqual(new errors.UserDoesNotExist());
         });
       });
@@ -68,7 +68,7 @@ describe('Get details', () => {
         .verified(fakeUser.verified)
         .create();
 
-      const user = await controller.get(details);
+      const [user] = await controller.get([details]);
       expect(user?.login).toEqual(fakeUser.login);
     });
   });

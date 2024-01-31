@@ -8,3 +8,10 @@ export interface IUserEntity {
   password: string;
   type: enums.EUserTypes;
 }
+
+export interface IUserDetails {
+  _id: string;
+  login: string;
+  verified: boolean;
+  type: enums.EUserTypes;
+}

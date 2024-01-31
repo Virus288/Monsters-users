@@ -7,7 +7,7 @@ import * as enums from '../../enums';
 import * as errors from '../../errors';
 import HandlerFactory from '../../tools/abstract/handler';
 import State from '../../tools/state';
-import type { IUserEntity } from './entity';
+import type { IUserDetails } from './entity';
 import type { IUserDetailsDto } from './get/types';
 import type { ILoginDto } from './login/types';
 import type { IRegisterDto } from './register/types';
@@ -52,15 +52,16 @@ export default class UserHandler extends HandlerFactory<EModules.Users> {
   }
 
   async getDetails(payload: unknown, user: ILocalUser): Promise<void> {
-    const callback = await this.getController.get(payload as IUserDetailsDto);
+    const callback = await this.getController.get(payload as IUserDetailsDto[]);
     return State.broker.send(user.tempId, callback, enums.EMessageTypes.Send);
   }
 
-  async remove(name: string, userId: string): Promise<IUserEntity> {
+  async remove(name: string, userId: string): Promise<IUserDetails> {
     const data = new RemoveUserDto({ name });
-    const user = await this.getController.get(data);
+    const users = await this.getController.get([data]);
+    if (users.length === 0) throw new errors.NoPermission();
 
-    if (!user) throw new errors.NoPermission();
+    const user = users[0] as IUserDetails;
     if (user._id.toString() !== userId) throw new errors.NoPermission();
 
     await this.removeController.remove(user._id);
