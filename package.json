@@ -35,7 +35,7 @@
     "amqplib": "0.10.3",
     "bcrypt": "5.1.1",
     "chalk": "4.1.2",
-    "husky": "8.0.3",
+    "husky": "9.0.10",
     "jsonwebtoken": "9.0.2",
     "mongoose": "8.1.1",
     "node": "21.6.1",
