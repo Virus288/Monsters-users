@@ -9,6 +9,14 @@ export default class Rooster extends RoosterFactory<IUser, typeof User, EModules
     super(User);
   }
 
+  async getAll(page: number): Promise<IUserEntity[]> {
+    return User.find()
+      .sort({ createdAt: 1 })
+      .limit(100)
+      .skip((page <= 0 ? 0 : page - 1) * 100)
+      .lean();
+  }
+
   async getByEmail(data: string): Promise<IUserEntity | null> {
     return User.findOne({ email: data }).lean();
   }

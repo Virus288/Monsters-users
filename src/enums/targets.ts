@@ -2,6 +2,7 @@ export enum EUserTargets {
   Register = 'register',
   Login = 'login',
   GetName = 'getName',
+  DebugGetAll = 'debugGetAll',
 }
 
 export enum EItemsTargets {
