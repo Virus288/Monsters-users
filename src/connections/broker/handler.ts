@@ -61,6 +61,8 @@ export default class Handler {
         return this.controller.register(payload.payload, payload.user);
       case enums.EUserTargets.GetName:
         return this.user.getDetails(payload.payload, payload.user);
+      case enums.EUserTargets.DebugGetAll:
+        return this.user.getAll(payload.payload, payload.user);
       case enums.ESharedTargets.RemoveUser:
         return this.controller.removeUser(payload.payload, payload.user);
       default:
