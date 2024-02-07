@@ -9,3 +9,6 @@ test:
 
 buildDocker:
 	docker build -t monsters/monsters-users .
+
+buildTestDocker:
+	docker build -t monsters/monsters-users-test .
