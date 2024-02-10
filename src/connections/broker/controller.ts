@@ -47,7 +47,7 @@ export default class Controller {
     const { name } = new RemoveUserDto(payload as IRemoveUserDto);
 
     const { _id } = await this.user.remove(name, user.userId!);
-    await this.profile.remove(_id);
+    await this.profile.remove(_id.toString());
 
     return State.broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
   }

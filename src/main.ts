@@ -1,6 +1,5 @@
 import Broker from './connections/broker';
 import Mongo from './connections/mongo';
-import Redis from './connections/redis';
 import Log from './tools/logger/log';
 import State from './tools/state';
 import type { IFullError } from './types';
@@ -16,9 +15,8 @@ class App {
     });
   }
 
-  async kill(): Promise<void> {
+  kill(): void {
     State.broker.close();
-    await State.redis.close();
 
     Log.log('Server', 'Server closed');
   }
@@ -28,10 +26,8 @@ class App {
     await mongo.init();
 
     State.broker = new Broker();
-    State.redis = new Redis();
 
     State.broker.init();
-    await State.redis.init();
     Log.log('Server', 'Server started');
   }
 }

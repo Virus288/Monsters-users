@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
 import Controller from '../../../src/modules/party/add';
 import * as utils from '../../utils';
+import { sleep } from '../../utils';
 import type { IAddPartyDto } from '../../../src/modules/party/add/types';
 import type { IUserEntity } from '../../../src/modules/user/entity';
 
@@ -61,12 +62,14 @@ describe('Party - create', () => {
   });
 
   describe('Should pass', () => {
-    it('Create party', () => {
+    it('Create party', async () => {
       const clone = structuredClone(create);
       clone.leader = undefined!;
 
-      const func = async (): Promise<void> => controller.add(create, fakeUser._id);
-      expect(func).not.toThrow();
+      const callback = await controller.add(create, fakeUser._id);
+      // No idea why but it won't finish without timeout
+      await sleep(200);
+      expect(callback).toBeUndefined();
     });
   });
 });

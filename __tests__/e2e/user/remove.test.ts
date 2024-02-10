@@ -2,12 +2,11 @@ import { afterEach, beforeEach, describe, expect, it } from '@jest/globals';
 import * as errors from '../../../src/errors';
 import Handler from '../../../src/modules/user/handler';
 import Controller from '../../../src/modules/user/remove/';
-import State from '../../../src/tools/state';
 import * as utils from '../../utils';
 import type { IInventoryEntity } from '../../../src/modules/inventory/entity';
 import type { IPartyEntity } from '../../../src/modules/party/entity';
 import type { IProfileEntity } from '../../../src/modules/profile/entity';
-import type { IUserEntity } from '../../../src/modules/user/entity';
+import type { IUserDetails, IUserEntity } from '../../../src/modules/user/entity';
 import type { IRemoveUserDto } from '../../../src/modules/user/remove/types';
 
 describe('Remove user', () => {
@@ -82,9 +81,9 @@ describe('Remove user', () => {
         .party(fakeParty._id)
         .create();
 
-      await handler.remove(remove.name, fakeUser._id);
-      const cached = await State.redis.getRemovedUsers(fakeUser._id);
-      expect(cached).toEqual(fakeUser.login);
+      const func = async (): Promise<IUserDetails> => handler.remove(remove.name, fakeUser._id);
+
+      expect(func).not.toThrow();
     });
   });
 });

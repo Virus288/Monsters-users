@@ -21,7 +21,7 @@ export default class RegisterDto implements IRegisterDto {
       .hasLength(30, 3)
       .isRegexCompatible(
         new RegExp(/^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/u, 'u'),
-        'login should only contain arabic letters, numbers and special characters',
+        'login should only contain letters, numbers and special characters',
       );
 
     new Validation(this.password, 'password')
