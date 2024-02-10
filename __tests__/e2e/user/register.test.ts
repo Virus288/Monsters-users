@@ -70,9 +70,7 @@ describe('Register', () => {
           })
           .catch((err) => {
             expect(err).toEqual(
-              new errors.IncorrectArgTypeError(
-                'login should only contain arabic letters, numbers and special characters',
-              ),
+              new errors.IncorrectArgTypeError('login should only contain letters, numbers and special characters'),
             );
           });
       });

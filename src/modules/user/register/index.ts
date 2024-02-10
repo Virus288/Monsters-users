@@ -1,7 +1,6 @@
 import RegisterDto from './dto';
 import * as errors from '../../../errors';
 import ControllerFactory from '../../../tools/abstract/controller';
-import State from '../../../tools/state';
 import Rooster from '../rooster';
 import * as utils from '../utils';
 import type { IRegisterDto } from './types';
@@ -25,10 +24,6 @@ export default class Controller extends ControllerFactory<EModules.Users> {
     }
 
     const hashed = utils.hashPassword(password);
-    const id = await this.rooster.add({ ...payload, password: hashed });
-
-    const user = await State.redis.getRemovedUsers(id);
-    if (user) await State.redis.removeRemovedUser(id);
-    return id;
+    return this.rooster.add({ ...payload, password: hashed });
   }
 }

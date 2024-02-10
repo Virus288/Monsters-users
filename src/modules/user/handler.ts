@@ -78,7 +78,6 @@ export default class UserHandler extends HandlerFactory<EModules.Users> {
     if (user._id.toString() !== userId) throw new errors.NoPermission();
 
     await this.removeController.remove(user._id);
-    await State.redis.addRemovedUser(name, userId);
     return user;
   }
 }

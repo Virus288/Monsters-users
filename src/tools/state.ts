@@ -1,6 +1,5 @@
 import type Broker from '../connections/broker';
 import type Mongo from '../connections/mongo';
-import type Redis from '../connections/redis';
 import type { IState } from '../types';
 
 class State implements IState {
@@ -12,16 +11,6 @@ class State implements IState {
 
   set broker(value: Broker) {
     this._broker = value;
-  }
-
-  private _redis: Redis | null = null;
-
-  get redis(): Redis {
-    return this._redis!;
-  }
-
-  set redis(value: Redis) {
-    this._redis = value;
   }
 
   private _mongo: Mongo | null = null;
