@@ -38,7 +38,7 @@
     "chalk": "4.1.2",
     "husky": "9.0.10",
     "jsonwebtoken": "9.0.2",
-    "mongoose": "8.1.1",
+    "mongoose": "8.1.2",
     "node": "21.6.1",
     "winston": "3.11.0",
     "winston-daily-rotate-file": "4.7.1"
