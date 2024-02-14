@@ -34,7 +34,6 @@ describe('Get details', () => {
       it('Id not proper id', () => {
         const clone = structuredClone(details);
         clone.id = 'aa';
-        8;
         controller.get([clone]).catch((err) => {
           expect(err).toEqual(new errors.IncorrectArgTypeError('id should be objectId'));
         });

@@ -1,6 +1,7 @@
 import AddBasicController from './addBasic';
 import DropController from './drop';
 import GetController from './get';
+import RemoveController from './remove';
 import UseController from './use';
 import * as enums from '../../enums';
 import HandlerFactory from '../../tools/abstract/handler';
@@ -9,6 +10,7 @@ import type { IAddBasicInventoryDto } from './addBasic/types';
 import type { IDropItemDto } from './drop/types';
 import type { IInventoryEntity } from './entity';
 import type { IGetInventoryDto } from './get/types';
+import type { IRemoveInventoryDto } from './remove/types';
 import type { IUseItemDto } from './use/types';
 import type { EModules } from '../../tools/abstract/enums';
 import type { ILocalUser } from '../../types';
@@ -17,12 +19,14 @@ export default class Handler extends HandlerFactory<EModules.Inventory> {
   private readonly _addBasicController: AddBasicController;
   private readonly _dropController: DropController;
   private readonly _useController: UseController;
+  private readonly _removeController: RemoveController;
 
   constructor() {
     super(new GetController());
     this._addBasicController = new AddBasicController();
     this._dropController = new DropController();
     this._useController = new UseController();
+    this._removeController = new RemoveController();
   }
 
   private get addBasicController(): AddBasicController {
@@ -31,6 +35,10 @@ export default class Handler extends HandlerFactory<EModules.Inventory> {
 
   private get useController(): UseController {
     return this._useController;
+  }
+
+  private get removeController(): RemoveController {
+    return this._removeController;
   }
 
   private get dropController(): DropController {
@@ -54,5 +62,9 @@ export default class Handler extends HandlerFactory<EModules.Inventory> {
 
   async addBasic(userId: string): Promise<IInventoryEntity> {
     return this.addBasicController.add({ userId } as IAddBasicInventoryDto);
+  }
+
+  async remove(owner: string): Promise<void> {
+    await this.removeController.remove({ owner } as IRemoveInventoryDto);
   }
 }

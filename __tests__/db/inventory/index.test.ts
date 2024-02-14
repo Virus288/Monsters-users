@@ -115,7 +115,7 @@ describe('Inventory', () => {
         .userId(fakeProfile.user)
         .create();
 
-      await rooster.remove(fakeInv._id);
+      await rooster.remove(fakeInv.userId);
       const inv = await rooster.get(fakeInv._id);
 
       expect(inv).toEqual(null);
