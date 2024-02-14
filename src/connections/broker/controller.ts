@@ -48,6 +48,8 @@ export default class Controller {
 
     const { _id } = await this.user.remove(name, user.userId!);
     await this.profile.remove(_id.toString());
+    await this.party.remove(_id.toString());
+    await this.inventory.remove(_id.toString());
 
     return State.broker.send(user.tempId, undefined, enums.EMessageTypes.Send);
   }

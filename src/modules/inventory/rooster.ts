@@ -13,8 +13,8 @@ export default class Rooster extends RoosterFactory<IInventory, typeof Inventory
     return Inventory.findOne({ userId: id }).lean();
   }
 
-  async remove(id: string): Promise<null> {
-    return Inventory.findOneAndDelete({ _id: id });
+  async remove(user: string): Promise<null> {
+    return Inventory.findOneAndDelete({ userId: user });
   }
 
   override async update(id: string, data: Partial<IInventoryEntity>): Promise<void> {
