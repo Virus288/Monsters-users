@@ -21,6 +21,10 @@ export default abstract class RoosterFactory<T extends Document, U extends Model
     return callback._id as string;
   }
 
+  async count(filter: Record<string, unknown>): Promise<number> {
+    return this.model.countDocuments(filter);
+  }
+
   /**
    * Create element with default data
    * #TODO Rewrite interface, so it will require data, required by mongoose schema

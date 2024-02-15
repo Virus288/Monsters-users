@@ -12,6 +12,9 @@ export default class Controller extends ControllerFactory<EModules.Logs> {
   async add(data: IAddLogDto, userId: string): Promise<{ _id: string }> {
     const payload = new AddLogDto({ ...data, userId });
 
+    const amount = await this.rooster.count({ userId });
+    if (amount >= 100) await this.rooster.removeOldest(userId);
+
     return { _id: await this.rooster.add(payload) };
   }
 }
