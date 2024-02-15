@@ -33,4 +33,8 @@ export default class Rooster extends RoosterFactory<ILog, typeof Log, EModules.L
 
     return !data || data.length === 0 ? [] : data;
   }
+
+  async removeOldest(userId: string): Promise<void> {
+    await Log.findOneAndDelete({ userId }, { sort: { createdAt: 1 } });
+  }
 }
