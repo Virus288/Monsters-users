@@ -34,7 +34,6 @@ describe('Profile', () => {
 
         try {
           new GetProfileDto(clone);
-          1;
         } catch (err) {
           expect(err).toEqual(new errors.MissingArgError('id'));
         }

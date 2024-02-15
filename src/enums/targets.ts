@@ -24,3 +24,8 @@ export enum EProfileTargets {
   Create = 'createProfile',
   Get = 'getProfile',
 }
+
+export enum ELogTargets {
+  AddLog = 'addLog',
+  GetLog = 'getLog',
+}

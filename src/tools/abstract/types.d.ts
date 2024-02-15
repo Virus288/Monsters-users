@@ -3,6 +3,10 @@ import type { IAddItemDto } from '../../modules/inventory/addBasic/types';
 import type { IInventoryEntity } from '../../modules/inventory/entity';
 import type InventoryGet from '../../modules/inventory/get';
 import type InventoryRooster from '../../modules/inventory/rooster';
+import type { IAddLogDto } from '../../modules/logs/add/types';
+import type { ILogEntity } from '../../modules/logs/entity';
+import type LogGet from '../../modules/logs/get';
+import type LogsRooster from '../../modules/logs/rooster';
 import type { IAddPartyDto } from '../../modules/party/add/types';
 import type { IPartyEntity } from '../../modules/party/entity';
 import type PartyGet from '../../modules/party/get';
@@ -21,6 +25,7 @@ export interface IModulesGetControllers {
   [EModules.Party]: PartyGet;
   [EModules.Profiles]: ProfileGet;
   [EModules.Inventory]: InventoryGet;
+  [EModules.Logs]: LogGet;
 }
 
 export interface IModulesControllers {
@@ -28,6 +33,7 @@ export interface IModulesControllers {
   [EModules.Profiles]: ProfileRooster;
   [EModules.Inventory]: InventoryRooster;
   [EModules.Party]: PartyRooster;
+  [EModules.Logs]: LogsRooster;
 }
 
 export interface IRoosterAddData {
@@ -35,6 +41,7 @@ export interface IRoosterAddData {
   [EModules.Profiles]: IAddProfileDto;
   [EModules.Inventory]: IAddItemDto;
   [EModules.Party]: IAddPartyDto;
+  [EModules.Logs]: IAddLogDto;
 }
 
 export interface IRoosterAddDefaultData {
@@ -42,6 +49,7 @@ export interface IRoosterAddDefaultData {
   [EModules.Profiles]: Partial<IProfileEntity>;
   [EModules.Inventory]: Partial<IInventoryEntity>;
   [EModules.Party]: Partial<IPartyEntity>;
+  [EModules.Logs]: Partial<ILogEntity>;
 }
 
 export interface IRoosterDefaultDataCallback {
@@ -49,15 +57,19 @@ export interface IRoosterDefaultDataCallback {
   [EModules.Profiles]: IProfileEntity;
   [EModules.Inventory]: IInventoryEntity;
   [EModules.Party]: IPartyEntity;
+  [EModules.Logs]: ILogEntity;
 }
 
-export type IRoosterUpdate = IRoosterAddDefaultData;
+export interface IRoosterUpdate extends IRoosterAddDefaultData {
+  [EModules.Logs]: Partial<ILogEntity>;
+}
 
 export interface IRoosterGetData {
   [EModules.Users]: IUserEntity | null;
   [EModules.Profiles]: IProfileEntity | null;
   [EModules.Inventory]: IInventoryEntity | null;
   [EModules.Party]: IPartyEntity | null;
+  [EModules.Logs]: ILogEntity | null;
 }
 
 export interface IRoosterFactory<Z extends EModules> {
