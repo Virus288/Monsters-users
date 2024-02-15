@@ -9,6 +9,7 @@ export interface IRabbitMessage {
     | enums.EProfileTargets
     | enums.ESharedTargets
     | enums.EItemsTargets
+    | enums.ELogTargets
     | enums.EPartyTargets;
   payload: unknown;
 }

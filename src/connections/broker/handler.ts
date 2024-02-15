@@ -2,6 +2,7 @@ import Controller from './controller';
 import * as enums from '../../enums';
 import * as errors from '../../errors';
 import InventoryController from '../../modules/inventory/handler';
+import LogController from '../../modules/logs/handler';
 import PartyController from '../../modules/party/handler';
 import ProfileController from '../../modules/profile/handler';
 import UserController from '../../modules/user/handler';
@@ -12,6 +13,7 @@ export default class Handler {
   private readonly _party: PartyController;
   private readonly _profile: ProfileController;
   private readonly _inventory: InventoryController;
+  private readonly _log: LogController;
   private readonly _controller: Controller;
 
   constructor() {
@@ -19,6 +21,7 @@ export default class Handler {
     this._profile = new ProfileController();
     this._inventory = new InventoryController();
     this._party = new PartyController();
+    this._log = new LogController();
     this._controller = new Controller(this.user, this.profile, this.inventory, this.party);
   }
 
@@ -38,8 +41,23 @@ export default class Handler {
     return this._profile;
   }
 
+  private get log(): LogController {
+    return this._log;
+  }
+
   private get controller(): Controller {
     return this._controller;
+  }
+
+  async logMessages(payload: types.IRabbitMessage): Promise<void> {
+    switch (payload.subTarget) {
+      case enums.ELogTargets.AddLog:
+        return this.log.add(payload.payload, payload.user);
+      case enums.ELogTargets.GetLog:
+        return this.log.get(payload.payload, payload.user);
+      default:
+        throw new errors.IncorrectTargetError();
+    }
   }
 
   async profileMessage(payload: types.IRabbitMessage): Promise<void> {
