@@ -3,7 +3,7 @@ import Router from './router';
 import * as enums from '../../enums';
 import { NotConnectedError } from '../../errors';
 import getConfig from '../../tools/configLoader';
-import Log from '../../tools/logger/log';
+import Log from '../../tools/logger';
 import type * as types from '../../types';
 
 export default class Broker {
@@ -112,6 +112,7 @@ export default class Broker {
   private async createQueue(): Promise<void> {
     Log.log('Rabbit', `Creating queue: ${enums.EAmqQueues.Gateway}`);
     Log.log('Rabbit', `Creating queue: ${enums.EAmqQueues.Users}`);
+
     await this._channel!.assertQueue(enums.EAmqQueues.Gateway, { durable: true });
     await this._channel!.assertQueue(enums.EAmqQueues.Users, { durable: true });
     await this._channel!.consume(
@@ -122,6 +123,9 @@ export default class Broker {
         if (payload.target === enums.EMessageTypes.Heartbeat) {
           this.sendHeartBeat(enums.EServices.Users, enums.EMessageTypes.Heartbeat);
         } else {
+          Log.log('Rabbit', 'Got new message');
+          Log.log('Rabbit', payload);
+
           this._queue[payload.user.tempId] = payload;
           this.errorWrapper(async () => this.router.handleMessage(payload), payload.user.tempId);
         }

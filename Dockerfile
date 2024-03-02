@@ -1,5 +1,5 @@
 FROM node:18
-ENV NODE_ENV prod
+ENV NODE_ENV production
 
 WORKDIR /usr/src/app
 ADD package.json /usr/src/app

@@ -29,3 +29,7 @@ export enum ELogTargets {
   AddLog = 'addLog',
   GetLog = 'getLog',
 }
+
+export enum ECharacterStateTargets {
+  ChangeState = 'changeState',
+}

@@ -14,22 +14,22 @@ export default class FakeInventory
   }
 
   _id(id?: string): this {
-    this.state._id = id;
+    this.data._id = id;
     return this;
   }
 
   items(items: IInventoryItem[]): this {
-    this.state.items = items;
+    this.data.items = items;
     return this;
   }
 
   userId(id?: string): this {
-    this.state.userId = id;
+    this.data.userId = id;
     return this;
   }
 
   protected override fillState(): void {
-    this.state = {
+    this.data = {
       items: [],
       userId: undefined,
       _id: undefined,

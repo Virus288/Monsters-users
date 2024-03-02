@@ -88,6 +88,15 @@ export default class Handler {
     }
   }
 
+  async characterStateMessage(payload: types.IRabbitMessage): Promise<void> {
+    switch (payload.subTarget) {
+      case enums.ECharacterStateTargets.ChangeState:
+        return this.profile.changeState(payload.payload, payload.user);
+      default:
+        throw new errors.IncorrectTargetError();
+    }
+  }
+
   async inventoryMessage(payload: types.IRabbitMessage): Promise<void> {
     switch (payload.subTarget) {
       case enums.EItemsTargets.Get:

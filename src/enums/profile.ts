@@ -6,5 +6,5 @@ export enum EUserRace {
   Dwarf = 'dwarf',
   Orc = 'orc',
   Fairy = 'fairy',
-  DragonBord = 'dragonBorn',
+  DragonBorn = 'dragonBorn',
 }

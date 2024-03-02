@@ -226,9 +226,9 @@ export class ElementTooShortError extends FullError {
 
 export class ElementTooLongError extends FullError {
   constructor(target: string, min: number) {
-    super('ElementTooShortError');
+    super('ElementTooShortLongError');
     this.message = `Element ${target} is too long. Maximum length is ${min}`;
-    this.name = 'ElementTooShortError';
+    this.name = 'ElementTooShortLongError';
     this.code = '022';
     this.status = 400;
   }

@@ -4,6 +4,7 @@ import type mongoose from 'mongoose';
 
 export default abstract class TemplateFactory<T extends EFakeData> {
   private readonly _target: IFakeModel[T];
+  private _state: IFakeState[T] = {};
 
   protected constructor(target: IFakeModel[T]) {
     this._target = target;
@@ -14,13 +15,11 @@ export default abstract class TemplateFactory<T extends EFakeData> {
     return this._target;
   }
 
-  private _state: IFakeState[T] = {};
-
-  protected get state(): IFakeState[T] {
+  protected get data(): IFakeState[T] {
     return this._state;
   }
 
-  protected set state(value: IFakeState[T]) {
+  protected set data(value: IFakeState[T]) {
     this._state = value;
   }
 
@@ -35,9 +34,9 @@ export default abstract class TemplateFactory<T extends EFakeData> {
   }
 
   async create(): Promise<mongoose.Types.ObjectId> {
-    const newElm = new this._target(this.state);
+    const newElm = new this._target(this.data);
     const { _id } = await newElm.save();
-    this.states.push({ ...this.state, _id });
+    this.states.push({ ...this.data, _id });
     this.clean();
     return _id;
   }
@@ -56,7 +55,7 @@ export default abstract class TemplateFactory<T extends EFakeData> {
   }
 
   private clean(): void {
-    Object.entries(this.state).forEach((e) => {
+    Object.entries(this.data).forEach((e) => {
       if (typeof e[1] === 'number') e[1] = 0;
       if (typeof e[1] === 'string') e[1] = undefined!;
       if (typeof e[1] === 'boolean') e[1] = false;

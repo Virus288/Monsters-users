@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import getConfig from '../../tools/configLoader';
-import Log from '../../tools/logger/log';
+import Log from '../../tools/logger';
 import type { ConnectOptions } from 'mongoose';
 
 export default class Mongo {
@@ -20,8 +20,6 @@ export default class Mongo {
 
   private async startServer(): Promise<void> {
     await mongoose.connect(getConfig().mongoURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
       dbName: 'Users',
     } as ConnectOptions);
     Log.log('Mongo', 'Started server');
