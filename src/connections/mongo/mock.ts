@@ -2,7 +2,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import { fakeData, FakeFactory } from '../../../__tests__/utils';
 import { EFakeData } from '../../../__tests__/utils/fakeFactory/enums';
-import Log from '../../tools/logger/log';
+import Log from '../../tools/logger';
 import type { IFakeState } from '../../../__tests__/utils/fakeFactory/types/data';
 import type { IInventoryEntity } from '../../modules/inventory/entity';
 import type { IPartyEntity } from '../../modules/party/entity';

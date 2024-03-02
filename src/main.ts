@@ -1,6 +1,6 @@
 import Broker from './connections/broker';
 import Mongo from './connections/mongo';
-import Log from './tools/logger/log';
+import Log from './tools/logger';
 import State from './tools/state';
 import type { IFullError } from './types';
 

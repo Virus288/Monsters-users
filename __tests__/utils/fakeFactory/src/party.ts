@@ -10,22 +10,22 @@ export default class FakeParty extends TemplateFactory<EFakeData.Party> implemen
   }
 
   leader(leader?: string): this {
-    this.state.leader = leader;
+    this.data.leader = leader;
     return this;
   }
 
   _id(id?: string): this {
-    this.state._id = id;
+    this.data._id = id;
     return this;
   }
 
   characters(characters?: string[]): this {
-    this.state.characters = characters;
+    this.data.characters = characters;
     return this;
   }
 
   protected override fillState(): void {
-    this.state = {
+    this.data = {
       _id: undefined,
       leader: undefined,
       characters: [],

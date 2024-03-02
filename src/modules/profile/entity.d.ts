@@ -10,4 +10,5 @@ export interface IProfileEntity {
   initialized: boolean;
   inventory: string;
   party: string;
+  state: enums.ECharacterState;
 }

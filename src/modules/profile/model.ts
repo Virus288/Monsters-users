@@ -42,6 +42,12 @@ export const profileSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     required: [true, 'party not provided'],
   },
+  state: {
+    type: String,
+    enum: enums.ECharacterState,
+    required: [true, 'state not provided'],
+    default: enums.ECharacterState.Map,
+  },
 });
 
 const Profile = mongoose.model<IProfile>('Profile', profileSchema);

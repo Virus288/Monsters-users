@@ -12,37 +12,37 @@ export default class FakeUser extends TemplateFactory<EFakeData.User> implements
   }
 
   _id(id?: string): this {
-    this.state._id = id;
+    this.data._id = id;
     return this;
   }
 
   login(login?: string): this {
-    this.state.login = login;
+    this.data.login = login;
     return this;
   }
 
   email(email?: string): this {
-    this.state.email = email;
+    this.data.email = email;
     return this;
   }
 
   password(password?: string): this {
-    if (password) this.state.password = hashPassword(password);
+    if (password) this.data.password = hashPassword(password);
     return this;
   }
 
   type(type?: enums.EUserTypes): this {
-    this.state.type = type;
+    this.data.type = type;
     return this;
   }
 
   verified(verified?: boolean): this {
-    this.state.verified = verified;
+    this.data.verified = verified;
     return this;
   }
 
   protected override fillState(): void {
-    this.state = {
+    this.data = {
       _id: undefined,
       email: undefined,
       login: undefined,

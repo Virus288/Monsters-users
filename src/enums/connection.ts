@@ -25,4 +25,5 @@ export enum EMessageTargets {
   Party = 'party',
   Profile = 'profile',
   Inventory = 'inventory',
+  CharacterState = 'characterState',
 }
