@@ -25,7 +25,9 @@ export default class MongoConnection {
   }
 
   private async startServer(): Promise<void> {
-    await mongoose.connect(getConfig().mongoURI);
+    await mongoose.connect(getConfig().mongoURI, {
+      dbName: 'Users',
+    } as ConnectOptions);
     Log.log('Mongo', 'Started server');
   }
 

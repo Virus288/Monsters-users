@@ -27,7 +27,7 @@ export default class Migrations {
   }
 
   async init(): Promise<void> {
-    this.migrationClient = await this._client.init();
+    this.migrationClient = await this.client.init();
 
     const lastMigration = await this.getLastMigration();
     lastMigration.forEach((m) => {
