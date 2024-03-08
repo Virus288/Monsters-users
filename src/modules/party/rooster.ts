@@ -10,10 +10,10 @@ export default class Rooster extends RoosterFactory<IParty, typeof Party, EModul
   }
 
   async getByLeader(id: string): Promise<IPartyEntity | null> {
-    return Party.findOne({ leader: id }).lean();
+    return this.model.findOne({ leader: id }).lean();
   }
 
   async remove(leader: string): Promise<void> {
-    await Party.findOneAndDelete({ leader });
+    await this.model.findOneAndDelete({ leader });
   }
 }
