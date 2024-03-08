@@ -10,7 +10,8 @@ export default class Rooster extends RoosterFactory<IUser, typeof User, EModules
   }
 
   async getAll(page: number): Promise<IUserEntity[]> {
-    return User.find()
+    return this.model
+      .find()
       .sort({ createdAt: 1 })
       .limit(100)
       .skip((page <= 0 ? 0 : page - 1) * 100)
@@ -18,14 +19,14 @@ export default class Rooster extends RoosterFactory<IUser, typeof User, EModules
   }
 
   async getByEmail(data: string): Promise<IUserEntity | null> {
-    return User.findOne({ email: data }).lean();
+    return this.model.findOne({ email: data }).lean();
   }
 
   async getByLogin(data: string): Promise<IUserEntity | null> {
-    return User.findOne({ login: data }).lean();
+    return this.model.findOne({ login: data }).lean();
   }
 
   async remove(id: string): Promise<null> {
-    return User.findOneAndDelete({ _id: id });
+    return this.model.findOneAndDelete({ _id: id });
   }
 }

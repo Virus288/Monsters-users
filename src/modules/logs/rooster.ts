@@ -11,30 +11,32 @@ export default class Rooster extends RoosterFactory<ILog, typeof Log, EModules.L
   }
 
   async getByUser(userId: string, lastId?: string): Promise<ILogEntity[]> {
-    const data = (await Log.aggregate([
-      {
-        $match: lastId
-          ? {
-              userId: new mongoose.Types.ObjectId(userId),
-              _id: { $gt: new mongoose.Types.ObjectId(lastId) },
-            }
-          : { userId: new mongoose.Types.ObjectId(userId) },
-      },
-      {
-        $addFields: { date: '$createdAt' },
-      },
-      {
-        $project: {
-          _id: 1,
-          date: 1,
+    const data = (await this.model
+      .aggregate([
+        {
+          $match: lastId
+            ? {
+                userId: new mongoose.Types.ObjectId(userId),
+                _id: { $gt: new mongoose.Types.ObjectId(lastId) },
+              }
+            : { userId: new mongoose.Types.ObjectId(userId) },
         },
-      },
-    ]).sort({ createdAt: 1 })) as ILogEntity[];
+        {
+          $addFields: { date: '$createdAt' },
+        },
+        {
+          $project: {
+            _id: 1,
+            date: 1,
+          },
+        },
+      ])
+      .sort({ createdAt: 1 })) as ILogEntity[];
 
     return !data || data.length === 0 ? [] : data;
   }
 
   async removeOldest(userId: string): Promise<void> {
-    await Log.findOneAndDelete({ userId }, { sort: { createdAt: 1 } });
+    await this.model.findOneAndDelete({ userId }, { sort: { createdAt: 1 } });
   }
 }
