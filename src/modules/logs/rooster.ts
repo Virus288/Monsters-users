@@ -27,6 +27,7 @@ export default class Rooster extends RoosterFactory<ILog, typeof Log, EModules.L
         {
           $project: {
             _id: 1,
+            message: 1,
             date: 1,
           },
         },
