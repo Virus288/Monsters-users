@@ -22,8 +22,8 @@
     "test:unit": "jest --config __tests__/jest.config.unit.ts",
     "test:db": "jest --runInBand --config __tests__/jest.config.db.ts",
     "generate": "npx module-generator",
-    "prepare": "husky install",
-    "migrate:prod": "cross-env NODE_ENV=production node build/src/migrations/index.js",
+    "prepareHooks": "husky install",
+    "migrate": "node build/src/migrations/index.js",
     "migrate:dev": "cross-env NODE_ENV=dev node build/src/migrations/index.js"
   },
   "lint-staged": {
