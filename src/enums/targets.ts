@@ -33,3 +33,8 @@ export enum ELogTargets {
 export enum ECharacterStateTargets {
   ChangeState = 'changeState',
 }
+
+export enum EBugReportTargets {
+  AddBugReport = 'addBugReport',
+  GetBugReport = 'getBugReport',
+}

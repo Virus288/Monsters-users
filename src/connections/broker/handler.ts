@@ -1,6 +1,7 @@
 import Controller from './controller';
 import * as enums from '../../enums';
 import * as errors from '../../errors';
+import BugReportController from '../../modules/bugReport/handler';
 import InventoryController from '../../modules/inventory/handler';
 import LogController from '../../modules/logs/handler';
 import PartyController from '../../modules/party/handler';
@@ -15,6 +16,7 @@ export default class Handler {
   private readonly _inventory: InventoryController;
   private readonly _log: LogController;
   private readonly _controller: Controller;
+  private readonly _bugReport: BugReportController;
 
   constructor() {
     this._user = new UserController();
@@ -22,6 +24,7 @@ export default class Handler {
     this._inventory = new InventoryController();
     this._party = new PartyController();
     this._log = new LogController();
+    this._bugReport = new BugReportController();
     this._controller = new Controller(this.user, this.profile, this.inventory, this.party);
   }
 
@@ -35,6 +38,10 @@ export default class Handler {
 
   private get party(): PartyController {
     return this._party;
+  }
+
+  private get bugReport(): BugReportController {
+    return this._bugReport;
   }
 
   private get profile(): ProfileController {
@@ -116,6 +123,17 @@ export default class Handler {
         return this.party.get(payload.payload, payload.user);
       case enums.EPartyTargets.Create:
         return this.party.create(payload.payload, payload.user);
+      default:
+        throw new errors.IncorrectTargetError();
+    }
+  }
+
+  async bugReportMessage(payload: types.IRabbitMessage): Promise<void> {
+    switch (payload.subTarget) {
+      case enums.EBugReportTargets.AddBugReport:
+        return this.bugReport.add(payload.payload, payload.user);
+      case enums.EBugReportTargets.GetBugReport:
+        return this.bugReport.get(payload.payload, payload.user);
       default:
         throw new errors.IncorrectTargetError();
     }
