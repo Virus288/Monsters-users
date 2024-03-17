@@ -2,7 +2,7 @@
 
 echo "Starting migrations"
 
-npm run migrate:prod
+npm run migrate
 
 echo "Starting service"
 

@@ -1,6 +1,7 @@
 import Handler from './handler';
 import * as enums from '../../enums';
 import * as errors from '../../errors';
+import Log from '../../tools/logger';
 import type * as types from '../../types';
 
 export default class Router {
@@ -15,6 +16,8 @@ export default class Router {
   }
 
   async handleMessage(payload: types.IRabbitMessage): Promise<void> {
+    this.logNewMessage(payload);
+
     switch (payload.target) {
       case enums.EMessageTargets.Log:
         return this.handler.logMessages(payload);
@@ -33,5 +36,16 @@ export default class Router {
       default:
         throw new errors.IncorrectTargetError();
     }
+  }
+
+  private logNewMessage(message: types.IRabbitMessage): void {
+    const toLog = { ...structuredClone(message) };
+
+    if ((toLog.payload as Record<string, string>)?.password) {
+      (toLog.payload as Record<string, string>).password = '***';
+    }
+
+    Log.log('Rabbit', 'Got new message');
+    Log.log('Rabbit', toLog);
   }
 }

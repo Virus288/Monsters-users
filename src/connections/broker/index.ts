@@ -123,9 +123,6 @@ export default class Broker {
         if (payload.target === enums.EMessageTypes.Heartbeat) {
           this.sendHeartBeat(enums.EServices.Users, enums.EMessageTypes.Heartbeat);
         } else {
-          Log.log('Rabbit', 'Got new message');
-          Log.log('Rabbit', payload);
-
           this._queue[payload.user.tempId] = payload;
           this.errorWrapper(async () => this.router.handleMessage(payload), payload.user.tempId);
         }
