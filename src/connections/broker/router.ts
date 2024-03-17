@@ -28,6 +28,8 @@ export default class Router {
         return this.handler.inventoryMessage(payload);
       case enums.EMessageTargets.Party:
         return this.handler.partyMessage(payload);
+      case enums.EMessageTargets.BugReport:
+        return this.handler.bugReportMessage(payload);
       default:
         throw new errors.IncorrectTargetError();
     }

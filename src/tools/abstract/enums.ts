@@ -5,4 +5,5 @@ export enum EModules {
   Party = 'party',
   Profiles = 'profiles',
   Inventory = 'inventory',
+  BugReport = 'bugReport',
 }

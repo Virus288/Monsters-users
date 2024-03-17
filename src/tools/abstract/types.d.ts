@@ -1,4 +1,8 @@
 import type { EModules } from './enums';
+import type { IAddBugReport } from '../../modules/bugReport/add/types';
+import type { IBugReportEntity } from '../../modules/bugReport/entity';
+import type BugReportGet from '../../modules/bugReport/get';
+import type BugReportRooster from '../../modules/bugReport/rooster';
 import type { IAddItemDto } from '../../modules/inventory/addBasic/types';
 import type { IInventoryEntity } from '../../modules/inventory/entity';
 import type InventoryGet from '../../modules/inventory/get';
@@ -26,6 +30,7 @@ export interface IModulesGetControllers {
   [EModules.Profiles]: ProfileGet;
   [EModules.Inventory]: InventoryGet;
   [EModules.Logs]: LogGet;
+  [EModules.BugReport]: BugReportGet;
 }
 
 export interface IModulesControllers {
@@ -34,6 +39,7 @@ export interface IModulesControllers {
   [EModules.Inventory]: InventoryRooster;
   [EModules.Party]: PartyRooster;
   [EModules.Logs]: LogsRooster;
+  [EModules.BugReport]: BugReportRooster;
 }
 
 export interface IRoosterAddData {
@@ -42,6 +48,7 @@ export interface IRoosterAddData {
   [EModules.Inventory]: IAddItemDto;
   [EModules.Party]: IAddPartyDto;
   [EModules.Logs]: IAddLogDto;
+  [EModules.BugReport]: IAddBugReport;
 }
 
 export interface IRoosterAddDefaultData {
@@ -50,6 +57,7 @@ export interface IRoosterAddDefaultData {
   [EModules.Inventory]: Partial<IInventoryEntity>;
   [EModules.Party]: Partial<IPartyEntity>;
   [EModules.Logs]: Partial<ILogEntity>;
+  [EModules.BugReport]: Partial<IBugReportEntity>;
 }
 
 export interface IRoosterDefaultDataCallback {
@@ -58,6 +66,7 @@ export interface IRoosterDefaultDataCallback {
   [EModules.Inventory]: IInventoryEntity;
   [EModules.Party]: IPartyEntity;
   [EModules.Logs]: ILogEntity;
+  [EModules.BugReport]: IBugReportEntity;
 }
 
 export interface IRoosterUpdate extends IRoosterAddDefaultData {
@@ -70,6 +79,7 @@ export interface IRoosterGetData {
   [EModules.Inventory]: IInventoryEntity | null;
   [EModules.Party]: IPartyEntity | null;
   [EModules.Logs]: ILogEntity | null;
+  [EModules.BugReport]: IBugReportEntity | null;
 }
 
 export interface IRoosterFactory<Z extends EModules> {
