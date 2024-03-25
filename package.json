@@ -41,7 +41,7 @@
     "husky": "9.0.11",
     "mongoose": "8.2.2",
     "node": "21.7.1",
-    "winston": "3.12.0",
+    "winston": "3.13.0",
     "winston-daily-rotate-file": "5.0.0"
   },
   "devDependencies": {
